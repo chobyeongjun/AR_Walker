@@ -1,0 +1,358 @@
+#include "ParseIni.h"
+#include "Logger.h"
+#include <stdlib.h>
+
+#if defined(ARDUINO_TEENSY36) || defined(ARDUINO_TEENSY41)
+void ini_print_error_message(uint8_t e, bool eol = true)
+{
+    if (Serial)
+    {
+        switch (e)
+        {
+        case IniFile::errorNoError:
+            logger::print("no error");
+            break;
+        case IniFile::errorFileNotFound:
+            logger::print("file not found");
+            break;
+        case IniFile::errorFileNotOpen:
+            logger::print("file not open");
+            break;
+        case IniFile::errorBufferTooSmall:
+            logger::print("buffer too small");
+            break;
+        case IniFile::errorSeekError:
+            logger::print("seek error");
+            break;
+        case IniFile::errorSectionNotFound:
+            logger::print("section not found");
+            break;
+        case IniFile::errorKeyNotFound:
+            logger::print("key not found");
+            break;
+        case IniFile::errorEndOfFile:
+            logger::print("end of file");
+            break;
+        case IniFile::errorUnknownError:
+            logger::print("unknown error");
+            break;
+        default:
+            logger::print("unknown error value");
+            break;
+        }
+        if (eol)
+        {
+            logger::print("\n");
+        }
+    }
+}
+
+void ini_parser(uint8_t *config_to_send)
+{
+    ini_parser("/config.ini", config_to_send);
+}
+
+void ini_parser(char *filename, uint8_t *config_to_send)
+{
+    ConfigData data; // ParseIni.h에서 작성했던, ConfigData
+
+    // Set pin to select the SD card
+    pinMode(SD_SELECT, OUTPUT); // SD_SELECT pin을 OUTPUT모드로 설정
+    digitalWrite(SD_SELECT, HIGH);
+
+    // Create buffer to hold the data read from the file
+    const size_t buffer_len = ini_config::buffer_length;
+    char buffer[buffer_len];
+
+    // Setup the SPI to read the SD card
+    SPI.begin();
+
+    if (!SD.begin(SD_SELECT)) //  SD 카드 라이브러리를 시작하고, 실제로 SD 카드가 꽂혀 있고 정상적으로 인식되는지 확인
+    {
+        while (1) //  만약 SD 카드 인식에 실패하면, 프로그램이 더 이상 진행되지 않도록 무한 루프에 빠뜨려 멈추게 합니다.
+
+            if (Serial)
+            {
+                logger::print("SD.begin() failed");
+                logger::print("\n");
+            }
+    }
+
+    IniFile ini(filename); //  IniFile 객체를 생성하고, 파일 이름을 지정하여 ini 파일을 열 준비를 합니다.
+
+    if (!ini.open())
+    {
+        if (Serial)
+        {
+            logger::print("Ini file ");
+            logger::print(filename);
+            logger::print(" does not exist");
+            logger::print("\n");
+        }
+
+        // Cannot do anything else
+        while (1)
+            ;
+    }
+
+    if (Serial) //  만약 Serial 통신이 가능하다면, 즉 Serial.begin()이 성공적으로 실행되었다면
+    {
+        logger::print("Ini file exists");
+        logger::print("\n");
+    }
+
+    // Check the file is valid. This can be used to warn if any lines are longer than the buffer.
+    if (!ini.validate(buffer, buffer_len))
+    {
+        if (Serial)
+        {
+            logger::print("ini file ");
+            logger::print(ini.getFilename());
+            logger::print(" not valid: ");
+            ini_print_error_message(ini.getError());
+        }
+
+        // Cannot do anything else
+        while (1)
+            ;
+    }
+
+    get_section_key(ini, "Board", "name", buffer, buffer_len); // Read the key.
+    data.board_name = buffer;                                  // Store the value
+
+    // logger::print(data.board_name.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::board_name[data.board_name]);
+
+    config_to_send[config_defs::board_name_idx] = config_map::board_name[data.board_name]; // Encode the key to an uint8_t
+
+    //--------------------------------------------------------
+
+    get_section_key(ini, "Board", "version", buffer, buffer_len);
+    data.board_version = buffer;
+
+    // logger::print(data.board_version.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::board_version[data.board_version]);
+
+    config_to_send[config_defs::board_version_idx] = config_map::board_version[data.board_version];
+    //--------------------------------------------------------
+
+    get_section_key(ini, "Battery", "name", buffer, buffer_len);
+    data.battery = buffer;
+
+    // logger::print(data.board_version.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::board_version[data.board_version]);
+
+    config_to_send[config_defs::battery_idx] = config_map::battery[data.battery];
+    //--------------------------------------------------------
+
+    get_section_key(ini, "Exo", "name", buffer, buffer_len);
+    data.exo_name = buffer;
+
+    // logger::print(data.exo_name.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::exo_name[data.exo_name]);
+
+    config_to_send[config_defs::exo_name_idx] = config_map::exo_name[data.exo_name];
+    //--------------------------------------------------------
+
+    // const char* 타입으로 변환하는 작업
+    const char temp_exo_name[data.exo_name.length() + 1]; // 문자열의 끝을 나타내는 **널 문자(\0)**를 위해 길이에 1을 더합니다
+    strcpy(temp_exo_name, data.exo_name.c_str());
+
+    // Check the section that corresponds to the exo_name to get the correct parameters.
+    get_section_key(ini, temp_exo_name, "sides", buffer, buffer_len);
+    data.exo_sides = buffer;
+
+    // logger::print(data.exo_sides.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::exo_side[data.exo_sides]);
+
+    config_to_send[config_defs::exo_side_idx] = config_map::exo_side[data.exo_sides];
+    //--------------------------------------------------------
+
+    get_section_key(ini, temp_exo_name, "knee", buffer, buffer_len);
+    data.exo_knee = buffer;
+
+    // logger::print(data.exo_knee.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::motor[data.exo_knee]);
+
+    config_to_send[config_defs::knee_idx] = config_map::motor[data.exo_knee];
+    //--------------------------------------------------------
+
+    get_section_key(ini, temp_exo_name, "ankle", buffer, buffer_len);
+    data.exo_ankle = buffer;
+
+    // logger::print(data.exo_ankle.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::motor[data.exo_ankle]);
+
+    config_to_send[config_defs::ankle_idx] = config_map::motor[data.exo_ankle];
+    //--------------------------------------------------------
+
+    get_section_key(ini, temp_exo_name, "kneeGearRatio", buffer, buffer_len);
+    data.knee_gearing = buffer;
+
+    // logger::print(data.knee_gearing.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::motor[data.knee_gearing]);
+
+    config_to_send[config_defs::knee_gear_idx] = config_map::gearing[data.knee_gearing];
+    //--------------------------------------------------------
+
+    get_section_key(ini, temp_exo_name, "ankleGearRatio", buffer, buffer_len);
+    data.ankle_gearing = buffer;
+
+    // logger::print(data.exo_ankle.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::motor[data.exo_ankle]);
+
+    config_to_send[config_defs::ankle_gear_idx] = config_map::gearing[data.ankle_gearing];
+    //--------------------------------------------------------
+
+    get_section_key(ini, temp_exo_name, "kneeDefaultController", buffer, buffer_len);
+    data.exo_knee_default_controller = buffer;
+
+    // logger::print(data.exo_knee_default_controller.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::knee_controllers[data.exo_knee_default_controller]);
+
+    config_to_send[config_defs::exo_knee_default_controller_idx] = config_map::knee_controllers[data.exo_knee_default_controller];
+    //--------------------------------------------------------
+
+    get_section_key(ini, temp_exo_name, "ankleDefaultController", buffer, buffer_len);
+    data.exo_ankle_default_controller = buffer;
+
+    // logger::print(data.exo_ankle_default_controller.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::ankle_controllers[data.exo_ankle_default_controller]);
+
+    config_to_send[config_defs::exo_ankle_default_controller_idx] = config_map::ankle_controllers[data.exo_ankle_default_controller];
+    //--------------------------------------------------------
+
+    get_section_key(ini, temp_exo_name, "kneeUseLoadcell", buffer, buffer_len);
+    data.knee_use_Loadcell = buffer;
+
+    // logger::print(data.knee_use_Loadcell.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::use_Loadcell[data.knee_use_Loadcell]);
+
+    config_to_send[config_defs::knee_use_Loadcell_idx] = config_map::use_Loadcell[data.knee_use_Loadcell];
+
+    //--------------------------------------------------------
+
+    get_section_key(ini, temp_exo_name, "ankleUseLoadcell", buffer, buffer_len);
+    data.ankle_use_Loadcell = buffer;
+
+    // logger::print(data.ankle_use_Loadcell.c_str());
+    // logger::print("\t");
+    // logger::println(config_map::use_Loadcell[data.ankle_use_Loadcell]);
+
+    config_to_send[config_defs::ankle_use_Loadcell_idx] = config_map::use_Loadcell[data.ankle_use_Loadcell];
+
+    //--------------------------------------------------------
+    // Loadcell 기준 무게 (Reference Weight) 값 읽기
+    //--------------------------------------------------------
+    get_section_key(ini, temp_exo_name, "leftKneeLoadcellReferenceWeight", buffer, buffer_len);
+    data.left_knee_Loadcell_ref_weight = atof(buffer);
+    config_to_send[config_defs::left_knee_Loadcell_ref_weight_idx] = data.left_knee_Loadcell_ref_weight;
+
+    get_section_key(ini, temp_exo_name, "rightKneeLoadcellReferenceWeight", buffer, buffer_len);
+    data.right_knee_Loadcell_ref_weight = atof(buffer);
+    config_to_send[config_defs::right_knee_Loadcell_ref_weight_idx] = data.right_knee_Loadcell_ref_weight;
+
+    get_section_key(ini, temp_exo_name, "leftAnkleLoadcellReferenceWeight", buffer, buffer_len);
+    data.left_ankle_Loadcell_ref_weight = atof(buffer);
+    config_to_send[config_defs::left_ankle_Loadcell_ref_weight_idx] = data.left_ankle_Loadcell_ref_weight;
+
+    get_section_key(ini, temp_exo_name, "rightAnkleLoadcellReferenceWeight", buffer, buffer_len);
+    data.right_ankle_Loadcell_ref_weight = atof(buffer);
+    config_to_send[config_defs::right_ankle_Loadcell_ref_weight_idx] = data.right_ankle_Loadcell_ref_weight;
+
+    //--------------------------------------------------------
+    // Loadcell 제로 오프셋 (Zero Offset) 값 읽기
+    //--------------------------------------------------------
+    get_section_key(ini, temp_exo_name, "leftKneeLoadcellZeroOffset", buffer, buffer_len);
+    data.left_knee_LoadcellZeroOffset = atof(buffer);
+    config_to_send[config_defs::left_knee_LoadcellZeroOffset_idx] = data.left_knee_LoadcellZeroOffset;
+
+    get_section_key(ini, temp_exo_name, "rightKneeLoadcellZeroOffset", buffer, buffer_len);
+    data.right_knee_LoadcellZeroOffset = atof(buffer);
+    config_to_send[config_defs::right_knee_LoadcellZeroOffset_idx] = data.right_knee_LoadcellZeroOffset;
+
+    get_section_key(ini, temp_exo_name, "leftAnkleLoadcellZeroOffset", buffer, buffer_len);
+    data.left_ankle_LoadcellZeroOffset = atof(buffer);
+    config_to_send[config_defs::left_ankle_LoadcellZeroOffset_idx] = data.left_ankle_LoadcellZeroOffset;
+
+    get_section_key(ini, temp_exo_name, "rightAnkleLoadcellZeroOffset", buffer, buffer_len);
+    data.right_ankle_LoadcellZeroOffset = atof(buffer);
+    config_to_send[config_defs::right_ankle_LoadcellZeroOffset_idx] = data.right_ankle_LoadcellZeroOffset;
+
+    //--------------------------------------------------------
+    // Loadcell 민감도 (Sensitivity) 값 읽기
+    //--------------------------------------------------------
+    get_section_key(ini, temp_exo_name, "leftKneeLoadcellSensitivity", buffer, buffer_len);
+    data.left_knee_LoadcellSensitivity = atof(buffer);
+    config_to_send[config_defs::left_knee_LoadcellSensitivity_idx] = data.left_knee_LoadcellSensitivity;
+
+    get_section_key(ini, temp_exo_name, "rightKneeLoadcellSensitivity", buffer, buffer_len);
+    data.right_knee_LoadcellSensitivity = atof(buffer);
+    config_to_send[config_defs::right_knee_LoadcellSensitivity_idx] = data.right_knee_LoadcellSensitivity;
+
+    get_section_key(ini, temp_exo_name, "leftAnkleLoadcellSensitivity", buffer, buffer_len);
+    data.left_ankle_LoadcellSensitivity = atof(buffer);
+    config_to_send[config_defs::left_ankle_LoadcellSensitivity_idx] = data.left_ankle_LoadcellSensitivity;
+
+    get_section_key(ini, temp_exo_name, "rightAnkleLoadcellSensitivity", buffer, buffer_len);
+    data.right_ankle_LoadcellSensitivity = atof(buffer);
+    config_to_send[config_defs::right_ankle_LoadcellSensitivity_idx] = data.right_ankle_LoadcellSensitivity;
+
+    get_section_key(ini, temp_exo_name, "leftKneeIMUID", buffer, buffer_len);
+    config_to_send[config_defs::left_knee_IMU_ID_idx] = atoi(buffer);
+
+    get_section_key(ini, temp_exo_name, "rightKneeIMUID", buffer, buffer_len);
+    config_to_send[config_defs::right_knee_IMU_ID_idx] = atoi(buffer);
+
+    get_section_key(ini, temp_exo_name, "leftAnkleIMUID", buffer, buffer_len);
+    config_to_send[config_defs::left_ankle_IMU_ID_idx] = atoi(buffer);
+
+    get_section_key(ini, temp_exo_name, "rightAnkleIMUID", buffer, buffer_len);
+    config_to_send[config_defs::right_ankle_IMU_ID_idx] = atoi(buffer);
+
+    ini.close();
+}
+
+void get_section_key(IniFile ini, const char *section, const char *key, char *buffer, size_t buffer_len)
+{
+    //  getValue 함수를 호출하여 config.ini의 [section]에서 key에 해당하는 값을 읽어 buffer에 저장합니다. 이 함수가 성공적으로 값을 찾으면 true를 반환
+    if (ini.getValue(section, key, buffer, buffer_len))
+    {
+        if (Serial)
+        {
+            // logger::print("section '");
+            // logger::print(section);
+            // logger::print("' has an entry '");
+            // logger::print(key);
+            // logger::print("' with value ");
+            // logger::print(buffer);
+            // logger::print("\n");
+        }
+    }
+    else
+    {
+        if (Serial)
+        {
+            logger::print("Could not read '");
+            logger::print(key);
+            logger::print("' from section '");
+            logger::print(section);
+            logger::print("' , error was ");
+            ini_print_error_message(ini.getError());
+        }
+    }
+}
+
+#endif
