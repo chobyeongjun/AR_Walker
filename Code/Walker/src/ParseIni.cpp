@@ -322,6 +322,9 @@ void ini_parser(char *filename, uint8_t *config_to_send)
     get_section_key(ini, temp_exo_name, "rightAnkleIMUID", buffer, buffer_len);
     config_to_send[config_defs::right_ankle_IMU_ID_idx] = atoi(buffer);
 
+    get_section_key(ini, temp_exo_name, "ewmaAlpha", buffer, buffer_len);
+    config_to_send[config_defs::ewma_alpha_idx] = atof(buffer);
+
     ini.close();
 }
 

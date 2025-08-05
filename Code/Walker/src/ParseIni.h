@@ -8,7 +8,7 @@ namespace ini_config
     const int buffer_length = 500;
     const int key_length = 25;
     const int section_length = 10;
-    const int number_of_keys = 25; // 키 개수에 맞게 수정
+    const int number_of_keys = 30; // 키 개수에 맞게 수정
 }
 
 namespace config_defs
@@ -152,6 +152,8 @@ namespace config_defs
     static const int right_knee_IMU_ID_idx = 26;
     static const int left_ankle_IMU_ID_idx = 27;
     static const int right_ankle_IMU_ID_idx = 28;
+    static const int ewma_alpha_idx = 29; 
+
 }
 
 #if defined(ARDUINO_TEENSY36) || defined(ARDUINO_TEENSY41)
@@ -306,6 +308,8 @@ struct ConfigData
     std::string right_knee_IMU_ID;
     std::string left_ankle_IMU_ID;
     std::string right_ankle_IMU_ID;
+
+    float ewma_alpha; 
 };
 #endif
 #endif
