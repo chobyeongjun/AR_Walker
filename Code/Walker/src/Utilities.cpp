@@ -1,7 +1,3 @@
-/*
- * Takes in the joint id and returns if the left indicator bit is set as a bool
- *
- */
 #include "Utilities.h"
 #include "Logger.h"
 
@@ -186,11 +182,7 @@ namespace utils
         digitalWrite(_pin, _state);
     };
 
-    /*
-     * Used to convert between floats and bytes
-     *
-     * !! NOT to be used outside of utils
-     */
+   
     union FloatByteUnion
     {
         float f;
@@ -339,10 +331,6 @@ namespace utils
         return (filter_value + alpha * (new_value - filter_value));
     }
 
-    /*
-     * Takes in the in a byte and if it is 0xFF changes to 0xFE
-     *
-     */
     uint8_t ff_to_fe(uint8_t val)
     {
         if (0xFF == val)
