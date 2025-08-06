@@ -4,21 +4,15 @@
 #include "LogLevels.h"
 #include "Config.h"
 
-
-namespace logger 
+namespace logger
 {
-    /**
-     * @brief Print a message to the console. "String", log level. 
-     * 
-     * @tparam T Message type, anything that is printable to the logger::print();
-     * @param msg Message to print
-     * @param level Log Level, this is compared to the global log level
-     */
+
     template <typename T>
     static void print(T msg, enum LogLevel level = LogLevel::Debug)
     {
-        //Only print if the local log level is lower (more important) or equal to the global log level
-        if (level <= logging::level) {
+        // Only print if the local log level is lower (more important) or equal to the global log level
+        if (level <= logging::level)
+        {
             Serial.print(msg);
         }
     }

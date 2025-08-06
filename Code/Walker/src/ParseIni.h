@@ -8,7 +8,7 @@ namespace ini_config
     const int buffer_length = 500;
     const int key_length = 25;
     const int section_length = 10;
-    const int number_of_keys = 30; // 키 개수에 맞게 수정
+    const int number_of_keys = 26; // 키 개수에 맞게 수정
 }
 
 namespace config_defs
@@ -79,10 +79,10 @@ namespace config_defs
         knee = 0b00000001,
         ankle = 0b00000010,
 
-        left_knee = left | knee,
-        left_ankle = left | ankle,
-        right_knee = right | knee,
-        right_ankle = right | ankle,
+        left_knee = left | knee,     // 65
+        left_ankle = left | ankle,   // 66
+        right_knee = right | knee,   // 33
+        right_ankle = right | ankle, // 34
     };
 
     enum class knee_controllers : uint8_t
@@ -115,14 +115,6 @@ namespace config_defs
         yes = 2,
     };
 
-    enum class flip_angle_dir : uint8_t
-    {
-        neither = 1,
-        left = 2,
-        right = 3,
-        both = 4,
-    };
-
     static const int board_name_idx = 0;
     static const int board_version_idx = 1;
     static const int battery_idx = 2;
@@ -136,23 +128,19 @@ namespace config_defs
     static const int exo_ankle_default_controller_idx = 10;
     static const int knee_use_Loadcell_idx = 11;
     static const int ankle_use_Loadcell_idx = 12;
-    static const int left_knee_Loadcell_ref_weight_idx = 13;
-    static const int right_knee_Loadcell_ref_weight_idx = 14;
-    static const int left_ankle_Loadcell_ref_weight_idx = 15;
-    static const int right_ankle_Loadcell_ref_weight_idx = 16;
-    static const int left_knee_LoadcellZeroOffset_idx = 17;
-    static const int right_knee_LoadcellZeroOffset_idx = 18;
-    static const int left_ankle_LoadcellZeroOffset_idx = 19;
-    static const int right_ankle_LoadcellZeroOffset_idx = 20;
-    static const int left_knee_LoadcellSensitivity_idx = 21;
-    static const int right_knee_LoadcellSensitivity_idx = 22;
-    static const int left_ankle_LoadcellSensitivity_idx = 23;
-    static const int right_ankle_LoadcellSensitivity_idx = 24;
-    static const int left_knee_IMU_ID_idx = 25;
-    static const int right_knee_IMU_ID_idx = 26;
-    static const int left_ankle_IMU_ID_idx = 27;
-    static const int right_ankle_IMU_ID_idx = 28;
-    static const int ewma_alpha_idx = 29; 
+    static const int left_knee_sensitive_idx = 13;
+    static const int right_knee_sensitive_idx = 14;
+    static const int left_ankle_sensitive_idx = 15;
+    static const int right_ankle_sensitive_idx = 16;
+    static const int left_knee_bias_idx = 17;
+    static const int right_knee_bias_idx = 18;
+    static const int left_ankle_bias_idx = 19;
+    static const int right_ankle_bias_idx = 20;
+    static const int left_knee_IMU_ID_idx = 21;
+    static const int right_knee_IMU_ID_idx = 22;
+    static const int left_ankle_IMU_ID_idx = 23;
+    static const int right_ankle_IMU_ID_idx = 24;
+    static const int ewma_alpha_idx = 25;
 
 }
 
@@ -289,27 +277,22 @@ struct ConfigData
     std::string knee_use_Loadcell;
     std::string ankle_use_Loadcell;
 
-    float left_knee_Loadcell_ref_weight;
-    float right_knee_Loadcell_ref_weight;
-    float left_ankle_Loadcell_ref_weight;
-    float right_ankle_Loadcell_ref_weight;
+    float left_knee_sensitive;
+    float right_knee_sensitive;
+    float left_ankle_sensitive;
+    float right_ankle_sensitive;
 
-    float left_knee_LoadcellZeroOffset;
-    float right_knee_LoadcellZeroOffset;
-    float left_ankle_LoadcellZeroOffset;
-    float right_ankle_LoadcellZeroOffset;
-
-    float left_knee_LoadcellSensitivity;
-    float right_knee_LoadcellSensitivity;
-    float left_ankle_LoadcellSensitivity;
-    float right_ankle_LoadcellSensitivity;
+    float left_knee_bias;
+    float right_knee_bias;
+    float left_ankle_bias;
+    float right_ankle_bias;
 
     std::string left_knee_IMU_ID;
     std::string right_knee_IMU_ID;
     std::string left_ankle_IMU_ID;
     std::string right_ankle_IMU_ID;
 
-    float ewma_alpha; 
+    float ewma_alpha;
 };
 #endif
 #endif

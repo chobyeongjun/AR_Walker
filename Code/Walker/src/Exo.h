@@ -1,12 +1,3 @@
-/**
- * @file Exo.h
- *
- * @brief Declares exo class that all the other components will live in.
- *
- * @author P. Stegall
- * @date Jan. 2022
- */
-
 #ifndef Exo_h
 #define Exo_h
 
@@ -24,18 +15,15 @@
 #include "StatusLed.h"
 #include "StatusDefs.h"
 #include "Config.h"
+#include "ExoData.h"
+#include "IMU.h"
+#include "Loadcell.h"
 
-class Exo
+lass Exo
 {
-public:                     // 초기화 시키는 코드 Exo 객체를 초기화
-    Exo(ExoData *exo_data); // Constructor: uses initializer list for the Side objects.
+public:
+    Exo(ExoData * exo_data); // Constructor: uses initializer list for the Side objects.
 
-    /**
-     * @brief Reads motor data from each motor used on that side and stores the values
-     *
-     * @return true if the code ran, ie tiiming was satisfied
-     * @return false
-     */
     bool run();
 
     ExoData *data;   /**< Pointer to ExoData that is getting updated by the coms mcu so they share format.*/
@@ -50,6 +38,7 @@ public:                     // 초기화 시키는 코드 Exo 객체를 초기�
     StatusLed status_led; /**< Used to display the system status */
 
 private:
+    IMU _imu; /**< IMU 객체를 Exo 클래스에 멤버 변수로 추가 */
 };
 #endif
 

@@ -254,62 +254,46 @@ void ini_parser(char *filename, uint8_t *config_to_send)
     config_to_send[config_defs::ankle_use_Loadcell_idx] = config_map::use_Loadcell[data.ankle_use_Loadcell];
 
     //--------------------------------------------------------
-    // Loadcell 기준 무게 (Reference Weight) 값 읽기
+    // Loadcell sens 값 읽기
     //--------------------------------------------------------
-    get_section_key(ini, temp_exo_name, "leftKneeLoadcellReferenceWeight", buffer, buffer_len);
-    data.left_knee_Loadcell_ref_weight = atof(buffer);
-    config_to_send[config_defs::left_knee_Loadcell_ref_weight_idx] = data.left_knee_Loadcell_ref_weight;
+    get_section_key(ini, temp_exo_name, "left_knee_sensitive", buffer, buffer_len);
+    data.left_knee_sensitive = atof(buffer);
+    config_to_send[config_defs::left_knee_sensitive_idx] = data.left_knee_sensitive;
 
-    get_section_key(ini, temp_exo_name, "rightKneeLoadcellReferenceWeight", buffer, buffer_len);
-    data.right_knee_Loadcell_ref_weight = atof(buffer);
-    config_to_send[config_defs::right_knee_Loadcell_ref_weight_idx] = data.right_knee_Loadcell_ref_weight;
+    get_section_key(ini, temp_exo_name, "right_knee_sensitive", buffer, buffer_len);
+    data.right_knee_sensitive = atof(buffer);
+    config_to_send[config_defs::right_knee_sensitive_idx] = data.right_knee_sensitive;
 
-    get_section_key(ini, temp_exo_name, "leftAnkleLoadcellReferenceWeight", buffer, buffer_len);
-    data.left_ankle_Loadcell_ref_weight = atof(buffer);
-    config_to_send[config_defs::left_ankle_Loadcell_ref_weight_idx] = data.left_ankle_Loadcell_ref_weight;
+    get_section_key(ini, temp_exo_name, "left_ankle_sensitive", buffer, buffer_len);
+    data.left_ankle_sensitive = atof(buffer);
+    config_to_send[config_defs::left_ankle_sensitive_idx] = data.left_ankle_sensitive;
 
-    get_section_key(ini, temp_exo_name, "rightAnkleLoadcellReferenceWeight", buffer, buffer_len);
-    data.right_ankle_Loadcell_ref_weight = atof(buffer);
-    config_to_send[config_defs::right_ankle_Loadcell_ref_weight_idx] = data.right_ankle_Loadcell_ref_weight;
-
-    //--------------------------------------------------------
-    // Loadcell 제로 오프셋 (Zero Offset) 값 읽기
-    //--------------------------------------------------------
-    get_section_key(ini, temp_exo_name, "leftKneeLoadcellZeroOffset", buffer, buffer_len);
-    data.left_knee_LoadcellZeroOffset = atof(buffer);
-    config_to_send[config_defs::left_knee_LoadcellZeroOffset_idx] = data.left_knee_LoadcellZeroOffset;
-
-    get_section_key(ini, temp_exo_name, "rightKneeLoadcellZeroOffset", buffer, buffer_len);
-    data.right_knee_LoadcellZeroOffset = atof(buffer);
-    config_to_send[config_defs::right_knee_LoadcellZeroOffset_idx] = data.right_knee_LoadcellZeroOffset;
-
-    get_section_key(ini, temp_exo_name, "leftAnkleLoadcellZeroOffset", buffer, buffer_len);
-    data.left_ankle_LoadcellZeroOffset = atof(buffer);
-    config_to_send[config_defs::left_ankle_LoadcellZeroOffset_idx] = data.left_ankle_LoadcellZeroOffset;
-
-    get_section_key(ini, temp_exo_name, "rightAnkleLoadcellZeroOffset", buffer, buffer_len);
-    data.right_ankle_LoadcellZeroOffset = atof(buffer);
-    config_to_send[config_defs::right_ankle_LoadcellZeroOffset_idx] = data.right_ankle_LoadcellZeroOffset;
+    get_section_key(ini, temp_exo_name, "right_ankle_sensitive", buffer, buffer_len);
+    data.right_ankle_sensitive = atof(buffer);
+    config_to_send[config_defs::right_ankle_sensitive_idx] = data.right_ankle_sensitive;
 
     //--------------------------------------------------------
-    // Loadcell 민감도 (Sensitivity) 값 읽기
+    // Loadcell bias 읽기
     //--------------------------------------------------------
-    get_section_key(ini, temp_exo_name, "leftKneeLoadcellSensitivity", buffer, buffer_len);
-    data.left_knee_LoadcellSensitivity = atof(buffer);
-    config_to_send[config_defs::left_knee_LoadcellSensitivity_idx] = data.left_knee_LoadcellSensitivity;
+    get_section_key(ini, temp_exo_name, "left_knee_bias", buffer, buffer_len);
+    data.left_knee_bias = atof(buffer);
+    config_to_send[config_defs::left_knee_bias_idx] = data.left_knee_bias;
 
-    get_section_key(ini, temp_exo_name, "rightKneeLoadcellSensitivity", buffer, buffer_len);
-    data.right_knee_LoadcellSensitivity = atof(buffer);
-    config_to_send[config_defs::right_knee_LoadcellSensitivity_idx] = data.right_knee_LoadcellSensitivity;
+    get_section_key(ini, temp_exo_name, "right_knee_bias", buffer, buffer_len);
+    data.right_knee_bias = atof(buffer);
+    config_to_send[config_defs::right_knee_bias_idx] = data.right_knee_bias;
 
-    get_section_key(ini, temp_exo_name, "leftAnkleLoadcellSensitivity", buffer, buffer_len);
-    data.left_ankle_LoadcellSensitivity = atof(buffer);
-    config_to_send[config_defs::left_ankle_LoadcellSensitivity_idx] = data.left_ankle_LoadcellSensitivity;
+    get_section_key(ini, temp_exo_name, "left_ankle_bias", buffer, buffer_len);
+    data.left_ankle_bias = atof(buffer);
+    config_to_send[config_defs::left_ankle_bias_idx] = data.left_ankle_bias;
 
-    get_section_key(ini, temp_exo_name, "rightAnkleLoadcellSensitivity", buffer, buffer_len);
-    data.right_ankle_LoadcellSensitivity = atof(buffer);
-    config_to_send[config_defs::right_ankle_LoadcellSensitivity_idx] = data.right_ankle_LoadcellSensitivity;
+    get_section_key(ini, temp_exo_name, "right_ankle_bias", buffer, buffer_len);
+    data.right_ankle_bias = atof(buffer);
+    config_to_send[config_defs::right_ankle_bias_idx] = data.right_ankle_bias;
 
+    //--------------------------------------------------------
+    // IMU ID 읽기
+    //--------------------------------------------------------
     get_section_key(ini, temp_exo_name, "leftKneeIMUID", buffer, buffer_len);
     config_to_send[config_defs::left_knee_IMU_ID_idx] = atoi(buffer);
 

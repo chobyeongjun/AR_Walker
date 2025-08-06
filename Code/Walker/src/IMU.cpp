@@ -9,11 +9,17 @@
 
 IMU::IMU() {}
 
-void IMU::begin(long baudrate)
+void IMU::begin(long baudrate, uint8_t id)
 {
 #if defined(ARDUINO_TEENSY36) || defined(ARDUINO_TEENSY41)
     // Board.h에 정의된 핀 정보를 사용해 시리얼 통신을 시작
     IMU_SERIAL.begin(baudrate, SERIAL_8N1, logic_micro_pins::imu_tx_pin, logic_micro_pins::imu_rx_pin);
+
+    // `<id posz>` 명령 생성 // postiion, velocity 초기화 및 전송 imu안되면 여기 의심해보기
+    char cmd[8];
+    sprintf(cmd, "<%02dposz>", id);
+    IMU_SERIAL.write(cmd, strlen(cmd));
+    delay(100); // IMU 응답 대기
 #endif
 }
 
@@ -40,14 +46,11 @@ void IMU::readData()
         case State::READING_DATA:
             _data_buffer[_bytes_read++] = byte;
 
-            // 데이터 패킷 구성 (총 26바이트)
+            // 데이터 패킷 구성
             // SOP(2) + CH(1) + ID(1) +
-            // EulerAngle(Roll,Pitch,Yaw) 3*2바이트 = 6바이트 +
-            // Gyro(X,Y,Z) 3*2바이트 = 6바이트 +
-            // Linear Accel(Global) 3*2바이트 = 6바이트 +
-            // Velocity(Global) 3*2바이트 = 6바이트 +
+            // Distance Global은 3항목, Euler Angle은 3항목, Gyroscope는 3항목
             // CHK(2)
-            const int TOTAL_BYTES = 2 + 1 + 1 + (3 * 2) + (3 * 2) + (3 * 2) + (3 * 2) + 2;
+            const int TOTAL_BYTES = 2 + 1 + 1 + (3 * 2) + (3 * 2) + (3 * 2) + 2;
             const int DATA_START_INDEX = 4; // SOP(2), CH(1), ID(1) 이후 데이터 시작
 
             if (_bytes_read >= TOTAL_BYTES)
@@ -67,8 +70,7 @@ void IMU::readData()
                     // 체크섬 일치, 데이터 파싱
                     int16_t roll_raw, pitch_raw, yaw_raw;
                     int16_t gyro_x_raw, gyro_y_raw, gyro_z_raw;
-                    int16_t lin_acc_x_raw, lin_acc_y_raw, lin_acc_z_raw;
-                    int16_t vel_x_raw, vel_y_raw, vel_z_raw;
+                    int16_t dist_x_raw, dist_y_raw, dist_z_raw;
 
                     int current_offset = DATA_START_INDEX;
 
@@ -84,16 +86,10 @@ void IMU::readData()
                     memcpy(&gyro_z_raw, &_data_buffer[current_offset + 4], 2);
                     current_offset += 6;
 
-                    // 선형 가속도 (Global)
-                    memcpy(&lin_acc_x_raw, &_data_buffer[current_offset], 2);
-                    memcpy(&lin_acc_y_raw, &_data_buffer[current_offset + 2], 2);
-                    memcpy(&lin_acc_z_raw, &_data_buffer[current_offset + 4], 2);
-                    current_offset += 6;
-
-                    // 속도 (Global)
-                    memcpy(&vel_x_raw, &_data_buffer[current_offset], 2);
-                    memcpy(&vel_y_raw, &_data_buffer[current_offset + 2], 2);
-                    memcpy(&vel_z_raw, &_data_buffer[current_offset + 4], 2);
+                    // 거리 (Global)
+                    memcpy(&dist_x_raw, &_data_buffer[current_offset], 2);
+                    memcpy(&dist_y_raw, &_data_buffer[current_offset + 2], 2);
+                    memcpy(&dist_z_raw, &_data_buffer[current_offset + 4], 2);
 
                     // 스펙시트에 따라 각 항목을 변환
                     roll = (float)roll_raw / 100.0f; // Euler Angle은 100을 나눔
@@ -104,13 +100,13 @@ void IMU::readData()
                     gyro_y = (float)gyro_y_raw / 10.0f;
                     gyro_z = (float)gyro_z_raw / 10.0f;
 
-                    acc_x = (float)lin_acc_x_raw / 1000.0f; // 가속도는 1000을 나눔
-                    acc_y = (float)lin_acc_y_raw / 1000.0f;
-                    acc_z = (float)lin_acc_z_raw / 1000.0f;
-
-                    vel_x = (float)vel_x_raw / 1000.0f; // 속도도 1000을 나눔
-                    vel_y = (float)vel_y_raw / 1000.0f;
-                    vel_z = (float)vel_z_raw / 1000.0f;
+                    dist_x = (float)dist_x_raw / 1000.0f; // 스펙시트()에 따라 1000을 나눔
+                    dist_y = (float)dist_y_raw / 1000.0f;
+                    dist_z = (float)dist_z_raw / 1000.0f;
+                }
+                else
+                {
+                    logger::println("Checksum mismatch!", LogLevel::Error);
                 }
 
                 _bytes_read = 0;
