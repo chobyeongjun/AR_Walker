@@ -11,8 +11,8 @@
 #include "StatusDefs.h"
 #include "Loadcell.h"
 #include "IMU.h"
-
-typedef void (*for_each_joint_function_t)(JointData *, float *);
+// JointData 타입의 객체를 가리키는 포인터. float 타입의 변수를 가리키는 포인터.
+typedef void (*for_each_joint_function_t)(JointData *, float *); // for_each_joint_function_t: 새롭게 정의하는 타입의 이름
 
 class ExoData
 {
@@ -66,24 +66,18 @@ public:
 
         uint32_t mark; /**< Used for timing, currently only used by the nano */
 
-        uint8_t *config;    /**< Pointer to the configuration array */
-        uint8_t config_len; /**< Length of the configuration array */
+        uint8_t *config; /**< Pointer to the configuration array */ // uint8_t 값들의 배열이나 단일 uint8_t 변수의 위치를 기억하는
+        uint8_t config_len;                                         /**< Length of the configuration array */
 
-        //
         int error_code; /**< Current error code for the system */
         int error_joint_id;
         bool user_paused; /**< If the user has paused the system */
 
-        int knee_Loadcell_flag = 0;  /**< Flag to determine if we want to use Loadcell for that joint */
-        int ankle_Loadcell_flag = 0; /**< Flag to determine if we want to use Loadcell for that joint */
+        uint8_t knee_Loadcell_flag = 0;  /**< Flag to determine if we want to use Loadcell for that joint */
+        uint8_t ankle_Loadcell_flag = 0; /**< Flag to determine if we want to use Loadcell for that joint */
 
-        // IMU 데이터 버퍼
-        static const int MAX_IMU_COUNT = 4;
-        float imu_data_buffer[MAX_IMU_COUNT][9]; // dist(3), gyro(3), euler(3)
-
-        // 사용되는 IMU ID를 저장하는 배열
-        uint8_t used_imu_ids[MAX_IMU_COUNT];
-        uint8_t used_imu_count = 0;
+        uint8_t knee_IMU_flag = 0;  /**< Flag to determine if we want to use IMU for that joint */
+        uint8_t ankle_IMU_flag = 0; /**< Flag to determine if we want to use IMU for that joint */
 
 private:
         uint16_t _status; /**< Status of the system*/

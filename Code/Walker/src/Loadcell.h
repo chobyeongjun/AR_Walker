@@ -9,18 +9,18 @@
 class Loadcell
 {
 public:
-    Loadcell(unsigned int pin);
-
-    float read(float bias, float sensitive);
+    Loadcell(unsigned int pin, bool is_left);
+    float read();
 
     int readRaw();
 
-private:
-    bool _is_used;
-    unsigned int _pin;
-
     int _raw_reading;
     float _calibrated_weight;
+
+private:
+    bool _is_used;
+    bool _is_left;
+    unsigned int _pin;
 };
 
 #endif // LOADCELL_H

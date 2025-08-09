@@ -19,10 +19,10 @@
 #include "IMU.h"
 #include "Loadcell.h"
 
-lass Exo
+class Exo
 {
 public:
-    Exo(ExoData * exo_data); // Constructor: uses initializer list for the Side objects.
+    Exo(ExoData *exo_data); // Constructor: uses initializer list for the Side objects.
 
     bool run();
 
@@ -38,7 +38,12 @@ public:
     StatusLed status_led; /**< Used to display the system status */
 
 private:
-    IMU _imu; /**< IMU 객체를 Exo 클래스에 멤버 변수로 추가 */
+    IMU _imu_left_ankle;
+    IMU _imu_right_ankle;
+    IMU _imu_left_knee;
+    IMU _imu_right_knee;
+
+    void _update_imu_data();
 };
 #endif
 

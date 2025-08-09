@@ -15,19 +15,22 @@ typedef struct
 
 namespace UART_msg_t_utils
 {
-    static void print_msg(UART_msg_t msg)
+  static void print_msg(UART_msg_t msg)
+  {
+    logger::println("UART_command_utils::print_msg->Msg: ");
+    logger::print(msg.command);
+    logger::print("\t");
+    logger::print(msg.joint_id);
+    logger::print("\t");
+    logger::print(msg.len);
+    logger::println();
+    for (int i = 0; i < msg.len; i++)
     {
-        logger::println("UART_command_utils::print_msg->Msg: ");
-        logger::print(msg.command); logger::print("\t");
-        logger::print(msg.joint_id); logger::print("\t");
-        logger::print(msg.len); logger::println();
-        for (int i=0; i<msg.len; i++)
-        {
-           logger::print(msg.data[i]); logger::print(", ");
-        }
-        logger::println();
+      logger::print(msg.data[i]);
+      logger::print(", ");
     }
+    logger::println();
+  }
 };
-
 
 #endif

@@ -5,24 +5,6 @@
 
 #include <vector>
 
-/* Class to help track the time of code execution. The class uses a singleton design pattern.
- *
- Example usage:
- *      Time_Helper* my_time_helper_singleton = get_instance();
- *      static const float my_context = my_time_helper_singleton->generate_new_context();
- *      static my_delta_time;
- *      my_delta_time = my_time_helper_singleton->tick(my_context);
- *
- * The above code gets a reference to the singleton and uses it to generate a persisent context (see below).
- * 'my_delta_time' will be filled with the time between the calls to tick in millis (first call will return 0).
- *
- * When you are done with a context, clean it up using 'destroy_context'. If you would like to use microseconds,
- * the default value of 'use_micros' in the constructor should be true.
- *
- * If 'tick()' is continuosly returning 0, you are passing an invalid context.
- *
- */
-
 typedef struct
 {
     float context;       // 어떤 코드 블록에 대한 시간인지"를 구분해 주는 것이 바로 컨텍스트

@@ -120,10 +120,6 @@ void ini_parser(char *filename, uint8_t *config_to_send)
     get_section_key(ini, "Board", "name", buffer, buffer_len); // Read the key.
     data.board_name = buffer;                                  // Store the value
 
-    // logger::print(data.board_name.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::board_name[data.board_name]);
-
     config_to_send[config_defs::board_name_idx] = config_map::board_name[data.board_name]; // Encode the key to an uint8_t
 
     //--------------------------------------------------------
@@ -131,29 +127,17 @@ void ini_parser(char *filename, uint8_t *config_to_send)
     get_section_key(ini, "Board", "version", buffer, buffer_len);
     data.board_version = buffer;
 
-    // logger::print(data.board_version.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::board_version[data.board_version]);
-
     config_to_send[config_defs::board_version_idx] = config_map::board_version[data.board_version];
     //--------------------------------------------------------
 
     get_section_key(ini, "Battery", "name", buffer, buffer_len);
     data.battery = buffer;
 
-    // logger::print(data.board_version.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::board_version[data.board_version]);
-
     config_to_send[config_defs::battery_idx] = config_map::battery[data.battery];
     //--------------------------------------------------------
 
     get_section_key(ini, "Exo", "name", buffer, buffer_len);
     data.exo_name = buffer;
-
-    // logger::print(data.exo_name.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::exo_name[data.exo_name]);
 
     config_to_send[config_defs::exo_name_idx] = config_map::exo_name[data.exo_name];
     //--------------------------------------------------------
@@ -166,19 +150,11 @@ void ini_parser(char *filename, uint8_t *config_to_send)
     get_section_key(ini, temp_exo_name, "sides", buffer, buffer_len);
     data.exo_sides = buffer;
 
-    // logger::print(data.exo_sides.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::exo_side[data.exo_sides]);
-
     config_to_send[config_defs::exo_side_idx] = config_map::exo_side[data.exo_sides];
     //--------------------------------------------------------
 
     get_section_key(ini, temp_exo_name, "knee", buffer, buffer_len);
     data.exo_knee = buffer;
-
-    // logger::print(data.exo_knee.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::motor[data.exo_knee]);
 
     config_to_send[config_defs::knee_idx] = config_map::motor[data.exo_knee];
     //--------------------------------------------------------
@@ -186,19 +162,11 @@ void ini_parser(char *filename, uint8_t *config_to_send)
     get_section_key(ini, temp_exo_name, "ankle", buffer, buffer_len);
     data.exo_ankle = buffer;
 
-    // logger::print(data.exo_ankle.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::motor[data.exo_ankle]);
-
     config_to_send[config_defs::ankle_idx] = config_map::motor[data.exo_ankle];
     //--------------------------------------------------------
 
     get_section_key(ini, temp_exo_name, "kneeGearRatio", buffer, buffer_len);
     data.knee_gearing = buffer;
-
-    // logger::print(data.knee_gearing.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::motor[data.knee_gearing]);
 
     config_to_send[config_defs::knee_gear_idx] = config_map::gearing[data.knee_gearing];
     //--------------------------------------------------------
@@ -206,19 +174,11 @@ void ini_parser(char *filename, uint8_t *config_to_send)
     get_section_key(ini, temp_exo_name, "ankleGearRatio", buffer, buffer_len);
     data.ankle_gearing = buffer;
 
-    // logger::print(data.exo_ankle.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::motor[data.exo_ankle]);
-
     config_to_send[config_defs::ankle_gear_idx] = config_map::gearing[data.ankle_gearing];
     //--------------------------------------------------------
 
     get_section_key(ini, temp_exo_name, "kneeDefaultController", buffer, buffer_len);
     data.exo_knee_default_controller = buffer;
-
-    // logger::print(data.exo_knee_default_controller.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::knee_controllers[data.exo_knee_default_controller]);
 
     config_to_send[config_defs::exo_knee_default_controller_idx] = config_map::knee_controllers[data.exo_knee_default_controller];
     //--------------------------------------------------------
@@ -226,19 +186,11 @@ void ini_parser(char *filename, uint8_t *config_to_send)
     get_section_key(ini, temp_exo_name, "ankleDefaultController", buffer, buffer_len);
     data.exo_ankle_default_controller = buffer;
 
-    // logger::print(data.exo_ankle_default_controller.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::ankle_controllers[data.exo_ankle_default_controller]);
-
     config_to_send[config_defs::exo_ankle_default_controller_idx] = config_map::ankle_controllers[data.exo_ankle_default_controller];
     //--------------------------------------------------------
 
     get_section_key(ini, temp_exo_name, "kneeUseLoadcell", buffer, buffer_len);
     data.knee_use_Loadcell = buffer;
-
-    // logger::print(data.knee_use_Loadcell.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::use_Loadcell[data.knee_use_Loadcell]);
 
     config_to_send[config_defs::knee_use_Loadcell_idx] = config_map::use_Loadcell[data.knee_use_Loadcell];
 
@@ -247,67 +199,20 @@ void ini_parser(char *filename, uint8_t *config_to_send)
     get_section_key(ini, temp_exo_name, "ankleUseLoadcell", buffer, buffer_len);
     data.ankle_use_Loadcell = buffer;
 
-    // logger::print(data.ankle_use_Loadcell.c_str());
-    // logger::print("\t");
-    // logger::println(config_map::use_Loadcell[data.ankle_use_Loadcell]);
-
     config_to_send[config_defs::ankle_use_Loadcell_idx] = config_map::use_Loadcell[data.ankle_use_Loadcell];
 
     //--------------------------------------------------------
-    // Loadcell sens 값 읽기
-    //--------------------------------------------------------
-    get_section_key(ini, temp_exo_name, "left_knee_sensitive", buffer, buffer_len);
-    data.left_knee_sensitive = atof(buffer);
-    config_to_send[config_defs::left_knee_sensitive_idx] = data.left_knee_sensitive;
+    get_section_key(ini, temp_exo_name, "kneeUseIMU", buffer, buffer_len);
+    data.knee_use_IMU = buffer;
 
-    get_section_key(ini, temp_exo_name, "right_knee_sensitive", buffer, buffer_len);
-    data.right_knee_sensitive = atof(buffer);
-    config_to_send[config_defs::right_knee_sensitive_idx] = data.right_knee_sensitive;
-
-    get_section_key(ini, temp_exo_name, "left_ankle_sensitive", buffer, buffer_len);
-    data.left_ankle_sensitive = atof(buffer);
-    config_to_send[config_defs::left_ankle_sensitive_idx] = data.left_ankle_sensitive;
-
-    get_section_key(ini, temp_exo_name, "right_ankle_sensitive", buffer, buffer_len);
-    data.right_ankle_sensitive = atof(buffer);
-    config_to_send[config_defs::right_ankle_sensitive_idx] = data.right_ankle_sensitive;
+    config_to_send[config_defs::knee_use_IMU_idx] = config_map::use_IMU[data.knee_use_IMU];
 
     //--------------------------------------------------------
-    // Loadcell bias 읽기
-    //--------------------------------------------------------
-    get_section_key(ini, temp_exo_name, "left_knee_bias", buffer, buffer_len);
-    data.left_knee_bias = atof(buffer);
-    config_to_send[config_defs::left_knee_bias_idx] = data.left_knee_bias;
 
-    get_section_key(ini, temp_exo_name, "right_knee_bias", buffer, buffer_len);
-    data.right_knee_bias = atof(buffer);
-    config_to_send[config_defs::right_knee_bias_idx] = data.right_knee_bias;
+    get_section_key(ini, temp_exo_name, "ankleUseIMU", buffer, buffer_len);
+    data.ankle_use_IMU = buffer;
 
-    get_section_key(ini, temp_exo_name, "left_ankle_bias", buffer, buffer_len);
-    data.left_ankle_bias = atof(buffer);
-    config_to_send[config_defs::left_ankle_bias_idx] = data.left_ankle_bias;
-
-    get_section_key(ini, temp_exo_name, "right_ankle_bias", buffer, buffer_len);
-    data.right_ankle_bias = atof(buffer);
-    config_to_send[config_defs::right_ankle_bias_idx] = data.right_ankle_bias;
-
-    //--------------------------------------------------------
-    // IMU ID 읽기
-    //--------------------------------------------------------
-    get_section_key(ini, temp_exo_name, "leftKneeIMUID", buffer, buffer_len);
-    config_to_send[config_defs::left_knee_IMU_ID_idx] = atoi(buffer);
-
-    get_section_key(ini, temp_exo_name, "rightKneeIMUID", buffer, buffer_len);
-    config_to_send[config_defs::right_knee_IMU_ID_idx] = atoi(buffer);
-
-    get_section_key(ini, temp_exo_name, "leftAnkleIMUID", buffer, buffer_len);
-    config_to_send[config_defs::left_ankle_IMU_ID_idx] = atoi(buffer);
-
-    get_section_key(ini, temp_exo_name, "rightAnkleIMUID", buffer, buffer_len);
-    config_to_send[config_defs::right_ankle_IMU_ID_idx] = atoi(buffer);
-
-    get_section_key(ini, temp_exo_name, "ewmaAlpha", buffer, buffer_len);
-    config_to_send[config_defs::ewma_alpha_idx] = atof(buffer);
+    config_to_send[config_defs::ankle_use_IMU_idx] = config_map::use_IMU[data.ankle_use_IMU];
 
     ini.close();
 }

@@ -8,7 +8,7 @@ namespace ini_config
     const int buffer_length = 500;
     const int key_length = 25;
     const int section_length = 10;
-    const int number_of_keys = 26; // 키 개수에 맞게 수정
+    const int number_of_keys = 28; // 키 개수에 맞게 수정
 }
 
 namespace config_defs
@@ -66,9 +66,7 @@ namespace config_defs
     enum class gearing : uint8_t
     {
         gearing_1_1 = 1,
-        gearing_2_1 = 2,
-        gearing_3_1 = 3,
-        gearing_4_5_1 = 4,
+
     };
 
     enum class joint_id : uint8_t
@@ -115,6 +113,21 @@ namespace config_defs
         yes = 2,
     };
 
+    enum class use_IMU : uint8_t
+    {
+        no = 1,
+        yes = 2,
+    };
+
+    enum class IMU_ID : uint8_t
+    {
+        ID_00 = 0,
+        ID_01 = 1,
+        ID_02 = 2,
+        ID_03 = 3,
+        ID_16 = 16,
+    };
+
     static const int board_name_idx = 0;
     static const int board_version_idx = 1;
     static const int battery_idx = 2;
@@ -126,21 +139,27 @@ namespace config_defs
     static const int ankle_gear_idx = 8;
     static const int exo_knee_default_controller_idx = 9;
     static const int exo_ankle_default_controller_idx = 10;
+
+    // Loadcell과 IMU 인덱스 수정 및 추가
     static const int knee_use_Loadcell_idx = 11;
     static const int ankle_use_Loadcell_idx = 12;
-    static const int left_knee_sensitive_idx = 13;
-    static const int right_knee_sensitive_idx = 14;
-    static const int left_ankle_sensitive_idx = 15;
-    static const int right_ankle_sensitive_idx = 16;
-    static const int left_knee_bias_idx = 17;
-    static const int right_knee_bias_idx = 18;
-    static const int left_ankle_bias_idx = 19;
-    static const int right_ankle_bias_idx = 20;
-    static const int left_knee_IMU_ID_idx = 21;
-    static const int right_knee_IMU_ID_idx = 22;
-    static const int left_ankle_IMU_ID_idx = 23;
-    static const int right_ankle_IMU_ID_idx = 24;
-    static const int ewma_alpha_idx = 25;
+
+    static const int knee_use_IMU_idx = 13;
+    static const int ankle_use_IMU_idx = 14;
+
+    static const int left_knee_sensitive_idx = 15;
+    static const int right_knee_sensitive_idx = 16;
+    static const int left_ankle_sensitive_idx = 17;
+    static const int right_ankle_sensitive_idx = 18;
+    static const int left_knee_bias_idx = 19;
+    static const int right_knee_bias_idx = 20;
+    static const int left_ankle_bias_idx = 21;
+    static const int right_ankle_bias_idx = 22;
+    static const int left_knee_IMU_ID_idx = 23;
+    static const int right_knee_IMU_ID_idx = 24;
+    static const int left_ankle_IMU_ID_idx = 25;
+    static const int right_ankle_IMU_ID_idx = 26;
+    static const int ewma_alpha_idx = 27;
 
 }
 
@@ -212,9 +231,6 @@ namespace config_map
 
     const IniKeyCode gearing{
         {"1", (uint8_t)config_defs::gearing::gearing_1_1},
-        {"2", (uint8_t)config_defs::gearing::gearing_2_1},
-        {"3", (uint8_t)config_defs::gearing::gearing_3_1},
-        {"4.5", (uint8_t)config_defs::gearing::gearing_4_5_1},
     };
 
     const IniKeyCode knee_controllers{
@@ -244,12 +260,9 @@ namespace config_map
         {"yes", (uint8_t)config_defs::use_Loadcell::yes},
     };
 
-    const IniKeyCode IMU_ID{
-        {"16", 16}, // IMU 사용하지 않을 때
-        {"0", 0},
-        {"1", 1},
-        {"2", 2},
-        {"3", 3},
+    const IniKeyCode use_IMU{
+        {"0", (uint8_t)config_defs::use_IMU::no},
+        {"yes", (uint8_t)config_defs::use_IMU::yes},
     };
 
 };
@@ -277,22 +290,8 @@ struct ConfigData
     std::string knee_use_Loadcell;
     std::string ankle_use_Loadcell;
 
-    float left_knee_sensitive;
-    float right_knee_sensitive;
-    float left_ankle_sensitive;
-    float right_ankle_sensitive;
-
-    float left_knee_bias;
-    float right_knee_bias;
-    float left_ankle_bias;
-    float right_ankle_bias;
-
-    std::string left_knee_IMU_ID;
-    std::string right_knee_IMU_ID;
-    std::string left_ankle_IMU_ID;
-    std::string right_ankle_IMU_ID;
-
-    float ewma_alpha;
+    std::string knee_use_IMU;
+    std::string ankle_use_IMU;
 };
 #endif
 #endif

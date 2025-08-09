@@ -36,16 +36,6 @@ _Motor::_Motor(config_defs::joint_id id, ExoData *exo_data, int enable_pin)
     // Set _motor_data to point to the data specific to this motor.
     switch (utils::get_joint_type(_id)) // utils::get_joint_type() 함수는 joint_id를 받아서 해당 관절의 타입을 반환하는 함수
     {
-    case (uint8_t)config_defs::joint_id::hip:
-        if (_is_left)
-        {
-            _motor_data = &(exo_data->left_side.hip.motor);
-        }
-        else
-        {
-            _motor_data = &(exo_data->right_side.hip.motor);
-        }
-        break;
 
     case (uint8_t)config_defs::joint_id::knee:
         if (_is_left)
@@ -66,16 +56,6 @@ _Motor::_Motor(config_defs::joint_id id, ExoData *exo_data, int enable_pin)
         else
         {
             _motor_data = &(exo_data->right_side.ankle.motor);
-        }
-        break;
-    case (uint8_t)config_defs::joint_id::elbow:
-        if (_is_left)
-        {
-            _motor_data = &(exo_data->left_side.elbow.motor);
-        }
-        else
-        {
-            _motor_data = &(exo_data->right_side.elbow.motor);
         }
         break;
     }
@@ -139,7 +119,6 @@ void _CANMotor::read_data() // 모터드라이버가 보낸 데이터를 읽는 
         CAN *can = can->getInstance();
         do
         {
-            int direction_modifier = _motor_data->flip_direction ? -1 : 1;
 
             CAN_message_t msg = can->read();
             if (msg.buf[0] == uint32_t(_motor_data->id))
@@ -150,9 +129,9 @@ void _CANMotor::read_data() // 모터드라이버가 보낸 데이터를 읽는 
                 uint32_t i_int = ((msg.buf[4] & 0xF) << 8) | msg.buf[5]; // 0xF 가 00001111 인데,  & 연산을 통해 하위의 4비트만 가져오고 8칸 옆으로 옮기고 거기에 buf[5]값을 더함
 
                 // Set data in ExoData object
-                _motor_data->p = direction_modifier * _uint_to_float(p_int, -_P_MAX, _P_MAX, 16);
-                _motor_data->v = direction_modifier * _uint_to_float(v_int, -_V_MAX, _V_MAX, 12);
-                _motor_data->i = direction_modifier * _uint_to_float(i_int, -_I_MAX, _I_MAX, 12);
+                _motor_data->p = _uint_to_float(p_int, -_P_MAX, _P_MAX, 16);
+                _motor_data->v = _uint_to_float(v_int, -_V_MAX, _V_MAX, 12);
+                _motor_data->i = _uint_to_float(i_int, -_I_MAX, _I_MAX, 12);
 
 #ifdef MOTOR_DEBUG
                 logger::print("_CANMotor::read_data():Got data-");
@@ -184,17 +163,15 @@ void _CANMotor::send_data(float torque) // 모터 드라이버에 명령을 내�
     logger::print("\n");
 #endif
 
-    int direction_modifier = _motor_data->flip_direction ? -1 : 1;
-
     _motor_data->t_ff = torque;
     const float current = torque / get_Kt();
 
     // Read data from ExoData object, constraint it, and package it
-    float p_sat = constrain(direction_modifier * _motor_data->p_des, -_P_MAX, _P_MAX); // Arduino의 constrain() 함수는 주어진 값을 지정된 범위로 제한하는 함수
-    float v_sat = constrain(direction_modifier * _motor_data->v_des, -_V_MAX, _V_MAX);
+    float p_sat = constrain(_motor_data->p_des, -_P_MAX, _P_MAX);
+    float v_sat = constrain(_motor_data->v_des, -_V_MAX, _V_MAX);
     float kp_sat = constrain(_motor_data->kp, _KP_MIN, _KP_MAX);
     float kd_sat = constrain(_motor_data->kd, _KD_MIN, _KD_MAX);
-    float i_sat = constrain(direction_modifier * current, -_I_MAX, _I_MAX);
+    float i_sat = constrain(current, -_I_MAX, _I_MAX);
     _motor_data->last_command = i_sat;
     uint32_t p_int = _float_to_uint(p_sat, -_P_MAX, _P_MAX, 16);
     uint32_t v_int = _float_to_uint(v_sat, -_V_MAX, _V_MAX, 12);
@@ -598,8 +575,6 @@ void MaxonMotor::send_data(float torque) // Always send motor command regardless
     logger::print("\n");
 #endif
 
-    int direction_modifier = _motor_data->flip_direction ? -1 : 1;
-
     _motor_data->t_ff = torque;
     _motor_data->last_command = torque;
 
@@ -616,9 +591,9 @@ void MaxonMotor::send_data(float torque) // Always send motor command regardless
     else
     {
         // Constrain the motor pwm command
-        uint16_t post_fuse_torque = max(_pwm_l_bound, _pwm_neutral_val + (direction_modifier * torque)); // Set the lowest allowed PWM command
-        post_fuse_torque = min(_pwm_u_bound, post_fuse_torque);                                          // Set the highest allowed PWM command
-        analogWrite((_motor_data->is_left ? _ctrl_left_pin : _ctrl_right_pin), post_fuse_torque);        // Send the motor command to the motor driver
+        uint16_t post_fuse_torque = max(_pwm_l_bound, _pwm_neutral_val + (torque));               // Set the lowest allowed PWM command
+        post_fuse_torque = min(_pwm_u_bound, post_fuse_torque);                                   // Set the highest allowed PWM command
+        analogWrite((_motor_data->is_left ? _ctrl_left_pin : _ctrl_right_pin), post_fuse_torque); // Send the motor command to the motor driver
     }
 };
 

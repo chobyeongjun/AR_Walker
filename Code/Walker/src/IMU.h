@@ -7,18 +7,12 @@
 class IMU
 {
 public:
-    IMU();
-
-    // IMU 시리얼 통신을 초기화하는 함수
+    IMU(uint8_t IMU_id);
     void begin(long baudrate);
 
-    // 시리얼에서 바이너리 데이터를 읽어와 파싱하는 함수
-    void readData();
+    void read();
 
-    // IMU 데이터 변수
-    float dist_x = 0;
-    float dist_y = 0;
-    float dist_z = 0;
+    // IMU data variables
     float gyro_x = 0;
     float gyro_y = 0;
     float gyro_z = 0;
@@ -27,17 +21,17 @@ public:
     float yaw = 0;
 
 private:
-    // 바이너리 데이터 수신 상태
     enum class State
     {
-        WAITING_FOR_SOP,
-        READING_DATA
+        WAITING_FOR_SOP, // Waiting for the start of the packet
+        READING_DATA     // Reading the data packet
     };
 
     State _state = State::WAITING_FOR_SOP;
-    uint8_t _id;
+
+    uint8_t IMU_id;
     uint8_t _bytes_read = 0;
-    uint8_t _data_buffer[24]; // IMU 데이터에 필요한 크기로 설정 (예시)
+    uint8_t _data_buffer[24]; // Buffer for IMU data packets
 };
 
 #endif // IMU_H

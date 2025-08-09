@@ -1,12 +1,3 @@
-/**
- * @file Motor.h
- *
- * @brief Declares a class used to interface with motors
- *
- * @author P. Stegall
- * @date Jan. 2022
- */
-
 #ifndef Motor_h
 #define Motor_h
 
@@ -22,84 +13,31 @@
 
 #include <stdint.h>
 
-/**
- * @brief Abstract class to define the interface for all motors.
- * All controllers must have a:
- * void read_data()
- * void send_data(float torque)
- * void transaction(float torque)
- * void on_off()
- * bool enable()
- * bool enable(bool overide)
- * void zero()
- * bool get_is_left()
- * config_defs::joint_id get_id()
- */
 class _Motor
 {
 public:
     _Motor(config_defs::joint_id id, ExoData *exo_data, int enable_pin);
     virtual ~_Motor() {};
 
-    // Pure virtual functions, these will have to be defined for each one.
-
-    /**
-     * @brief Reads motor data from each motor used on that side and stores the values
-     */
     virtual void read_data() = 0;
 
-    /**
-     * @brief Sends the new motor command to the motor.
-     *
-     * @param motor torque command in Nm
-     */
     virtual void send_data(float torque) = 0;
 
-    /**
-     * @brief Sends the new motor command to the motor and reads the current state of the motor.
-     *
-     * @param motor torque command in Nm
-     */
     virtual void transaction(float torque) = 0;
 
-    /**
-     * @brief Powers on or off the motors depending on the is_on value in motor data
-     */
     virtual void on_off() = 0;
 
-    /**
-     * @brief Enables or disables the motors depending on the state stored in the corresponding enabled state in motor data.
-     * Only sends commands if the state has changes in the motor data.
-     */
     virtual bool enable() = 0;
 
-    /**
-     * @brief Same as enable but will resend commands if override is true, regardless of what the state of the system is.
-     */
     virtual bool enable(bool overide) = 0;
 
-    /**
-     * @brief Set position to zero
-     */
     virtual void zero() = 0;
 
-    /**
-     * @brief Lets you know if it is a left or right side.
-     *
-     * @return 1 if the motor is on the left side, 0 otherwise
-     */
     virtual bool get_is_left(); //
 
-    /**
-     * @brief Returns the motor id, same as the joint id
-     *
-     * @return the motor id
-     */
     virtual config_defs::joint_id get_id();
 
-    virtual float get_Kt() = 0; /**< Torque constant of the motor, at the motor output. [Nm/A] */
-    //     = 0은 해당 함수가 **순수 가상 함수(pure virtual function)**임을 의미
-    // "나는 이 함수의 실제 동작을 정의하지 않을 테니, 나를 상속받는 자식 클래스는 이 함수를 반드시 직접 구현(재정의)해야 한다"는 강제 규칙
+    virtual float get_Kt() = 0;
 
     virtual void set_error() = 0; /**< Sets the error flag for the motor. */
 
@@ -112,12 +50,8 @@ protected:
     bool _prev_motor_enabled;
     bool _prev_on_state;
     bool _error = false;
-    float _Kt; /**< Torque constant of the motor, at the motor output. [Nm/A] */
+    float _Kt;
 };
-
-/**
- * @brief A motor that does nothing
- */
 class NullMotor : public _Motor
 {
 public:
@@ -133,9 +67,6 @@ public:
     void set_error() {};
 };
 
-/**
- * @brief Class for Maxon EC motor
- */
 class MaxonMotor : public _Motor
 {
 public:
@@ -171,9 +102,6 @@ protected:
     const int _pwm_l_bound = logic_micro_pins::maxon_pwm_l_bound;             /**< Lower bound of pwm command for Maxon motor drivers */
 };
 
-/**
- * @brief This will define some of the common communication used by all the CAN motors and should be inherited by all of them.
- */
 class _CANMotor : public _Motor
 {
 public:
@@ -193,38 +121,10 @@ public:
 protected:
     void set_Kt(float Kt);
 
-    /**
-     * @brief Packs a float into the uint format needed to be sent to the motor.
-     *
-     * @param Float to be packed
-     * @param Lower limit of the range of x values, used for scaling
-     * @param Upper limit of the range of x values, used for scaling
-     * @param Number of bits to pack the value into, 12 or 16
-     *
-     * @return Should return a uint that has been scaled to a position between x_min and x_max.  Currently returns a float, but it seems to work.
-     */
-
     // CAN통신은 메모리를 아끼기 위해 실수 데이터를 넣는 게 아니라 정수로 변환해서 보내는데, 이 함수를 사용함
     float _float_to_uint(float x, float x_min, float x_max, int bits);
 
-    /**
-     * @brief Unpacks a unsigned int format from the motor into a float.
-     *
-     * @param Unsigned int to be unpacked
-     * @param Lower limit of the range of x values, used for scaling
-     * @param Upper limit of the range of x values, used for scaling
-     * @param Number of bits to pack the value into, 12 or 16
-     *
-     * @return unpacked float value
-     */
-
-    // 다시 실수로 변환하는 함수
     float _uint_to_float(unsigned int x_int, float x_min, float x_max, int bits);
-
-    /**
-     * @brief Detects timeouts in case of a read failure.
-     *
-     */
 
     //_handle_read_failure(): 모터로부터 데이터를 읽는 데 실패했을 때(타임아웃 등) 호출되는 에러 처리 함수
     void _handle_read_failure();
@@ -244,9 +144,6 @@ protected:
     const float _variance_threshold = 0.01; /**< Threshold for the variance of the measured current values */ // 측정된 전류 값들의 분산(variance) 임계값으로, 데이터가 안정적인지 혹은 급격히 변하는지를 판단하는 데 사용
 };
 
-/**
- * @brief Class for AK60 V1.0 motor
- */
 class AK60 : public _CANMotor
 {
 public:
@@ -254,9 +151,6 @@ public:
     ~AK60() {};
 };
 
-/**
- * @brief Class for AK60 V1.1 motor - Takes Current for Input
- */
 class AK60_v1_1 : public _CANMotor
 {
 public:
@@ -264,9 +158,6 @@ public:
     ~AK60_v1_1() {};
 };
 
-/**
- * @brief Class for AK80 V1.0 motor
- */
 class AK80 : public _CANMotor
 {
 public:
@@ -274,9 +165,6 @@ public:
     ~AK80() {};
 };
 
-/**
- * @brief Class for AK70 V1.0 motor
- */
 class AK70 : public _CANMotor
 {
 public:
