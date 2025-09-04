@@ -265,47 +265,48 @@ namespace UART_command_handlers
         //Note: Ankle and Hip are Configured for Step Controller, Elbow for the ElbowMinMax Controller, Multi-joint for their primary control schemes
         // rx_msg.data에 담기는 값들은 로봇의 현재 상태를 나타내는 핵심 센서 및 제어 값들
         switch (config[config_defs::exo_name_idx])
+        {
 
         // 수정해야함.
         case (uint8_t)config_defs::exo_name::bilateral_knee:
             rx_msg.len = (uint8_t)rt_data::BILATERAL_KNEE_RT_LEN;
-            rx_msg.data[0] = exo_data->right_side.knee.controller.filtered_torque_reading;             //First Tab - Top Blue Line                      right_actual torque
-            rx_msg.data[1] = exo_data->right_side.knee.controller.ff_setpoint;                         //First Tab - Top Orange Line 피드포워드 목표 값.   right_reference torque
-            rx_msg.data[2] = exo_data->left_side.knee.controller.filtered_torque_reading;              //First Tab - Bottom Blue Line                   left_actual torque
-            rx_msg.data[3] = exo_data->left_side.knee.controller.ff_setpoint;                          //First Tab - Bottom Orange Line                 left_reference torque
-            rx_msg.data[4] = exo_data->right_side.toe_stance;                                           //Second Tab - Top Blue Line                    발가락이 땅에 닿아 체중을 지지하고 있는 상태
-            rx_msg.data[5] = exo_data->right_side.toe_fsr;                                              //Second Tab - Top Orange Line                  발가락 압력 센서 값
-            rx_msg.data[6] = exo_data->left_side.toe_stance;                                            //Second Tab - Bottom Blue Line
-            rx_msg.data[7] = exo_data->left_side.toe_fsr;                                               //Second Tab - Bottom Orange Line
-            rx_msg.data[8] = exo_data->right_side.heel_fsr;                                             //Not Plotted, Saved            이건
-            rx_msg.data[9] = exo_data->left_side.heel_fsr;                                              //Not Plotted, Saved
+            rx_msg.data[0] = 0;            
+            rx_msg.data[1] = 0;            
+            rx_msg.data[2] = 0;
+            rx_msg.data[3] = 0;
+            rx_msg.data[4] = 0;
+            rx_msg.data[5] = 0;
+            rx_msg.data[6] = 0;
+            rx_msg.data[7] = 0;
+            rx_msg.data[8] = 0;
+            rx_msg.data[9] = 0;
             break;
         case (uint8_t)config_defs::exo_name::bilateral_ankle:
             rx_msg.len = (uint8_t)rt_data::BILATERAL_ANKLE_RT_LEN;
-            rx_msg.data[0] = exo_data->right_side.ankle.controller.filtered_torque_reading;             //First Tab - Top Blue Line                      right_actual torque
-            rx_msg.data[1] = exo_data->right_side.ankle.controller.ff_setpoint;                         //First Tab - Top Orange Line 피드포워드 목표 값.   right_reference torque
-            rx_msg.data[2] = exo_data->left_side.ankle.controller.filtered_torque_reading;              //First Tab - Bottom Blue Line                   left_actual torque
-            rx_msg.data[3] = exo_data->left_side.ankle.controller.ff_setpoint;                          //First Tab - Bottom Orange Line                 left_reference torque
-            rx_msg.data[4] = exo_data->right_side.toe_stance;                                           //Second Tab - Top Blue Line                    발가락이 땅에 닿아 체중을 지지하고 있는 상태
-            rx_msg.data[5] = exo_data->right_side.toe_fsr;                                              //Second Tab - Top Orange Line                  발가락 압력 센서 값
-            rx_msg.data[6] = exo_data->left_side.toe_stance;                                            //Second Tab - Bottom Blue Line
-            rx_msg.data[7] = exo_data->left_side.toe_fsr;                                               //Second Tab - Bottom Orange Line
-            rx_msg.data[8] = exo_data->right_side.heel_fsr;                                             //Not Plotted, Saved            이건
-            rx_msg.data[9] = exo_data->left_side.heel_fsr;                                              //Not Plotted, Saved
+            rx_msg.data[0] = 0;
+            rx_msg.data[1] = 0;
+            rx_msg.data[2] = 0;
+            rx_msg.data[3] = 0;
+            rx_msg.data[4] = 0;
+            rx_msg.data[5] = 0;
+            rx_msg.data[6] = 0;
+            rx_msg.data[7] = 0;
+            rx_msg.data[8] = 0;
+            rx_msg.data[9] = 0;
             break;
 
         default:
             rx_msg.len = (uint8_t)rt_data::BILATERAL_KNEE_RT_LEN;
-            rx_msg.data[0] = exo_data->right_side.knee.controller.filtered_torque_reading;             //First Tab - Top Blue Line
-            rx_msg.data[1] = exo_data->right_side.knee.controller.ff_setpoint;                         //First Tab - Top Orange Line
-            rx_msg.data[2] = exo_data->left_side.knee.controller.filtered_torque_reading;              //First Tab - Bottom Blue Line
-            rx_msg.data[3] = exo_data->left_side.knee.controller.ff_setpoint;                          //First Tab - Bottom Orange Line
-            rx_msg.data[4] = exo_data->right_side.toe_stance;                                           //Second Tab - Top Blue Line
-            rx_msg.data[5] = exo_data->right_side.toe_fsr;                                              //Second Tab - Top Orange Line
-            rx_msg.data[6] = exo_data->left_side.toe_stance;                                            //Second Tab - Bottom Blue Line
-            rx_msg.data[7] = exo_data->left_side.toe_fsr;                                               //Second Tab - Bottom Orange Line
-            rx_msg.data[8] = exo_data->right_side.heel_fsr;                                             //Not Plotted, Saved
-            rx_msg.data[9] = exo_data->left_side.heel_fsr;                                              //Not Plotted, Saved
+            rx_msg.data[0] = 0;
+            rx_msg.data[1] = 0;
+            rx_msg.data[2] = 0;
+            rx_msg.data[3] = 0;
+            rx_msg.data[4] = 0;
+            rx_msg.data[5] = 0;
+            rx_msg.data[6] = 0;
+            rx_msg.data[7] = 0;
+            rx_msg.data[8] = 0;
+            rx_msg.data[9] = 0;
             break;
         }
 

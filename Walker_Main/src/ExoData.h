@@ -54,12 +54,12 @@ public:
 
         void set_default_parameters(uint8_t id);
 
-
         void reset_imu_data();
 
         bool sync_led_state; /**< State of the sync led */
         bool estop;          /**< State of the estop */
         float battery_value; /**< Could be Voltage or SOC, depending on the battery type*/
+        float battery_percent; /**< LiPo battery percentage (0-100%) */
 
         SideData left_side;  /**< Data for the left side */
         SideData right_side; /**< Data for the right side */
@@ -75,8 +75,19 @@ public:
 
         uint8_t knee_Loadcell_flag = 0;  /**< Flag to determine if we want to use Loadcell for that joint */
         uint8_t ankle_Loadcell_flag = 0; /**< Flag to determine if we want to use Loadcell for that joint */
+        
         uint8_t knee_IMU_flag = 0;  /**< Flag to determine if we want to use IMU for that joint */
         uint8_t ankle_IMU_flag = 0; /**< Flag to determine if we want to use IMU for that joint */
+        
+        // Reference Force Settings for Admittance Control
+        float left_knee_reference_force = 20.0f;   /**< Reference force for left knee admittance control (N) */
+        float right_knee_reference_force = 18.0f;  /**< Reference force for right knee admittance control (N) */
+        float left_ankle_reference_force = 25.0f;  /**< Reference force for left ankle admittance control (N) */
+        float right_ankle_reference_force = 22.0f; /**< Reference force for right ankle admittance control (N) */
+        
+        // GUI Interface functions for Reference Force
+        void set_reference_force(config_defs::joint_id joint_id, float force);
+        float get_reference_force(config_defs::joint_id joint_id);
 
 private:
         uint16_t _status; /**< Status of the system*/

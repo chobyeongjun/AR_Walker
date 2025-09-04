@@ -44,6 +44,7 @@ namespace config_info
     // number_of_keys 48로 ParseIni.h에 정의되어 있음,
 }
 
+
 void setup()
 {
     analogReadResolution(12); // 아날로그 센서 (토크 센서) 정밀도를 12비트로 설정 기본값 10 비트 에서 12비트로 (0 ~ 4095 범위)
@@ -51,8 +52,8 @@ void setup()
     Serial.begin(115200);
     delay(100);
 
-    // Get the config information from the SD card (calls function in ParseIni.h).
-    ini_parser(config_info::config_to_send);
+    // Use hardcoded config values (removed SD card dependency)
+    // ini_parser(config_info::config_to_send);
 
 // Print to confirm config came through correctly (Should not contain zeros).
 #ifdef MAIN_DEBUG // Only print if MAIN_DEBUG is defined
@@ -63,6 +64,8 @@ void setup()
     logger::print("\n");
 #endif
 
+
+ 
 // Labels for the signals if plotting.
 #ifdef MAKE_PLOTS
     logger::print("Left_hip_trq_cmd, ");
@@ -77,6 +80,8 @@ void setup()
     logger::print("\n");
 #endif
 }
+
+
 
 void loop()
 {

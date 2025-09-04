@@ -5,18 +5,12 @@
 #if defined(ARDUINO_TEENSY36) || defined(ARDUINO_TEENSY41)
 
 Side::Side(bool is_left, ExoData *exo_data)
-    : knee(
+    : _knee(
     (is_left ? config_defs::joint_id::left_knee : config_defs::joint_id::right_knee),
-    config_to_send,
-    is_left ? loadcell_calibration::left_knee_bias : loadcell_calibration::right_knee_bias,
-    is_left ? loadcell_calibration::left_knee_sensitive : loadcell_calibration::right_knee_sensitive 
-  ), 
-   ankle(
+    exo_data), 
+   _ankle(
     (is_left ? config_defs::joint_id::left_ankle : config_defs::joint_id::right_ankle),
-    config_to_send,
-    is_left ? loadcell_calibration::left_ankle_bias : loadcell_calibration::right_ankle_bias,
-    is_left ? loadcell_calibration::left_ankle_sensitive : loadcell_calibration::right_ankle_sensitive 
-  )
+    exo_data)
 {
     _data = exo_data;
     _is_left = is_left;
@@ -45,13 +39,13 @@ Side::Side(bool is_left, ExoData *exo_data)
 
 void Side::disable_motors()
 {
-    _knee._motor->enable(false);
-    _ankle._motor->enable(false);
+    _knee._motor->is_on = false;
+    _ankle._motor->is_on = false;
 };
 
 void Side::run_side()
 {
-    check_calibration();
+    // check_calibration();
     read_data();
     update_motor_cmds();
 };
@@ -68,9 +62,9 @@ void Side::read_data()
 
     // 2. IMU 데이터 가져오기 및 부호 통일
     // _side_data를 통해 IMU 데이터를 가져와 부호를 통일
-    float ankle_gyro_y = _side_data->ankle.imu_gyro_y;
-    float ankle_accel_z = _side_data->ankle.imu_accel_z; // imu_accel_z는 JointData에 추가되어야 함
-    float ankle_pitch = _side_data->ankle.imu_pitch;
+    float ankle_gyro_y = _side_data->_ankle.imu_gyro_y;
+    float ankle_accel_z = _side_data->_ankle.imu_accel_z; // imu_accel_z는 JointData에 추가되어야 함
+    float ankle_pitch = _side_data->_ankle.imu_pitch;
     if (_is_left) {
         ankle_gyro_y = -ankle_gyro_y;
         ankle_pitch = -ankle_pitch;
@@ -95,20 +89,20 @@ void Side::read_data()
     _side_data->percent_gait = _calc_percent_gait();
 };
 
-void Side::check_calibration()
-{
-    if (_side_data->is_used)
-    {
-        if (_side_data->knee.is_used)
-        {
-            _knee.check_calibration();
-        }
-        if (_side_data->ankle.is_used)
-        {
-            _ankle.check_calibration();
-        }
-    }
-};
+// void Side::check_calibration()
+// {
+//     if (_side_data->is_used)
+//     {
+//         if (_side_data->knee.is_used)
+//         {
+//             _knee.check_calibration();
+//         }
+//         if (_side_data->ankle.is_used)
+//         {
+//             _ankle.check_calibration();
+//         }
+//     }
+// };
 
 bool Side::_check_heel_strike(float ankle_gyro_y, float ankle_accel_z) {
     static bool was_in_swing = false;

@@ -7,7 +7,10 @@
 #include "Utilities.h"
 #include "Logger.h"
 
-// Create abstract class for error types
+// Forward declaration for ExoData
+class ExoData;
+
+// Create abstract class for joint-level error types
 class ErrorType
 {
 public:
@@ -15,6 +18,7 @@ public:
     virtual bool check(JointData *_data) = 0;  // 모든 에러는 자신이 발생했는지 **검사(check)**하는 방법을 반드시 가져야 한다
     virtual void handle(JointData *_data) = 0; // "모든 에러는 발생했을 때 어떻게 **대처(handle)**할지 방법을 반드시 가져야 한다
 };
+
 
 class TestError : public ErrorType
 {
@@ -55,17 +59,6 @@ public:
 
     bool check(JointData *_data)
     {
-        // Calcualate motor torque
-        const float motor_torque = _data->motor.i * _data->motor.kt;
-
-        // Low pass motor torque
-        _data->smoothed_motor_torque = utils::ewma(motor_torque, _data->smoothed_motor_torque, _data->motor_torque_smoothing);
-
-        // If average motor torque is not close to 0, calculate the transmission efficiency
-        const float torque_error = utils::is_close_to(_data->smoothed_motor_torque, 0, _data->close_to_zero_tolerance) ? (0) : abs((float(_data->smoothed_motor_torque) - float(_data->torque_reading)) / float(_data->smoothed_motor_torque));
-        const uint8_t _id = static_cast<uint8_t>(_data->id);
-        _data->torque_error = utils::ewma(torque_error, _data->torque_error, _data->torque_error_smoothing);
-
         return false; // abs(torque_error) > 100 * (1 - _data->transmission_efficiency_threshold); //This should be the normal method for handling this error but we encountered issues so currently set to do nothing
     }
     void handle(JointData *_data)
@@ -75,54 +68,19 @@ public:
     }
 };
 
-class TorqueOutOfBoundsError : public ErrorType
+class ForceOutOfBoundsError : public ErrorType
 {
 public:
-    TorqueOutOfBoundsError() : ErrorType() {};
+    ForceOutOfBoundsError() : ErrorType() {};
 
     bool check(JointData *_data)
     {
-        return abs(_data->torque_reading) > _data->torque_output_threshold;
+        return false;
     }
     void handle(JointData *_data)
     {
         //_data->motor.enabled = false;
-        logger::println("Torque Out of Bounds Error", LogLevel::Error);
-    }
-};
-
-class TorqueVarianceError : public ErrorType
-{
-public:
-    TorqueVarianceError() : ErrorType() {};
-
-    bool check(JointData *_data)
-    {
-        // Append new torque reading to the window
-        _data->torque_data_window.push(_data->torque_reading);
-
-        // If the window is larger than the max size, pop the oldest value
-        if (_data->torque_data_window.size() > _data->torque_data_window_max_size)
-        {
-            _data->torque_data_window.pop();
-
-            // Calculate the standard deviation of the window
-            std::pair<float, float> pop_vals = utils::online_std_dev(_data->torque_data_window);
-
-            // Generate symmetric bounds around the mean
-            std::pair<float, float> bounds = std::make_pair(pop_vals.first - _data->torque_std_dev_multiple * pop_vals.second, pop_vals.first + _data->torque_std_dev_multiple * pop_vals.second);
-
-            // Increment the failure count if the current torque reading is outside the bounds
-            _data->torque_failure_count += (int)utils::is_outside_range(_data->torque_reading, bounds.first, bounds.second);
-        }
-
-        // If the failure count is greater than the max, return true
-        return _data->torque_failure_count >= _data->torque_failure_count_max;
-    }
-    void handle(JointData *_data)
-    {
-        //_data->motor.enabled = false;
-        logger::println("Torque Variance Error", LogLevel::Error);
+        logger::println("Force Out of Bounds Error", LogLevel::Error);
     }
 };
 
@@ -133,10 +91,14 @@ public:
 
     bool check(JointData *_data)
     {
+
+        // If the failure count is greater than the max, return true
         return false;
     }
     void handle(JointData *_data)
     {
+        //_data->motor.enabled = false;
+        logger::println("Force Variance Error", LogLevel::Error);
     }
 };
 
@@ -172,6 +134,164 @@ public:
     {
         //_data->motor.enabled = false;
         logger::println("Motor Timeout Error", LogLevel::Error);
+    }
+};
+
+class IMUBatteryLowError : public ErrorType
+{
+public:
+    IMUBatteryLowError() : ErrorType() {};
+
+    bool check(JointData *_data)
+    {
+        return (_data->imu_battery <= 5);
+    }
+    void handle(JointData *_data)
+    {
+        _data->motor.enabled = false;
+        logger::println("IMU Battery Critical Low Error - Joint Disabled", LogLevel::Error);
+    }
+};
+
+class IMUBatteryWarning : public ErrorType
+{
+public:
+    IMUBatteryWarning() : ErrorType() {};
+
+    bool check(JointData *_data)
+    {
+        return (_data->imu_battery <= 10 && _data->imu_battery > 5);
+    }
+    void handle(JointData *_data)
+    {
+        logger::println("IMU Battery Warning - Replace Soon", LogLevel::Warn);
+    }
+};
+
+class MotorTemperatureError : public ErrorType
+{
+public:
+    MotorTemperatureError() : ErrorType() {};
+
+    bool check(JointData *_data)
+    {
+        return (_data->motor.temperature >= 110);
+    }
+    void handle(JointData *_data)
+    {
+        _data->motor.enabled = false;
+        logger::println("Motor Temperature Critical Error - Joint Disabled", LogLevel::Error);
+    }
+};
+
+class MotorTemperatureWarning : public ErrorType
+{
+public:
+    MotorTemperatureWarning() : ErrorType() {};
+
+    bool check(JointData *_data)
+    {
+        return (_data->motor.temperature >= 100 && _data->motor.temperature < 110);
+    }
+    void handle(JointData *_data)
+    {
+        logger::println("Motor Temperature Warning - Monitor Closely", LogLevel::Warn);
+    }
+};
+
+class MotorCurrentOverloadError : public ErrorType
+{
+public:
+    MotorCurrentOverloadError() : ErrorType() {};
+
+    bool check(JointData *_data)
+    {
+        return (abs(_data->motor.i) >= 13.5);
+    }
+    void handle(JointData *_data)
+    {
+        _data->motor.enabled = false;
+        logger::println("Motor Current Overload Error - Joint Disabled", LogLevel::Error);
+    }
+};
+
+class MotorCableError : public ErrorType
+{
+private:
+    static uint8_t cable_error_count[4];
+
+public:
+    MotorCableError() : ErrorType() {};
+
+    bool check(JointData *_data)
+    {
+        uint8_t joint_index = static_cast<uint8_t>(_data->id);
+        
+        if (abs(_data->motor.i) >= 7.0 && abs(_data->loadcell_reading) < 5.0)
+        {
+            cable_error_count[joint_index]++;
+            if (cable_error_count[joint_index] >= 10)
+            {
+                cable_error_count[joint_index] = 0;
+                return true;
+            }
+        }
+        else
+        {
+            if (cable_error_count[joint_index] > 0)
+            {
+                cable_error_count[joint_index]--;
+            }
+        }
+        return false;
+    }
+    void handle(JointData *_data)
+    {
+        _data->motor.enabled = false;
+        logger::println("Motor Cable Error - Check Connections - Joint Disabled", LogLevel::Error);
+    }
+};
+
+class LipoBatteryError : public ErrorType
+{
+public:
+    LipoBatteryError() : ErrorType() {};
+
+    bool check(JointData *_data)
+    {
+        if (_data->parent_exo == nullptr) return false;
+        
+        const float V_warning = 19.2f;  // 경고 수준 (3.2V × 6셀)
+        return (_data->parent_exo->battery_percent <= 15.0f || _data->parent_exo->battery_value <= V_warning);
+    }
+    void handle(JointData *_data)
+    {
+        if (_data->parent_exo == nullptr) return;
+        
+        // 모든 관절 비활성화
+        _data->parent_exo->left_side.ankle.motor.enabled = false;
+        _data->parent_exo->left_side.knee.motor.enabled = false; 
+        _data->parent_exo->right_side.ankle.motor.enabled = false;
+        _data->parent_exo->right_side.knee.motor.enabled = false;
+        
+        logger::println("LiPo Battery Critical Low - All Motors Disabled", LogLevel::Error);
+    }
+};
+
+class LipoBatteryWarning : public ErrorType
+{
+public:
+    LipoBatteryWarning() : ErrorType() {};
+
+    bool check(JointData *_data)
+    {
+        if (_data->parent_exo == nullptr) return false;
+        
+        return (_data->parent_exo->battery_percent <= 25.0f && _data->parent_exo->battery_percent > 15.0f);
+    }
+    void handle(JointData *_data)
+    {
+        logger::println("LiPo Battery Warning - Charge Soon", LogLevel::Warn);
     }
 };
 

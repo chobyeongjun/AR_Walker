@@ -1,45 +1,50 @@
 #ifndef IMU_H
 #define IMU_H
 
-#include "Arduino.h"
-#include <stdint.h>
+#include <Arduino.h>
+#include "Board.h"
+#include "Logger.h"
 
-class IMU
-{
+#if defined(ARDUINO_TEENSY36) || defined(ARDUINO_TEENSY41)
+
+class IMU {
 public:
+    // 생성자
     IMU(uint8_t IMU_id);
+
+    // 초기화 함수
     void begin(long baudrate);
 
-    void read();
+    // 패킷 읽기 및 처리 함수
+    bool read_packet(uint8_t* packet_data, size_t packet_size);
 
-    // IMU data variables
-    float gyro_x = 0;
-    float gyro_y = 0;
-    float gyro_z = 0;
-    float roll = 0;
-    float pitch = 0;
-    float yaw = 0;
-    float acc_x = 0;
-    float acc_y = 0;
-    float acc_z = 0;
+    // 캘리브레이션 함수
+    void calibrate();
 
+    // 💡 public 멤버 변수들
+    float roll, pitch, yaw;
+    float gyro_x, gyro_y, gyro_z;
+    float acc_x, acc_y, acc_z;
+    float battery; 
+    
+    uint8_t IMU_id;
+    bool is_calibrated = false;
 
 private:
-    enum class State
-    {
-        WAITING_FOR_SOP, // Waiting for the start of the packet
-        READING_DATA     // Reading the data packet
-    };
-    // 체크섬 일치, 데이터 파싱
-    float roll_raw, pitch_raw, yaw_raw;
-    float gyro_x_raw, gyro_y_raw, gyro_z_raw;
-    float acc_x_raw, acc_y_raw, acc_z_raw;
-    
-    State _state = State::WAITING_FOR_SOP;
+    // 💡 private 멤버 변수들
+    int16_t roll_raw, pitch_raw, yaw_raw;
+    int16_t gyro_x_raw, gyro_y_raw, gyro_z_raw;
+    int16_t acc_x_raw, acc_y_raw, acc_z_raw;
+    int16_t battery_raw; 
 
-    uint8_t IMU_id;
-    uint8_t _bytes_read = 0;
-    uint8_t _data_buffer[30]; // Buffer for IMU data packets
+    // 초기 보정값
+    float roll_initial = 0;
+    float pitch_initial = 0;
+    float yaw_initial = 0;
+
+    
 };
+
+#endif // defined(ARDUINO_TEENSY36) || defined(ARDUINO_TEENSY41)
 
 #endif // IMU_H

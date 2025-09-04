@@ -35,6 +35,15 @@ public:
     float ankle_angle_at_ground_strike;         
     float expected_duration_window_upper_coeff; 
     float expected_duration_window_lower_coeff;
+    
+    // Gait state detection functions
+    bool is_swing_phase() const;
+    bool is_stance_phase() const;
+    bool is_early_swing() const;      // 0-30% of swing
+    bool is_mid_swing() const;        // 30-60% of swing  
+    bool is_late_swing() const;       // 60-100% of swing
+    bool is_early_stance() const;     // Stance phase detection
+    bool is_late_stance() const;      // Pre-swing preparation
 };
 
 #endif

@@ -12,7 +12,6 @@
 #include "Loadcell.h"
 #include "ParseIni.h"
 #include "board.h"
-#include "Joint.h"
 #include "config.h"
 #include "Utilities.h"
 #include "StatusDefs.h"
@@ -22,11 +21,11 @@
 
 class _Joint
 {
-    static uint8_t left_loadcell_used_count;  /**< Used to record how many sensors are already set */
-    static uint8_t right_loadcell_used_count; /**< Used to record how many sensors are already set */
+    static uint8_t left_loadcell_used_count; 
+    static uint8_t right_loadcell_used_count;
 
-    static uint8_t left_motor_used_count;  /**< Used to record how many motors are already set for torque sensor pin assignment */
-    static uint8_t right_motor_used_count; /**< Used to record how many motors are already set for torque sensor pin assignment */
+    static uint8_t left_motor_used_count;  
+    static uint8_t right_motor_used_count; 
 
 public:
 
@@ -45,11 +44,14 @@ public:
 
     static unsigned int get_loadcell_pin(config_defs::joint_id, ExoData *);
 
-    static unsigned int get_motor_enable_pin(config_defs::joint_id, ExoData *);
-
     _Motor *_motor;              /**< Pointer to the base _Motor class so we can use any motor type.*/
     Loadcell _loadcell; 
     _Controller *_controller;    /**< Pointer to the current controller. Using pointer so we just need to change the object we are pointing to when the controller changes.*/
+    
+    // Gait-based controllers
+    _Controller *_swing_position_controller;  /**< Position controller for swing phase */
+    _Controller *_swing_speed_controller;     /**< Speed controller for swing phase */
+    _Controller *_stance_admittance_controller; /**< Admittance controller for stance phase */
 
 protected:
     // Give access to the larger data object and the joint specific data
@@ -60,6 +62,16 @@ protected:
     // Joint info
     config_defs::joint_id _id; /**< Joint id */
     bool _is_left;             /**< If the joint is on the left side so we don't have to keep calculating it */
+    
+    // Gait state-based control methods
+    void _initialize_gait_controllers();                    /**< Initialize all gait-based controllers */
+    void _select_controller_based_on_gait_state();          /**< Switch controller based on current gait state */
+    void _apply_motor_command(float motor_cmd);              /**< Apply motor command using appropriate servo mode */
+    SideData* _get_side_data();                             /**< Get the appropriate side data */
+    
+    // Controller switching state tracking
+    bool _was_in_swing;                                      /**< Track previous gait state for smooth transitions */
+    unsigned long _last_state_change_time;                  /**< Time of last gait state change */
 };
 
 class KneeJoint : public _Joint
@@ -73,10 +85,7 @@ public:
     void set_controller(uint8_t);
 
 protected:
-    // Objects for joint specific controllers
-    ZeroTorque _zero_torque;         /**< Zero torque controller */
-    ConstantTorque _constant_torque; /**< Constant torque controller */
-    Chirp _chirp;                    /**< Chirp Controller for Device Characterization */
+   
     Step _step;                      /**< Step Controller for Device Characterization */
 };
 
@@ -92,18 +101,9 @@ public:
     void set_controller(uint8_t);
 
 protected:
-
-    // Objects for joint specific controllers
-    ZeroTorque _zero_torque;                            /**< Zero torque controller */
-    ProportionalJointMoment _proportional_joint_moment; /**< Proportional joint moment controller */
-    ZhangCollins _zhang_collins;                        /**< Zhang Collins controller */
-    ConstantTorque _constant_torque;                    /**< Constant torque controller*/
-    TREC _trec;                                         /**< TREC */
-    CalibrManager _calibr_manager;                      /**< Calibration Manager "Controller" */
-    Chirp _chirp;                                       /**< Chirp Controller for Device Characterization */
+  
     Step _step;                                         /**< Step Controller for Device Characterization */
-    SPV2 _spv2;                                         /**< SPV2 */
-    PJMC_PLUS _pjmc_plus;                               /**< The new proportional joint moment controller */
+  
 };
 
 

@@ -10,7 +10,7 @@
 #include "FlexCAN_T4.h"
 #if defined(ARDUINO_TEENSY36)
     static FlexCAN_T4<CAN0, RX_SIZE_256, TX_SIZE_16> Can0;
-#elif defined(ARDUINO_TEENSY41)
+#elif defined(ARDUINO_TEENSY41)ㄹ
     static FlexCAN_T4<CAN1, RX_SIZE_256, TX_SIZE_16> Can0;
 #endif
 

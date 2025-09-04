@@ -163,21 +163,7 @@ namespace utils
         return len;
     };
 
-    SpeedCheck::SpeedCheck(int pin)
-    {
-        _pin = pin;
-        _state = 0;
 
-        pinMode(_pin, OUTPUT);
-        digitalWrite(_pin, _state);
-    };
-
-    void SpeedCheck::toggle()
-    {
-        _state = _state ^ 1;
-
-        digitalWrite(_pin, _state);
-    };
 
    
     union FloatByteUnion

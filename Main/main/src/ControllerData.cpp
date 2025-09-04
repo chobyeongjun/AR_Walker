@@ -1,0 +1,68 @@
+#include "ControllerData.h"
+
+ControllerData::ControllerData(config_defs::joint_id id, uint8_t* config_to_send)
+{
+    
+    switch ((uint8_t)id & (~(uint8_t)config_defs::joint_id::left & ~(uint8_t)config_defs::joint_id::right))  //Use the id with the side masked out.
+    {
+
+        case (uint8_t)config_defs::joint_id::knee:
+        {
+            controller = config_to_send[config_defs::exo_knee_default_controller_idx];
+            joint = config_defs::JointType::knee;
+            break;
+        }
+        case (uint8_t)config_defs::joint_id::ankle:
+        {
+            controller = config_to_send[config_defs::exo_ankle_default_controller_idx];
+            joint = config_defs::JointType::ankle;
+            break;
+        }
+   
+    }
+    
+    setpoint = 0;
+    parameter_set = 0;
+
+    for (int i=0; i < 3; i++)
+    {    
+        parameters[i] = 0;
+    }
+
+    filtered_cmd = 0;
+    filtered_torque_reading = 0;
+};
+
+void ControllerData::reconfigure(uint8_t* config_to_send) 
+{
+    //Just reset controller
+    switch ((uint8_t)joint)  //Use the id with the side masked out.
+    {
+
+        case (uint8_t)config_defs::joint_id::knee:
+        {
+            controller = config_to_send[config_defs::exo_knee_default_controller_idx];
+            break;
+        }
+        case (uint8_t)config_defs::joint_id::ankle:
+        {
+            controller = config_to_send[config_defs::exo_ankle_default_controller_idx];
+            break;
+        }
+    
+    }
+    
+    setpoint = 0;
+
+    for (int i=0; i < 3; i++)
+    {    
+        parameters[i] = 0;
+    }
+};
+
+
+uint8_t ControllerData::get_parameter_length()
+{
+    uint8_t length = 0;
+    return length;
+}

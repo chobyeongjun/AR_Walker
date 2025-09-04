@@ -61,12 +61,12 @@ class MachineLearning(tk.Frame):
     def create_widgets(self):
 
         # Load and place the smaller image behind the timer and battery
-        small_image = Image.open("./Resources/Images/OpenExo.png").convert("RGBA")
+        small_image = Image.open("./Resources/Images/H-Walker_Blue.png").convert("RGBA")
         small_image = small_image.resize((80, 40))  # Resize the image to a smaller size
         self.small_bg_image = ImageTk.PhotoImage(small_image)
 
         # Load and place the smaller image behind the timer and battery
-        small_image = Image.open("./Resources/Images/OpenExo.png").convert("RGBA")
+        small_image = Image.open("./Resources/Images/H-Walker_Blue.png").convert("RGBA")
         small_image = small_image.resize((int(1736*.06), int(336*.06)))  # Resize the image to a smaller size
         self.small_bg_image = ImageTk.PhotoImage(small_image)
 

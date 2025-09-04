@@ -17,9 +17,19 @@ void print_status_message(uint16_t message)
     case status_defs::messages::test:
         logger::print("Test");
         break;
+    case status_defs::messages::loadcell_calibration:
+        logger::print("loadcell_calibration");
+        break;
+    case status_defs::messages::imu_start:
+        logger::print("imu_start");
+        break;
+    case status_defs::messages::imu_stop:
+        logger::print("imu_stop");
+        break;
     case status_defs::messages::motor_start_up:
         logger::print("Motor Start Up");
         break;
+
     case status_defs::messages::error:
         logger::print("General Error");
         break;
@@ -35,16 +45,17 @@ void print_status_message(uint16_t message)
     case status_defs::messages::error_right_ankle_loadcell:
         logger::print("Loadcell Error");
         break;
-    case status_defs::messages::error_left_knee_imu:
-        logger::print("IMU Error");
-        break;
-    case status_defs::messages::error_right_knee_imu:
-        logger::print("IMU Error");
-        break;
+
     case status_defs::messages::error_left_ankle_imu:
         logger::print("IMU Error");
         break;
     case status_defs::messages::error_right_ankle_imu:
+        logger::print("IMU Error");
+        break;
+    case status_defs::messages::error_left_knee_imu:
+        logger::print("IMU Error");
+        break;
+    case status_defs::messages::error_right_knee_imu:
         logger::print("IMU Error");
         break;
     case status_defs::messages::error_left_knee_motor:
@@ -62,11 +73,11 @@ void print_status_message(uint16_t message)
     case status_defs::messages::error_left_knee_controller:
         logger::print("Error :: Left Knee Controller");
         break;
-    case status_defs::messages::error_left_ankle_controller:
-        logger::print("Error :: Left Ankle Controller");
-        break;
     case status_defs::messages::error_right_knee_controller:
         logger::print("Error :: Right Knee Controller");
+        break;
+    case status_defs::messages::error_left_ankle_controller:
+        logger::print("Error :: Left Ankle Controller");
         break;
     case status_defs::messages::error_right_ankle_controller:
         logger::print("Error :: Right Ankle Controller");
