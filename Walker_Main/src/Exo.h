@@ -1,11 +1,9 @@
 #ifndef Exo_h
 #define Exo_h
 
-// Arduino compiles everything in the src folder even if not included so it causes an error for the nano if this is not included
 #if defined(ARDUINO_TEENSY36) || defined(ARDUINO_TEENSY41)
 
 #include "Arduino.h"
-
 #include "Side.h"
 #include <stdint.h>
 #include "ParseIni.h"
@@ -26,24 +24,30 @@ public:
 
     bool run();
 
-    ExoData *data;   /**< Pointer to ExoData that is getting updated by the coms mcu so they share format.*/
-    Side left_side;  /**< Left side object that contains all the joints and sensors for that side */
-    Side right_side; /**< Right side object that contains all the joints and sensors for that side */
+    ExoData *data;  
+    Side left_side;  
+    Side right_side; 
 
-#ifdef USE_SPEED_CHECK
-    utils::SpeedCheck speed_check; /**< Used to check the speed of the loop without needing prints */
-#endif
-
-    SyncLed sync_led;     /**< Used to syncronize data with a motion capture system */
-    StatusLed status_led; /**< Used to display the system status */
+    SyncLed sync_led;     
+    StatusLed status_led; 
+    
+    bool is_collecting_data = false;
 
 private:
-    IMU _imu_left_ankle;   
-    IMU _imu_right_ankle; 
-    IMU _imu_left_knee;   
-    IMU _imu_right_knee;   
+    IMU _left_ankle_imu;   
+    IMU _right_ankle_imu; 
+    IMU _left_knee_imu;   
+    IMU _right_knee_imu;
+    
+    // 💡 IMU 데이터 처리를 위한 멤버 변수들을 private으로 선언
+    const int TOTAL_PACKET_SIZE = 26; // IMU 프로토콜에 맞게 26바이트로 수정
+    uint8_t receive_buffer[26];
+    size_t buffer_index = 0;
+    bool left_available = false;
+    bool right_available = false;
 
-    void _update_imu_data();
+    void _process_imu_data();
+
 };
 #endif
 

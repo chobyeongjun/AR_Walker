@@ -39,7 +39,7 @@ class ActiveTrial(tk.Frame):
         self.controller.deviceManager.on_disconnect = self.ActiveTrial_on_device_disconnected
         
         # UI elements
-        self.fontstyle = 'Segoe UI'
+        self.fontstyle = 'Open Sans'
 
         self.var = IntVar()
         self.chartVar = StringVar()
@@ -60,7 +60,7 @@ class ActiveTrial(tk.Frame):
         calibrationMenuLabel.grid(row=0, column=0, columnspan=8, pady=20,padx=(100, 0))
 
         # Load and place the smaller image behind the timer and battery
-        small_image = Image.open("./Resources/Images/OpenExo.png").convert("RGBA")
+        small_image = Image.open("./Resources/Images/H-Walker_Blue.png").convert("RGBA")
         small_image = small_image.resize((int(1736*.06), int(336*.06)))  # Resize the image to a smaller size
         self.small_bg_image = ImageTk.PhotoImage(small_image)
 

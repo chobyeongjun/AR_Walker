@@ -157,7 +157,7 @@ uint8_t set_controller_params(uint8_t joint_id, uint8_t controller_id, uint8_t s
 #endif
 
                         // Read till the end of the line or all the parameters are full
-                        while (param_num < controller_defs::max_parameters)
+                        while (param_num < 2)
                         {
                             if (param_num_in_file > param_num)
                             {
@@ -189,7 +189,7 @@ uint8_t set_controller_params(uint8_t joint_id, uint8_t controller_id, uint8_t s
 #endif
 
                         // Read till the end of the line or all the parameters are full
-                        while (param_num < controller_defs::max_parameters)
+                        while (param_num < 2)
                         {
                             if (param_num_in_file > param_num)
                             {
@@ -352,7 +352,7 @@ uint8_t set_controller_params(uint8_t joint_id, uint8_t controller_id, uint8_t s
 #endif
 
                         // Read till the end of the line or all the parameters are full
-                        while (param_num < controller_defs::max_parameters)
+                        while (param_num < 2)
                         {
                             if (param_num_in_file > param_num)
                             {
@@ -385,7 +385,7 @@ uint8_t set_controller_params(uint8_t joint_id, uint8_t controller_id, uint8_t s
 #endif
 
                         // Read till the end of the line or all the parameters are full
-                        while (param_num < controller_defs::max_parameters)
+                        while (param_num < 2)
                         {
                             if (param_num_in_file > param_num)
                             {

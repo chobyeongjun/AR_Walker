@@ -14,7 +14,15 @@ const std::map<ErrorCodes, ErrorType *> error_map = {
     {FORCE_VARIANCE_ERROR, new ForceVarianceError()},
     {IMU_ERROR, new ForceVarianceError()},
     {TRACKING_ERROR, new TrackingError()},
-    {MOTOR_TIMEOUT_ERROR, new MotorTimeoutError()}};
+    {MOTOR_TIMEOUT_ERROR, new MotorTimeoutError()},
+    {IMU_BATTERY_LOW_ERROR, new IMUBatteryLowError()},
+    {IMU_BATTERY_WARNING, new IMUBatteryWarning()},
+    {MOTOR_TEMPERATURE_ERROR, new MotorTemperatureError()},
+    {MOTOR_TEMPERATURE_WARNING, new MotorTemperatureWarning()},
+    {MOTOR_CURRENT_OVERLOAD_ERROR, new MotorCurrentOverloadError()},
+    {MOTOR_CABLE_ERROR, new MotorCableError()},
+    {LIPO_BATTERY_ERROR, new LipoBatteryError()},
+    {LIPO_BATTERY_WARNING, new LipoBatteryWarning()}};
 
 #endif
 #endif // ERROR_MAPS_H

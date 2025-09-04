@@ -21,16 +21,15 @@ public: // ParseIni.h에 정의된 config_defs::joint_id enum class를 사용하
 
     config_defs::joint_id id; 
     uint8_t motor_type;       
-    float last_command;       
     float p;                  
     float v;                  
     float i;                  
     float kt;                 
-    float p_des = 0;          
-    float v_des = 0;          
-    float kp = 0;             
-    float kd = 0;             
-    float t_ff = 0;           
+    int8_t temperature;       
+    uint8_t error;            
+    float p_des;              
+    float v_des;              
+    float a_des;              
 
     bool do_zero;        
     bool enabled;        

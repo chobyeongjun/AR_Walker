@@ -6,6 +6,7 @@ from async_tkinter_loop import async_handler
 from Widgets.Keyboard.custom_keyboard import CustomKeyboard
 import json
 import os
+
 jointMap = {
     "Right hip": 1,
     "Left hip": 2,
@@ -32,7 +33,7 @@ class UpdateTorque(tk.Frame):  # Frame to start exo and calibrate
         self.controller.deviceManager.on_disconnect = self.UpdateTorque_on_device_disconnected
 
         #UI Styling
-        self.fontstyle = 'Segoe UI'
+        self.fontstyle = 'Open Sans'
 
         self.bilateralButtonVar = StringVar()
         self.bilateralButtonVar.set("Bilateral Mode On")

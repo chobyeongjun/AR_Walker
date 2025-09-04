@@ -46,9 +46,6 @@ StatusLed::StatusLed(int r_pin, int g_pin, int b_pin, int brightness)
     update(_current_message); // Set status
 };
 
-// Public
-
-
 void StatusLed::update(uint16_t message)
 {
     if (message != _current_message) // current_message (이전에 저장된 상태) 와 다를때만 이 코드가 실행되고,
@@ -96,9 +93,6 @@ void StatusLed::set_brightness(int brightness)
     _brightness = brightness;
 };
 
-/*
-Protected
-*/
 
 void StatusLed::_set_color(int r_color, int g_color, int b_color)
 {

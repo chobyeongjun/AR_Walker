@@ -96,6 +96,13 @@ void ComsMCU::local_sample()
         float raw_battery_value = _battery->get_parameter();
         filtered_value = utils::ewma(raw_battery_value, filtered_value, k_battery_ewma_alpha);
         _data->battery_value = filtered_value;
+        
+        // LiPo 배터리 퍼센트 계산 (6S LiPo 기준)
+        const float V_max = 25.2f;  // 완충 (4.2V × 6셀)
+        const float V_min = 18.0f;  // 방전 한계 (3.0V × 6셀)
+        float battery_percent = ((filtered_value - V_min) / (V_max - V_min)) * 100.0f;
+        _data->battery_percent = max(0.0f, min(100.0f, battery_percent));
+        
         del_t = 0;
     }
 

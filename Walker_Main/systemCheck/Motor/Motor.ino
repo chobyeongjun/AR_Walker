@@ -147,8 +147,8 @@
       }
     
       // This isn't the actual angle this is an angle used to create a sinusodal torque
-      float angle_deg = 360.0 * (timestamp - pattern_start_timestamp) / pattern_period_ms;
-      float left_torque_command = left_magnitude * sin (angle_deg * PI / 180);
+      floa      float left_torque_command = left_magnitude * sin (angle_deg * PI / 180);
+t angle_deg = 360.0 * (timestamp - pattern_start_timestamp) / pattern_period_ms;
       float right_torque_command = right_magnitude * sin (angle_deg * PI / 180);
       
       

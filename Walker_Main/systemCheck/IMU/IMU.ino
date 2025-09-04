@@ -1,10 +1,10 @@
 #if defined(ARDUINO_TEENSY36) || defined(ARDUINO_TEENSY41)
 
-  #include "src\Board.h"
-  #include "src\Utilities.h"
-  #include "src\ParseIni.h"
-  #include "src\IMU.h"
-  #include "src\Logger.h"
+  #include "src/Board.h"
+  #include "src/Utilities.h"
+  #include "src/ParseIni.h"
+  #include "src/IMU.h"
+  #include "src/Logger.h"
 
   // 테스트를 위한 IMU 객체 (ID 0)
   IMU test_imu(0);

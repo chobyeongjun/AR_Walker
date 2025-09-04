@@ -79,163 +79,6 @@ class _Controller
         
         float _cf_mfac(float reference, float current_measurement);
 };
-
-
-class TREC : public _Controller
-{
-public:
-    TREC(config_defs::joint_id id, ExoData* exo_data);
-    ~TREC() {};
-
-    float calc_motor_cmd();
-
-private:
-    void _update_reference_angles(SideData* side_data, ControllerData* controller_data, float percent_grf, float percent_grf_heel);
-    void _capture_neutral_angle(SideData* side_data, ControllerData* controller_data);
-    void _grf_threshold_dynamic_tuner(SideData* side_data, ControllerData* controller_data, float threshold, float percent_grf_heel);
-    void _plantar_setpoint_adjuster(SideData* side_data, ControllerData* controller_data, float pjmcSpringDamper);
-};
-
-
-class ProportionalJointMoment : public _Controller
-{
-    public:
-        ProportionalJointMoment(config_defs::joint_id id, ExoData* exo_data);
-        ~ProportionalJointMoment(){};
-        
-        float calc_motor_cmd();
-    private:
-        std::pair<float, float> _stance_thresholds_left, _stance_thresholds_right;
-        
-        float _inclination_scaling{1.0f};
-};
-
-
-class ZeroTorque : public _Controller
-{
-    public:
-        ZeroTorque(config_defs::joint_id id, ExoData* exo_data);
-        ~ZeroTorque(){};
-        
-        float calc_motor_cmd();
-};
-
-
-class ZhangCollins: public _Controller
-{
-    public:
-        ZhangCollins(config_defs::joint_id id, ExoData* exo_data);
-        ~ZhangCollins(){};
-        
-        float calc_motor_cmd();
-
-        float _spline_generation(float node1, float node2, float node3, float torque_magnitude, float percent_gait);
-
-        float torque_cmd;
-		float cmd;
-};
-
-
-class FranksCollinsHip: public _Controller
-{
-    public:
-        FranksCollinsHip(config_defs::joint_id id, ExoData* exo_data);
-        ~FranksCollinsHip(){};
-       
-        float calc_motor_cmd();
-
-        float _spline_generation(float node1, float node2, float node3, float torque_magnitude, float shifted_percent_gait);
-
-        float last_percent_gait;
-        float last_start_time;
-       
-};
-
-
-class ConstantTorque : public _Controller
-{
-public:
-    ConstantTorque(config_defs::joint_id id, ExoData* exo_data);
-    ~ConstantTorque() {};
-
-    float calc_motor_cmd();
-
-    float previous_command;         /* Stores Previous Loop's Torque Command */
-    float previous_torque_reading;  /* Stores Previous Loop's Measured Torque */
-    int flag;                       /* Flag that Determines Filter Status */
-    float difference;               /* Stores Difference in Command when Changed */
-
-};
-
-
-class ElbowMinMax : public _Controller
-{
-public:
-    ElbowMinMax(config_defs::joint_id id, ExoData* exo_data);
-    ~ElbowMinMax() {};
-
-    float alpha0;
-    float alpha1;
-    float alpha2;
-    float alpha3;
-
-    float cmd;
-
-    float Smoothed_Sig_Flex;
-    float Smoothed_Sig_Ext;
-    float Smoothed_Flex_Max;
-    float Smoothed_Flex_Min;
-    float Smoothed_Ext_Max;
-    float Smoothed_Ext_Min;
-
-    float starttime;
-
-    float check;
-
-    float Angle_Max;
-    float Angle_Min;
-    float Angle;
-
-    bool flexState;
-    bool extState;
-    bool nullState;
-
-    float previous_setpoint;
-
-    float fsr_toe_previous_elbow;
-    float fsr_heel_previous_elbow;
-
-    float SpringEffect;
-
-    float calc_motor_cmd();
-    
-};
-
-class CalibrManager : public _Controller
-{
-public:
-    CalibrManager(config_defs::joint_id id, ExoData* exo_data);
-    ~CalibrManager() {};
-
-    float calc_motor_cmd();
-};
-
-
-class Chirp : public _Controller
-{
-public:
-    Chirp(config_defs::joint_id id, ExoData* exo_data);
-    ~Chirp() {};
-
-    float start_flag;               /* Flag that triggers recording of the initial start time of the controller upon usage. */
-    float start_time;               /* Variable that stores the start time of the controller. */
-    float current_time;             /* Variable that stores the current time of the controller. */
-    float previous_amplitude;       /* Variable that stores the previous amplitude, used as a switch to restart the controller if needed. (Set amplitude to 0 and then set to desired amplitude). */
-
-    float calc_motor_cmd();         /* Function that calculates the motor command. */
-
-};
-
 class Step : public _Controller
 {
 public:
@@ -250,7 +93,6 @@ public:
     float end_time;                 /* Records time that step ended. */
 
     float previous_command;
-    float previous_torque_reading;
     int flag;
     float difference;
     float turn;
@@ -261,74 +103,91 @@ public:
 
 };
 
-class ProportionalHipMoment : public _Controller
+class AdmittanceController : public _Controller
 {
 public:
-    ProportionalHipMoment(config_defs::joint_id id, ExoData* exo_data);
-    ~ProportionalHipMoment() {};
-    
-    /* Note: Duration in this controller is in terms of number of iterations in that window, rather than as a time. */
+    AdmittanceController(config_defs::joint_id id, ExoData* exo_data);
+    ~AdmittanceController() {};
 
-    int state;                      /* Keeps track of what state we are in: State 1 - Mid-to-Late Swing (15% onward), State 2: Stance, State 3: Early-Swing (First 15%). */
-
-    bool first_state2;              /* Flag to set variable values upon the first instance of the current State 2. */
-    bool first_state3;              /* Flag to set variable values upon the first instance of the current State 3. */
-
-    int swing_counter;              /* Keeps track of the number of iterations that have occured in current swing phase. */
-    int state1_counter;             /* Keeps track of the number of iterations that have occured in current State 1. */
-    int prev_state1_counter;        /* Stores the previous duration of State 1, used to estimate position in current State 1 relative to expected duration. */
-    int stance_counter;             /* Keeps track of the number of iterations that have occured in current Stance Phase. */
-    int swing_duration;             /* Stores the duration of the previous swing phase. */
- 
-    float setpoint;                 /* Stores the calculated feed-foward setpoint for the hip command. */
-    float old_setpoint;             /* Stores the setpoint at the end of State 3 to be used for setpoint calculation in State 1. */
-
-    int state_count_12;             /* Keeps track of the number of iterations that have occured in the State 1 - to - State 2 Transition. */
-    int state_count_23;             /* Keeps track of the number of iterations that have occured in the State 2 - to - State 3 Transition. */
-    int state_count_31;             /* Keeps track of the number of iterations that have occured in the State 3 - to - State 1 Transition. */
-    
-    int Prev_latestance_duration;   /* Stores the previous duration of the late-stance phase (part of the late-stance to early-swing transition period. */
-    int latestance_duration;        /* Records the duration of the recently ended late-stance phase. */
-    int latestance_counter;         /* Keeps track of the number of iterations that have occured in the current Late-Stance Period. */
-    float Alpha_counter;            /* Keeps track of the number of iterations that have occured in the current Late-Stance - and - Early Swing Transition Period. */
-    float Alpha;                    /* Stores the expected duration of the Late-Stance - and - Early Swing Transition Period, based on the duration of the last transition period. */
-    float t;                        /* Calculated percentage of stance-to-swing transition based on the duration of the previous stance-to-swing transition (expressed as 0.1, 0.2,... rather than 10%, 20%,...). */
-    
-    float fs;                       /* Ratio of heel and toe fsrs accounting for GRF Ratio (0.25). */
-    float fs_min;                   /* Stores the minimum calculated fs for the current cycle, used as a starting estimate for the Late-Stance - to - Early Swing transition period. */
-    float prev_fs;                  /* Stores the previous cycle's fs to help determine the slope of the fs curve. */
-    float hip_ratio;                /* Part of calculation to determine the feed-foward setpoint calculation during stance-phase (State 2). */
-
-    float calc_motor_cmd();         /* Function to calcualte the desired motor command. */
+    float calc_motor_cmd();         /* Calculates reference position based on admittance control */
 
 private:
-
+    // Admittance control parameters
+    float _mass;                    /* Virtual mass (kg) */
+    float _damping;                 /* Virtual damping (Ns/m) */
+    float _stiffness;               /* Virtual stiffness (N/m) */
+    
+    // Reference and actual force
+    float _reference_force;         /* Desired force (N) */
+    float _actual_force;            /* Measured force from loadcell (N) */
+    
+    // Position and velocity tracking
+    float _reference_position;      /* Calculated reference position (degrees) */
+    float _reference_velocity;      /* Calculated reference velocity (deg/s) */
+    float _prev_reference_position; /* Previous reference position */
+    float _prev_reference_velocity; /* Previous reference velocity */
+    
+    // Time tracking for integration
+    float _prev_time;               /* Previous time for dt calculation */
+    
+    // Internal calculation methods
+    float _calculate_force_error();                                    /* Force error calculation */
+    void _update_reference_kinematics(float force_error, float dt);    /* Update position/velocity */
+    float _get_actual_force_from_loadcell();                          /* Get force from loadcell */
+    
+    // Admittance control equation: M*a + D*v + K*x = F_error
+    // Solved for acceleration: a = (F_error - D*v - K*x) / M
 };
 
-class SPV2 : public _Controller
+class PositionController : public _Controller
 {
 public:
-    SPV2(config_defs::joint_id id, ExoData* exo_data);
-    ~SPV2() {};
+    PositionController(config_defs::joint_id id, ExoData* exo_data);
+    ~PositionController() {};
 
-    float calc_motor_cmd();
+    float calc_motor_cmd();         /* Calculates position command for swing phase */
 
 private:
-
+    float _target_position;         /* Target position for swing (degrees) */
+    float _current_position;        /* Current joint position (degrees) */
+    
+    // PID parameters for position control
+    float _kp_pos;                  /* Position proportional gain */
+    float _ki_pos;                  /* Position integral gain */
+    float _kd_pos;                  /* Position derivative gain */
+    
+    // Swing trajectory parameters
+    float _swing_start_position;    /* Position at swing start */
+    float _swing_target_position;   /* Desired position at swing end */
+    
+    float _calculate_swing_trajectory();  /* Calculate desired position during swing */
 };
 
-
-class PJMC_PLUS : public _Controller
+class SpeedController : public _Controller
 {
 public:
-    PJMC_PLUS(config_defs::joint_id id, ExoData* exo_data);
-    ~PJMC_PLUS() {};
+    SpeedController(config_defs::joint_id id, ExoData* exo_data);
+    ~SpeedController() {};
 
-    float calc_motor_cmd();
+    float calc_motor_cmd();         /* Calculates speed command for swing phase */
 
 private:
-
+    float _target_speed;            /* Target speed for swing (deg/s) */
+    float _current_speed;           /* Current joint speed (deg/s) */
+    
+    // PID parameters for speed control
+    float _kp_speed;                /* Speed proportional gain */
+    float _ki_speed;                /* Speed integral gain */
+    float _kd_speed;                /* Speed derivative gain */
+    
+    // Swing speed profile parameters
+    float _max_swing_speed;         /* Maximum speed during swing */
+    float _acceleration_phase;      /* Acceleration phase percentage (0-1) */
+    float _deceleration_phase;      /* Deceleration phase percentage (0-1) */
+    
+    float _calculate_swing_speed_profile();  /* Calculate desired speed during swing */
 };
+
 
 #endif
 #endif

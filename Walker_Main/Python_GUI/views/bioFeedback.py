@@ -42,7 +42,7 @@ class BioFeedback(tk.Frame):
         self.counter_var = IntVar(value=self.counter)
 
         #UI Styling
-        self.fontstyle = 'Segoe UI'
+        self.fontstyle = 'Open Sans'
         
         # Target value variable
         self.target_value = None
@@ -69,7 +69,7 @@ class BioFeedback(tk.Frame):
         calibrationMenuLabel.grid(row=0, column=0, columnspan=8, pady=20)
 
         # Load and place the smaller image behind the timer and battery
-        small_image = Image.open("./Resources/Images/OpenExo.png").convert("RGBA")
+        small_image = Image.open("./Resources/Images/H-Walker_Blue.png").convert("RGBA")
         small_image = small_image.resize((int(1736*.075), int(336*.075)))  # Resize the image to a smaller size
         self.small_bg_image = ImageTk.PhotoImage(small_image)
 

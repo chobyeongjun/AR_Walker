@@ -25,7 +25,7 @@ class ScanWindow(tk.Frame):
 
         # UI elements
         self.scanning_animation_running = False  # Flag for animation state
-        self.fontstyle = 'Segoe UI'
+        self.fontstyle = 'Open Sans'
         self.create_widgets()  # Create UI elements
         self.load_device_available() #Check if loaded devices avalible
 
@@ -49,8 +49,8 @@ class ScanWindow(tk.Frame):
         canvas.grid(row=7, column=1, sticky="se", padx=5, pady=10)
 
         # Load and place the smaller image behind the timer and battery
-        small_image = Image.open("./Resources/Images/OpenExo.png").convert("RGBA")
-        small_image = small_image.resize((int(1736*.075), int(336*.075)))  # Resize the image to a smaller size
+        small_image = Image.open("./Resources/Images/H-Walker_Blue.png").convert("RGBA")
+        small_image = small_image.resize((int(1736*.75), int(336*.75)))  # Resize the image to a smaller size
         self.small_bg_image = ImageTk.PhotoImage(small_image)
 
         # Create a Canvas for the smaller image

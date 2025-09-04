@@ -1,23 +1,21 @@
 #include "JointData.h"
 #include "Logger.h"
 
-
 // 생성자 시그니처 수정 및 초기화 리스트 추가
-JointData::JointData(config_defs::joint_id id, uint8_t* config_to_send, float loadcell_bias, float loadcell_sensitive)
-    : motor(id, config_to_send), 
-      controller(id, config_to_send)
+JointData::JointData(config_defs::joint_id id, uint8_t *config_to_send)
+    : motor(id, config_to_send), controller(id, config_to_send)
 {
-    // Loadcell bias와 sensitivity 값 저장
-    this->loadcell_bias = loadcell_bias;
-    this->loadcell_sensitive = loadcell_sensitive;
-    
-    // 다른 멤버 변수 초기화
     this->id = id;
-    this->loadcell_reading = 0;
     this->is_left = ((uint8_t)this->id & (uint8_t)config_defs::joint_id::left) == (uint8_t)config_defs::joint_id::left;
     this->position = 0;
     this->velocity = 0;
-    
+
+    this->loadcell_reading = 0;
+    this->imu_pitch = 0;
+    this->imu_gyro_y = 0;
+    this->imu_battery = 0;
+    this->parent_exo = nullptr; // 초기화 시점에는 nullptr, 나중에 설정됨
+
     // is_used 플래그 설정
     switch ((uint8_t)this->id & (~(uint8_t)config_defs::joint_id::left & ~(uint8_t)config_defs::joint_id::right))
     {
@@ -39,11 +37,9 @@ JointData::JointData(config_defs::joint_id id, uint8_t* config_to_send, float lo
 };
 
 // reconfigure 메서드 시그니처 수정 및 로직 추가
-void JointData::reconfigure(uint8_t *config_to_send, float loadcell_bias, float loadcell_sensitive)
+void JointData::reconfigure(uint8_t *config_to_send)
 {
-    this->loadcell_bias = loadcell_bias;
-    this->loadcell_sensitive = loadcell_sensitive;
-    
+
     switch ((uint8_t)this->id & (~(uint8_t)config_defs::joint_id::left & ~(uint8_t)config_defs::joint_id::right))
     {
     case (uint8_t)config_defs::joint_id::knee:
@@ -58,6 +54,4 @@ void JointData::reconfigure(uint8_t *config_to_send, float loadcell_bias, float 
     }
     }
 
-    motor.reconfigure(config_to_send);
-    controller.reconfigure(config_to_send);
 };

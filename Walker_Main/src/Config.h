@@ -26,7 +26,7 @@
 // Release: No prints, Debug: Prints to serial monitor
 namespace logging
 {
-    const LogLevel level = LogLevel::Release; // Release or Debug (Note: Enter Debug to have Logger print to serial monitor)
+    const LogLevel level = LogLevel::Debug; // Release or Debug (Note: Enter Debug to have Logger print to serial monitor)
     const int baud_rate = 115200;
 }
 
@@ -63,7 +63,8 @@ namespace loadcell_calibration
     const float right_ankle_bias = 7.0f;
     const float right_ankle_sensitive = 8.0f;
 }
-}
+
+
 
 namespace BLE_times
 {

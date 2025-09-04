@@ -39,6 +39,12 @@ ExoData::ExoData(uint8_t *config_to_send)
     {
         ankle_IMU_flag = 1;
     }
+    
+    // JointData의 parent_exo 포인터 설정
+    left_side.knee.parent_exo = this;
+    left_side.ankle.parent_exo = this;
+    right_side.knee.parent_exo = this;
+    right_side.ankle.parent_exo = this;
 };
 
 void ExoData::reconfigure(uint8_t *config_to_send)
@@ -183,8 +189,7 @@ void ExoData::print()
         // GCP 데이터 출력
         logger::print("\t\tGCP : ");
         logger::println(left_side.percent_gait);
-        logger::print("\t\tExpected Gait Duration : ");
-        logger::println(left_side.expected_gait_duration);
+   
 
         // 무릎 관절 Loadcell 데이터 출력
         if (left_side.knee.is_used)
@@ -230,8 +235,7 @@ void ExoData::print()
         // GCP 데이터 출력
         logger::print("\t\tGCP : ");
         logger::println(right_side.percent_gait);
-        logger::print("\t\tExpected Gait Duration : ");
-        logger::println(right_side.expected_gait_duration);
+
 
         // 무릎 관절 Loadcell 데이터 출력
         if (right_side.knee.is_used)
@@ -250,3 +254,58 @@ void ExoData::print()
         }
     }
 };
+
+//****************************************************
+// Reference Force Management Functions
+//****************************************************
+
+void ExoData::set_reference_force(config_defs::joint_id joint_id, float force)
+{
+    // Apply safety limits to the reference force
+    float safe_force = constrain(force, 0.0f, 50.0f);  // Limit to 0-50N for safety
+    
+    switch (joint_id) {
+        case config_defs::joint_id::left_knee:
+            left_knee_reference_force = safe_force;
+            break;
+        case config_defs::joint_id::right_knee:
+            right_knee_reference_force = safe_force;
+            break;
+        case config_defs::joint_id::left_ankle:
+            left_ankle_reference_force = safe_force;
+            break;
+        case config_defs::joint_id::right_ankle:
+            right_ankle_reference_force = safe_force;
+            break;
+        default:
+            // Invalid joint ID, do nothing
+            logger::print("ExoData::set_reference_force - Invalid joint ID: ");
+            logger::println((int)joint_id);
+            return;
+    }
+    
+    logger::print("Reference Force Set - Joint ID: ");
+    logger::print((int)joint_id);
+    logger::print(", Force: ");
+    logger::print(safe_force);
+    logger::println("N");
+}
+
+float ExoData::get_reference_force(config_defs::joint_id joint_id)
+{
+    switch (joint_id) {
+        case config_defs::joint_id::left_knee:
+            return left_knee_reference_force;
+        case config_defs::joint_id::right_knee:
+            return right_knee_reference_force;
+        case config_defs::joint_id::left_ankle:
+            return left_ankle_reference_force;
+        case config_defs::joint_id::right_ankle:
+            return right_ankle_reference_force;
+        default:
+            // Invalid joint ID, return default value
+            logger::print("ExoData::get_reference_force - Invalid joint ID: ");
+            logger::println((int)joint_id);
+            return 10.0f;  // Default 10N
+    }
+}
