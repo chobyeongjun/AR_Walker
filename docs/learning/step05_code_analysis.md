@@ -304,7 +304,7 @@ Serial4에서 바이트 단위로 수신
 |------|------|------|
 | FlexCAN_T4 | STM32 HAL FDCAN | MCU 교체 |
 | AK CAN 프로토콜 | Elmo CANopen | 모터 드라이버 교체 |
-| 12비트 ADC 직접 | INA828 + 16비트 ADC | 로드셀 앰프 추가 |
+| INA125U + 12비트 ADC | INA828 + 16비트 ADC | 앰프 업그레이드 + ADC 해상도 향상 |
 | Arduino Serial | STM32 HAL UART + DMA | 성능 향상 |
 | BLE (Nano) | SPI → ESP32 → Wi-Fi/BLE | 통신 아키텍처 변경 |
 | 시간 체크 루프 | TIM 인터럽트 | 정확한 500Hz 보장 |
