@@ -266,7 +266,7 @@ CAN_L: ──┘  └──     → 차이는 변하지 않음 → 노이즈에 
 | ESP32-S3 | 입과 귀 | 3.3V | SPI, Wi-Fi, BLE, ESP-NOW | 1 |
 | Elmo Gold Twitter | 근육 | 48V | CAN | 2~4 |
 | INA828 | 촉각 | 3.3V | 아날로그 → ADC | 4 |
-| EBIMU RF | 균형감각 | 자체/3.3V | RF → UART | 1+ |
+| EBIMU RF 리시버 | 균형감각 | **5V** | RF → UART | 1+ |
 | Jetson Orin Nano | 고차원 사고 | **15V** (12~19V) | UART | 1 |
 | 캡처카드+카메라 | 눈 (영상) | **15V** (12~19V) | USB | 1 |
 | CAN 트랜시버 | 통역사 | 3.3V | CAN TX/RX ↔ CAN_H/L | 1~2 |
