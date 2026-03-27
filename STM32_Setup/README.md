@@ -437,22 +437,7 @@ STM32_Study/
 
 ## 5. 추가 설정
 
-### 5.1 VS Code 연동
-
-VS Code로 코드 열람과 간단한 편집이 가능합니다.
-자세한 설정은 [templates/vscode_settings.md](templates/vscode_settings.md)를 참고하세요.
-
-**빠른 시작**:
-```bash
-# VS Code로 프로젝트 열기
-code ~/STM32_Study/H-Walker_STM32_Test
-
-# 확장 설치
-code --install-extension ms-vscode.cpptools
-code --install-extension marus25.cortex-debug
-```
-
-### 5.2 Workspace 설정 vs Project 설정
+### 5.1 Workspace 설정 vs Project 설정
 
 | 항목 | Workspace 설정 | Project 설정 |
 |------|---------------|-------------|
