@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply font-sans bg-page-light text-gray-900 transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-page-dark text-gray-100;
+  }
+}
+
+@layer components {
+  /* Progress bar */
+  .progress-bar {
+    @apply fixed top-0 left-0 h-1 z-50 transition-all duration-150;
+    background: linear-gradient(90deg, #6c5ce7, #818cf8);
+  }
+
+  /* Info boxes via blockquote */
+  .prose blockquote {
+    @apply not-italic;
+  }
+
+  /* Table responsive wrapper */
+  .table-wrapper {
+    @apply overflow-x-auto -mx-4 px-4;
+  }
+
+  .prose table {
+    @apply w-full border border-gray-200 dark:border-gray-700;
+  }
+
+  .dark .prose thead {
+    @apply bg-accent-dark/10;
+  }
+
+  .dark .prose th {
+    @apply text-accent-dark;
+  }
+
+  .prose tbody tr:hover {
+    background: rgba(108, 92, 231, 0.04);
+  }
+
+  .dark .prose tbody tr:hover {
+    background: rgba(129, 140, 248, 0.06);
+  }
+
+  /* Striped table rows */
+  .prose tbody tr:nth-child(even) {
+    background: rgba(108, 92, 231, 0.02);
+  }
+
+  .dark .prose tbody tr:nth-child(even) {
+    background: rgba(129, 140, 248, 0.03);
+  }
+
+  /* Code block copy button area */
+  .prose pre {
+    @apply relative;
+  }
+
+  /* Image captions */
+  .prose img + em,
+  .prose p:has(> img) + p > em:first-child {
+    @apply block text-center text-sm text-gray-500 dark:text-gray-400 -mt-2 mb-8;
+  }
+
+  /* TOC active link */
+  .toc-link.active {
+    @apply text-accent dark:text-accent-dark font-semibold border-l-2 border-accent dark:border-accent-dark;
+  }
+
+  /* Heading anchors */
+  .prose h2,
+  .prose h3 {
+    @apply scroll-mt-20;
+  }
+
+  .prose h2 {
+    @apply border-b border-gray-200 dark:border-gray-700;
+  }
+
+  .dark .prose h3 {
+    @apply text-accent-dark;
+  }
+
+  .dark .prose a {
+    @apply text-accent-dark;
+  }
+
+  .dark .prose blockquote {
+    @apply border-l-accent-dark;
+    background: rgba(129, 140, 248, 0.08);
+  }
+
+  .dark .prose code:not(pre code) {
+    @apply text-accent-dark;
+    background: rgba(129, 140, 248, 0.06);
+  }
+
+  .dark .prose h2 {
+    @apply border-gray-700;
+  }
+}

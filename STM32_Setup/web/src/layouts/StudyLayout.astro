@@ -1,0 +1,123 @@
+---
+import ProgressBar from '../components/ProgressBar.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  headings: { depth: number; slug: string; text: string }[];
+  date?: string;
+  tags?: string[];
+}
+
+const { title, description, headings, date, tags } = Astro.props;
+const readingTime = Math.ceil(description.length / 500) || 30; // Rough estimate
+---
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} — TechBlips</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body class="min-h-screen">
+  <ProgressBar />
+
+  <!-- Navigation -->
+  <header class="sticky top-0 z-40 backdrop-blur-lg bg-white/80 dark:bg-page-dark/80 border-b border-gray-200 dark:border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white">
+        <span class="text-accent dark:text-accent-dark">Tech</span>Blips
+      </a>
+      <div class="flex items-center gap-4">
+        <a href="/" class="text-sm text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent-dark transition-colors">
+          Study
+        </a>
+        <ThemeToggle />
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="bg-gradient-to-b from-accent/5 to-transparent dark:from-accent-dark/5 border-b border-gray-100 dark:border-gray-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
+        <a href="/" class="hover:text-accent dark:hover:text-accent-dark transition-colors">홈</a>
+        <span>/</span>
+        <a href="/" class="hover:text-accent dark:hover:text-accent-dark transition-colors">엔지니어 스터디</a>
+        <span>/</span>
+        <span class="text-gray-700 dark:text-gray-300">STM32</span>
+      </nav>
+
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-gray-900 dark:text-white leading-tight mb-4">
+        {title}
+      </h1>
+      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mb-6">
+        {description}
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+        {date && (
+          <span class="flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            {date}
+          </span>
+        )}
+        <span class="flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          약 {readingTime}분
+        </span>
+      </div>
+
+      {tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-4">
+          {tags.map(tag => (
+            <span class="px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full bg-accent/10 text-accent dark:bg-accent-dark/10 dark:text-accent-dark">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Content area with TOC sidebar -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 lg:py-12">
+    <div class="xl:grid xl:grid-cols-[280px_1fr] xl:gap-12">
+      <!-- Sidebar TOC (sticky on desktop) -->
+      <aside class="xl:block mb-8 xl:mb-0">
+        <div class="xl:sticky xl:top-24 xl:max-h-[calc(100vh-120px)] xl:overflow-y-auto xl:pr-4">
+          <h2 class="hidden xl:block text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4 px-3">
+            목차
+          </h2>
+          <TableOfContents headings={headings} />
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <article class="prose prose-lg dark:prose-invert max-w-none">
+        <slot />
+      </article>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-200 dark:border-gray-800 mt-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+      <p>&copy; 2026 TechBlips. Built with Astro + Tailwind CSS.</p>
+    </div>
+  </footer>
+</body>
+</html>
