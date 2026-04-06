@@ -2,8 +2,9 @@
 
 ## 기술 스택
 
-- **Astro** — 정적 사이트 빌더
+- **Next.js** (App Router) — 정적 사이트 빌더 (static export)
 - **Tailwind CSS** + @tailwindcss/typography — 스타일링
+- **next-mdx-remote** — 마크다운/MDX 렌더링
 - **Cloudflare Pages** — 배포
 
 ## 로컬 개발
@@ -16,13 +17,13 @@ npm install
 
 # 개발 서버 실행
 npm run dev
-# → http://localhost:4321
+# → http://localhost:3000
 
 # 프로덕션 빌드
 npm run build
 
 # 빌드 결과 미리보기
-npm run preview
+npm run start
 ```
 
 ## Cloudflare Pages 배포
@@ -33,7 +34,7 @@ npm run preview
 2. Cloudflare Dashboard → Pages → Create a project → Connect to Git
 3. 설정:
    - Build command: `npm run build`
-   - Build output directory: `dist`
+   - Build output directory: `out`
    - Root directory: `STM32_Setup/web` (모노레포인 경우)
    - Node.js version: 18
 4. Save and Deploy
@@ -42,7 +43,7 @@ npm run preview
 
 ```bash
 npm run build
-npx wrangler pages deploy dist --project-name=techblips
+npx wrangler pages deploy out --project-name=techblips
 ```
 
 ## 이미지 추가
