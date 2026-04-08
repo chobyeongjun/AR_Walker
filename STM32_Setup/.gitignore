@@ -1,0 +1,69 @@
+# ============================================
+# STM32CubeIDE .gitignore
+# Target: STM32H743VITx / STM32CubeIDE 2.1.x
+# ============================================
+
+# ---------------------------
+# Build output directories
+# ---------------------------
+Debug/
+Release/
+build/
+
+# ---------------------------
+# Compiled objects & binaries
+# ---------------------------
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+*.srec
+
+# ---------------------------
+# IDE metadata (user-specific)
+# ---------------------------
+.settings/
+*.launch
+
+# STM32CubeIDE workspace (NOT project)
+.metadata/
+RemoteSystemsTempFiles/
+
+# STM32CubeMX backup
+*.ioc.bak
+
+# ---------------------------
+# OS-specific files
+# ---------------------------
+# macOS
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# Linux
+*~
+
+# ---------------------------
+# Editor / IDE (personal)
+# ---------------------------
+.vscode/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# ---------------------------
+# IMPORTANT: DO NOT ignore these files!
+# These MUST be tracked for cross-PC compatibility:
+#   .cproject   - CDT build configuration
+#   .project    - Eclipse project descriptor
+#   *.ioc       - STM32CubeMX configuration
+#   STM32*.ld   - Linker script
+# ---------------------------
