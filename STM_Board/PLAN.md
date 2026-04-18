@@ -790,20 +790,96 @@ L8 BOT    — 신호 + 패시브
 
 ---
 
-## 4. Phase 플랜 (v2)
+## 4-0. **모듈러 설계 전략 (v2.9 — 사용자 제안 반영)**
+
+> **핵심 관찰:** 로직부 (MCU, 센서, 통신, 앰프, BLE 등) 는 모터가 24V든 48V든 무관하게 **항상 5V/3.3V로 동작**.
+> → 모터 결정 전에 **로직부는 100% freeze 가능**. 모터 의존부만 보류.
+
+### Phase A — 모터 무관 (지금 freeze, schematic 진행) ✅
+
+| 블록 | 부품 | 모터 의존? |
+|---|---|---|
+| MCU 코어 | STM32H723VGT6 + HSE 25M + LSE + VCAP + 디커플링 + SWD | X |
+| **로드셀 앰프** | **ADS131M04 + REF5025 + RC 안티앨리어싱 + JST-GH ×2** | X (사용자 우선 요청 — "앰프 미리 만들어놓기") |
+| 케이블 인코더 | AS5048A × 2 (SPI) + 자석 brackets | X |
+| Jetson 통신 | UART (DMA) + SYNC GPIO + JST-GH 헤더 | X |
+| EBIMU 입력 | UART RX + JST-GH 헤더 + 5V 출력 | X |
+| 무선 제어 | ESP32-C3-MINI-1U + IPEX 안테나 + UART + EN/IO9 + 22µF | X |
+| USB-C 디버그 | USB-C 커넥터 + TPD4S012 ESD + CC 풀다운 | X |
+| 저장 | microSD push-push (Hirose DM3AT) + 풀업 + ESD | X |
+| CAN-FD 트랜시버 | TCAN1462 + 120Ω 종단 + PESD2CAN + JST-GH 5pin | **X** (모델 무관, CANopen 표준) |
+| **배터리 모니터** | **INA228 + 1mΩ shunt + NTC 입력** | △ (shunt 위치만 모터부에 있음, IC 자체는 5V/I²C) |
+| E-stop | JST-GH 2pin + 74LVC1G08 AND + 풀업·디바운스 + LED + (옵션) latch | △ (HW 차단 신호는 모터 enable 라인으로 가야 함) |
+| UI | RGB LED (TIM PWM) + sync LED + USER 버튼 + RESET 버튼 | X |
+| **로직 전원** | **5V→3.3V LDO ×2 (TLV75533) + ferrite 분리 + 디커플링** | X (입력 5V만 들어오면 됨) |
+| 24~48V → 5V Buck | **TPS62933 (60V 입력 커버, 전 구간 OK)** | △ (토폴로지 freeze, 입력 캡 전압 정격만 motor 후 확정) |
+
+### Phase B — 모터 결정 후 (보류)
+
+| 블록 | 영향받는 항목 |
+|---|---|
+| DC 입력 커넥터 | XT60 / XT90 / Molex — 입력 max 전류 결정 |
+| eFuse + 외부 MOSFET 사이즈 | LTC4368 + MOSFET RDS(on) - 모터 max 전류 |
+| 모터 출력 커넥터 | XT30 / XT60 - 모터당 max 전류 |
+| 입력 벌크 캡 전압 정격 | 63V (24/36/48V 안전) vs 100V (60V+ 시) |
+| Common-mode choke 정격 | 30A / 60A |
+| 백업 퓨즈 정격 | 15A / 30A / 40A blade |
+| 모터 전원 폴리곤 너비 | 100mil / 200mil / 300mil |
+| 모터 enable 출력 단자 | Logic-level vs opto-isolated |
+
+### 진행 방식
+
+```
+[지금]                              [모터 확정 후]
+                                   
+Phase A schematic 그리기      ────►  Phase B schematic 추가
+(KiCad hierarchical sheet 사용)     (motor_power.kicad_sch)
+                                   
+부품 발주·보관 가능                 부품 사이즈 확정 후 발주
+                                   
+PCB 레이아웃은 Phase B 끝난         통합 PCB 레이아웃 (단일 보드)
+후 통합                              또는 mezzanine (로직판 + 파워판)
+```
+
+**장점:**
+- 로직부는 모터 결정 기다리지 않고 진행
+- 모터 결정 시 변경 범위가 명확 (Phase B만)
+- 로직 스키매틱 검증을 모터 도착 전에 끝낼 수 있음
+- 부품 미리 발주·테스트 가능
+
+**옵션 — 2-PCB 분리?**
+- 로직 PCB (50×40mm 정도) + 파워 분배 PCB (40×40mm 정도) board-to-board 커넥터
+- 장점: 로직판은 USB 5V로 단독 동작 가능 → 부트업·통신·SD·BLE 다 검증 가능
+- 단점: 커넥터 1개 추가, 보드 2장 발주
+- **추천: 우선 단일 보드 hierarchical 설계 → PCB 단계에서 분리 여부 재검토**
+
+---
+
+## 4. Phase 플랜 (v2.9)
 
 | Phase | 내용 | 산출물 | 상태 |
 |---|---|---|---|
-| **P0** | 요구·블록도 (이 문서 v2) | `PLAN.md` | ✅ |
-| **P1** | **각 블록 reference schematic 수집** ← 형이 말한 거 | `refs/reference_schematics.md`, 데이터시트 PDF | 🟡 |
-| **P2** | BOM v1 부품 LCSC/Mouser 검증 (재고/가격) | `parts/BOM_v1.csv` | ⬜ |
-| **P3** | KiCad 프로젝트 + 라이브러리 (심볼/풋프린트) | `kicad/exo_stm32.kicad_pro` | ⬜ |
-| **P4** | 블록별 schematic (모터 IF는 일반화 버전) | `*.kicad_sch` | ⬜ |
-| **P5** | **모터/Elmo 드라이버 확정 → 모터 IF 블록 + 전압 확정** | 결정 로그 | 보류 |
-| **P6** | ERC + schematic 검토 → freeze | tag `sch-v1` | ⬜ |
-| **P7** | PCB 레이아웃 (4-layer: SIG/GND/PWR/SIG) | `*.kicad_pcb` | ⬜ |
-| **P8** | DRC, gerber, 발주 | gerber zip | ⬜ |
-| **P9** | 브링업 | 체크리스트 | ⬜ |
+| **P0** | 요구·블록도·모듈러 전략 | `PLAN.md` | ✅ |
+| **P1** | Phase A 블록별 reference schematic 수집 | `refs/`, 데이터시트 PDF | 🟡 진행중 |
+| **P2** | KiCad 프로젝트 + 심볼/풋프린트 라이브러리 | `kicad/exo_stm32.kicad_pro` | ⬜ |
+| **P3A** | **Phase A schematic — hierarchical sheet 단위로 그리기** | `kicad/sheets/*.kicad_sch` | ⬜ |
+| **P3A.1** | MCU 코어 + 클럭 + 디커플링 + SWD | `mcu_core.kicad_sch` | ⬜ |
+| **P3A.2** | **로드셀 앰프 (ADS131M04) ← 사용자 우선** | `loadcell_amp.kicad_sch` | ⬜ |
+| **P3A.3** | 인코더 (AS5048A ×2) | `encoder.kicad_sch` | ⬜ |
+| **P3A.4** | 통신 (CAN, Jetson UART, SYNC, EBIMU) | `comms.kicad_sch` | ⬜ |
+| **P3A.5** | 무선 (ESP32-C3-MINI-1U + IPEX) | `wireless.kicad_sch` | ⬜ |
+| **P3A.6** | 저장 (microSD SDMMC) | `storage.kicad_sch` | ⬜ |
+| **P3A.7** | USB-C 디버그 + ESD | `usb_debug.kicad_sch` | ⬜ |
+| **P3A.8** | E-stop + UI (LED·버튼) | `safety_ui.kicad_sch` | ⬜ |
+| **P3A.9** | 배터리 모니터 (INA228 + shunt + NTC) | `battery_monitor.kicad_sch` | ⬜ |
+| **P3A.10** | 로직 전원 (5V→3V3 LDO ×2 + 디커플링) | `logic_power.kicad_sch` | ⬜ |
+| **P4A** | Phase A ERC, peer review → freeze | tag `sch-A-v1` | ⬜ |
+| **P5** | **모터/Elmo 드라이버 확정 + 전압 확정** | `docs/motor_decision.md` | 보류 |
+| **P3B** | Phase B schematic (모터 전원·eFuse·커넥터·buck) | `motor_power.kicad_sch` | 보류 |
+| **P4B** | Phase A+B 통합 ERC → freeze | tag `sch-v1` | ⬜ |
+| **P6** | PCB 레이아웃 (6-layer 50×50mm) | `*.kicad_pcb` | ⬜ |
+| **P7** | DRC, gerber, 발주 | gerber zip | ⬜ |
+| **P8** | 브링업 (Phase A 단독 동작 가능 — USB 5V로) | 체크리스트 | ⬜ |
 
 ---
 
@@ -836,10 +912,18 @@ L8 BOT    — 신호 + 패시브
 
 ### 남은 결정
 
-1. **6L (50×50) vs 8L (45×45)** — 8L은 +$25/장, 모터 전원 평면 2개로 발열 분산 best. wearable 5mm 차이가 크면 8L.
-2. **CubeMX 칩** — H723VGT6로 진행 OK?
-3. ~~INA226 입력 전류 모니터 포함?~~ → **INA228로 확정 포함** (사용자: "배터리 잔량도 확인해야지")
-4. **모터 모델·전압·max 전류** (Phase 5)
+| 항목 | 옵션 | 시급성 |
+|---|---|---|
+| 6L (50×50) vs 8L (45×45) | 5mm 차이 / +$25 | PCB 단계 (P6) — 천천히 |
+| CubeMX 칩 H723VGT6 OK? | — | **지금** (Phase A 시작 전) |
+| 모터 모델·전압·max 전류 (Phase 5) | Elmo 모델 + V/I | Phase B 시작 전 |
+| Phase A 단일 보드 vs 분리 (로직판+파워판) | 단일 / 분리 | PCB 단계 (P6) |
+
+### 다음 액션 (사용자 답 받으면 바로)
+
+1. **Phase A 부품 reference schematic 수집** (Phase 1 진행 중)
+2. **KiCad 프로젝트 생성** + hierarchical sheet 골격 (Phase 2)
+3. **로드셀 앰프 schematic 부터 그리기** (사용자 우선 요청)
 
 ---
 
