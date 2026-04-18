@@ -1,14 +1,17 @@
 block,ref,part,package,qty,source,notes
-power,J_PWR_IN,XT30PW (PCB mount),SMD/THT hybrid,1,Amass,DC input 15A continuous - motor power passes through
-power,J_PWR_M1,XT30PW (PCB mount),SMD/THT hybrid,1,Amass,Motor 1 power output to Elmo driver
-power,J_PWR_M2,XT30PW (PCB mount),SMD/THT hybrid,1,Amass,Motor 2 power output to Elmo driver
-power,U_REV,LTC4359 + AOD514 N-MOSFET,SO-8,1,Analog/AOS,ideal diode controller for high current
-power,F1,ATM mini-blade fuse holder + 15A blade,THT,1,Littelfuse,replaceable fuse for motor current
-power,L_CHOKE,Wurth 744232xxx (15A rated),SMD,1,Wurth,EMI common-mode choke
+power,J_PWR_IN,XT60PW (PCB mount),SMD/THT hybrid,1,Amass,DC input 30A continuous - motor power passes through
+power,J_PWR_M1,XT30PW (or XT60 for safety),SMD/THT hybrid,1,Amass,Motor 1 power output 15A continuous
+power,J_PWR_M2,XT30PW (or XT60 for safety),SMD/THT hybrid,1,Amass,Motor 2 power output 15A continuous
+power,U_EFUSE,LTC4368-1IMS,MSOP-12,1,Analog Devices,eFuse controller 0-80V latch mode - OVP/UVLO/RVP/OCP/inrush
+power,Q_EFUSE,IPB180N06S4-02,TO-263,1,Infineon,N-MOSFET 60V 180A 2.7mOhm - eFuse pass element
+power,F1_BACKUP,ATM mini-blade fuse holder + 30A blade,THT,1,Littelfuse,backup replaceable fuse
+power,L_CHOKE,Wurth 7443631400 (60A),SMD,1,Wurth,EMI common-mode choke 60A rated
 power,TVS_IN,SMCJ58A,SMC,1,Littelfuse,1500W TVS for inductive kickback
-power,U_EFUSE,TPS25940 (optional),VQFN-20,1,TI,eFuse - OV/OC/reverse - recommended
-power,C_BULK_HV,470uF/63V Al-polymer,SMD 10mm,2,Panasonic,motor power bulk for regen current
-power,C_CER_HV,22uF/63V X7R,1210,2,Murata,ceramic bulk
+power,C_BULK_HV,470uF/63V Al-polymer,SMD 10mm,4,Panasonic,motor power bulk - regen + inrush
+power,C_CER_HV,22uF/63V X7R,1210,4,Murata,ceramic bulk distributed
+power,C_Y,1nF 1kV ceramic Y-cap,1812,2,Murata,line-to-GND CM noise
+power,R_SHUNT_IN,1mOhm 2W shunt,2512,1,Susumu,input current measurement (optional)
+power,U_INA,INA226,VSSOP-10,1,TI,input current/voltage monitor (optional)
 power,U_BUCK,TPS62933PDQNR,SOT583,1,TI,24/48V->5V 2.5MHz 2A - taps off motor rail
 power,L_BUCK,XAL4040-222,SMD 4x4,1,Coilcraft,2.2uH for TPS62933
 power,FB_BUCK_IN,ferrite bead 1A,0805,1,Murata,isolate buck input from motor noise
