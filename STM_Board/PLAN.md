@@ -65,18 +65,37 @@
 
 ---
 
-## 2. MCU 후보 (컴팩트 고려)
+## 2. MCU 비교·추천 (사용자 요청)
 
-| 후보 | 패키지 | 면적 | Ethernet 가능 | USB HS 내장 PHY | 평가 |
-|---|---|---:|---|---|---|
-| STM32H723**Z**GT6 | LQFP144 (20×20) | 400 mm² | ◯ | ◯ | Ethernet 갈 때만 |
-| **STM32H723VGT6** | **LQFP100 (14×14)** | **196 mm²** | ✗ | ◯ | ⭐ Ethernet 안 가면 1순위 |
-| STM32H723VGH6 | UFBGA100 (7×7) | 49 mm² | ✗ | ◯ | 가장 작음, BGA — 자가 납땜·리워크 어려움 |
-| STM32H743VIT6 | LQFP100 (14×14) | 196 mm² | ✗ | ✗ (외부 ULPI 필요) | USB HS 위해 PHY 추가 → 컴팩트 X |
+### 후보 비교표
 
-**현재 추천: STM32H723VGT6 (LQFP100)** — Ethernet 미사용 가정, USB HS 내장 PHY, 반-크기.
+| 후보 | 패키지 | 면적 | CPU/RAM/Flash | USB HS 내장 PHY | Ethernet | 가격대 | 장점 | 단점 |
+|---|---|---:|---|---|---|---|---|---|
+| **STM32H723VGT6** ⭐ | LQFP100 (14×14) | **196 mm²** | M7 550MHz / 564KB / 1MB | ◯ | ✗ | 중 | **컴팩트 + USB HS 내장 + 충분한 성능**. 자가 납땜 OK | RMII 핀 없음 (Ethernet 불가) |
+| STM32H723ZGT6 | LQFP144 (20×20) | 400 mm² | M7 550MHz / 564KB / 1MB | ◯ | ◯ | 중 | Ethernet 가능 | 면적 2배, 보드 사이즈 직격 |
+| STM32H723VGH6 | UFBGA100 (7×7) | 49 mm² | M7 550MHz / 564KB / 1MB | ◯ | ✗ | 중 | 가장 작음 | **BGA — 자가 납땜·리워크 사실상 불가, 4-layer 라우팅 어려움** |
+| STM32H743VIT6 | LQFP100 (14×14) | 196 mm² | M7 480MHz / **1MB / 2MB** | ✗ (외부 ULPI 필요) | ◯ | 중 | RAM·Flash 더 큼 | **USB HS 위해 외부 PHY 필요 → 부품 추가** |
+| STM32H7A3VIT6 | LQFP100 (14×14) | 196 mm² | M7 280MHz / 1.4MB / 2MB | ✗ | ✗ | 중 | RAM 큼 | 클럭 낮음, USB HS 외부 |
+| STM32H730VBT6 | LQFP100 (14×14) | 196 mm² | M7 550MHz / 564KB / **128KB Flash** | ◯ | ✗ | 저 | 저렴 | 외부 QSPI Flash 필수 → 부품 추가 |
 
-> ❓ CubeMX 세팅 어떤 칩이야? 그 칩으로 맞춤. (현재 V100 가정 vs 이미 Z144로 했으면 알려줘)
+### 1순위 추천: **STM32H723VGT6 (LQFP100, 14×14)** ⭐
+
+**이유:**
+1. **컴팩트** — LQFP100은 자가 납땜 가능한 가장 작은 STM32H7 패키지 (BGA 제외)
+2. **USB HS 내장 PHY** — Jetson/디버그 USB가 외부 부품 없이 동작 (H743V/H7A3는 외부 ULPI PHY 5x5mm 추가 필요 → 컴팩트 손해)
+3. **Flash·RAM 충분** — 1MB Flash + 564KB RAM이면 우리 펌웨어(제어, 통신, BLE 브리지, SD logger) + 여유분 OK
+4. **CPU 550MHz** — 1kHz 제어 + 32kSPS ADC + DMA 동시 충분
+5. **Ethernet 안 갈 거니까 LQFP144 불필요** → 핀·면적 낭비 X
+6. **가격 안정·수급 양호** — 2025년 기준 ST 공식 라인업
+7. **Nucleo-H723ZG 보드와 동일 패밀리** — schematic·라이브러리 그대로 활용 (핀맵만 줄이면 됨)
+
+**비추천 이유:**
+- BGA(VGH6): 컴팩트엔 좋지만 자가 디버깅·리워크 거의 불가능, 학습 단계엔 비추
+- LQFP144(ZGT6): Ethernet 안 쓸 거면 +200mm² 헛 비용
+- H743V: 외부 USB PHY 부품 → 컴팩트 모순
+- H730: 외부 Flash 필요 → 컴팩트 모순
+
+> ❓ CubeMX에서 이미 다른 칩으로 세팅했으면 알려줘. 같은 H7 계열이면 핀맵 호환성 높음.
 
 ---
 
@@ -149,20 +168,63 @@
 - 풀업 저항, 100nF
 - TVS (선택)
 
-### 3-7. UI / 안전
-- RGB LED (TIM PWM 3채널)
-- Sync LED
-- USER 버튼 + RESET 버튼
-- **하드웨어 E-stop 단자대** (NC 접점 입력 → MCU + 모터 enable 라인 직접 차단)
-- 부저 (옵션)
+### 3-7. UI / E-stop (필수 — 사용자 확정)
 
-### 3-8. 무선 제어 (신규)
-- **ESP32-C3-MINI-1 (또는 -1U 외부 안테나)** — BLE 5.0 + WiFi 802.11b/g/n, 자체 인증 안테나 내장
-- MCU ↔ ESP32 인터페이스: **UART (1Mbps)** + GPIO 2개 (RESET, BOOT0/IO9)
-- ESP32는 별도 펌웨어 (ESP-IDF) — STM32에서 BLE/WiFi 가상화
-- 안테나 keep-out 영역 PCB에 명시 (15mm clearance)
-- 전원: 3.3V 500mA (TX 피크), 별도 LDO 또는 main 3.3V (대용량 캡 필수)
-- (대안) UART 헤더만 두고 외부 BLE 모듈(Adafruit Bluefruit, HM-19) 플러그 가능하게
+#### E-stop 회로 (이중 안전)
+
+```
+┌──────────────┐         ┌─────────────┐
+│ External NC  │  J_ESTOP│ Pull-up     │
+│ Mushroom Btn │─────────│ + 디바운스   │──┬──► MCU EXTI (SW 차단)
+└──────────────┘         │ R = 10k,C=10nF│  │
+                         └─────────────┘  │
+                                          ├──► AND gate 입력 (HW 차단)
+                                          │
+            MCU motor_enable GPIO ────────┴──► AND gate 입력
+                                          │
+                              motor_enable_final ◄ AND gate 출력
+                                          │
+                                          ▼
+                              모터 드라이버 enable / SSR 게이트
+```
+
+**왜 이중인가:**
+- **SW 차단** = MCU EXTI 인터럽트로 즉시 disable 명령 송신, 빠른 응답
+- **HW 차단** = MCU가 멈춰도(펌웨어 행, SEGGER 정지) AND 게이트가 직접 enable 신호 끊음 → MCU 우회 안전
+
+**부품:**
+- 외부: 표준 산업용 mushroom NC 버튼 (사용자 마련)
+- 보드: JST-GH 2pin (NC 접점 입력), 10kΩ 풀업, 10nF 디바운스 캡, 1k 직렬 저항
+- AND gate: **74LVC1G08 (SOT-353, 1.6×1.6mm)** — 1게이트, 매우 작음
+- E-stop 상태 LED (적색 0603)
+- (옵션) RS-latch — 한 번 누르면 reset 버튼 누를 때까지 락. SR 래치 (74LVC1G373) 1개 추가
+- 면적 추가: ~25 mm²
+
+#### 그 외 UI
+- RGB LED (TIM PWM 3채널) — 시스템 상태
+- Sync LED — SYNC 펄스 시각화
+- USER 버튼 + RESET 버튼
+- E-stop reset 버튼 (래치 사용 시)
+- 부저 (옵션, 컴팩트 위해 보류)
+
+### 3-8. 무선 제어 — 안테나 PCB 내장 vs IPEX 외부 (사용자 질문 답)
+
+| 옵션 | 모듈 | 장점 | 단점 |
+|---|---|---|---|
+| **PCB 내장** | ESP32-C3-MINI-1 | • 단일 모듈, 외부 부품 0<br>• 비용 저렴<br>• 조립 단순<br>• 깔끔한 외형 | • **15mm × 15mm keep-out** 영역 필수 (구리·부품 X)<br>• 안테나가 보드 가장자리에 와야 함<br>• 케이스에 가리면 신호 약화 (특히 금속 케이스)<br>• 사용자 몸이 안테나 가리면 BLE 끊김 가능 |
+| **IPEX 외부** ⭐ | ESP32-C3-MINI-1**U** + IPEX 케이블 + 외부 안테나 (예: 2.4GHz dipole) | • **케이스 외부에 안테나 부착 가능** (착용 중 신호 안정)<br>• 보드 keep-out 영역 작음<br>• BLE 연결 거리 길고 안정적<br>• 안테나 방향 자유 | • IPEX 케이블 + 외부 안테나 부품 필요<br>• 비용 ↑<br>• 안테나 케이블이 보드 외부로 나가야 함 |
+
+**Wearable Exosuit 추천: IPEX 외부 안테나 (`-1U`)**
+
+이유: 사용자가 옷 입으면 보드는 케이스 안 + 옷 속 → PCB 내장 안테나 신호 거의 다 막힘. 외부 안테나만 살짝 옷 밖에 노출하면 BLE/WiFi 안정. "실시간 무선 통제"가 목적이면 IPEX가 정답.
+
+**부품 (IPEX 선택 시):**
+- ESP32-C3-MINI-1**U** — UART (1Mbps) + GPIO 2개 (EN, IO9)
+- IPEX MHF1 케이블 (10~30cm)
+- 2.4GHz 안테나 (예: 무지향성 펜형, 5dBi)
+- ESP-IDF 펌웨어 별도 작성
+
+(대안) UART 헤더만 두고 외부 BLE 모듈 플러그 — 더 작지만 결합도 ↓
 
 ### 3-9. 디버그
 - SWD 10-pin Cortex
@@ -192,10 +254,36 @@
 - MCU 측 처리 < 1 ms (1kHz 루프)
 - 통신 채널이 < 5 ms jitter 보장해야 함
 
-### 하드웨어 동기 라인 (필수 추가)
-- **SYNC_OUT (MCU GPIO → Jetson GPIO)**: MCU가 일정 주기 펄스 발생 → Jetson이 카메라 프레임 타임스탬프와 매칭
-- **SYNC_IN (Jetson GPIO → MCU EXTI)**: 카메라 트리거 신호 (옵션, 카메라가 GPIO 트리거 지원 시)
-- 핀: 2-pin JST + GND. 기존 sync LED 핀 재활용 가능.
+### 하드웨어 동기 라인 — 왜 필요한가 (사용자 질문 답)
+
+**문제:** Jetson이 카메라 프레임에서 포즈를 뽑아 MCU에 보낼 때, 그 데이터가 *언제 시점의* 정보인지 MCU가 정확히 모름.
+
+```
+T1: 카메라 프레임 캡처 (Jetson clock)
+T2: pose 추정 끝 (T1 + ~10ms, GPU jitter)
+T3: UART 전송 시작 (T2 + ~2ms, 스케줄러 jitter)
+T4: MCU 도착 (T3 + 통신 시간)
+T5: MCU 제어 루프 사용
+```
+
+MCU는 T5 시점에 받은 데이터를 보고 모터를 명령하지만, 그 데이터는 사실 **T1 시점의 사용자 자세**. T5−T1 = "데이터 나이". 이걸 모르면:
+- 사용자가 빠르게 움직일 때 **몇 ms 늦은 명령**을 그대로 따라가며 진동·불안정
+- Force feedback과 pose feedback이 시간축에서 안 맞아 admittance 제어 망가짐
+
+**SYNC 라인의 역할:** MCU와 Jetson이 **공유하는 하드웨어 이벤트**를 만들어서 둘의 시계를 맞춤.
+- 방법 A — MCU가 1kHz/100Hz 펄스 출력 → Jetson이 GPIO로 받아 자기 시계와 매핑 (가장 흔함)
+- 방법 B — Jetson이 카메라 트리거 펄스 → MCU EXTI로 받아 "이 시점에 카메라 셔터 열림" 기록
+- 둘 다 가능하게 양방향 GPIO 헤더 권장
+
+**비유:** 두 사람이 다른 손목시계 쓰면서 "3시에 만나자" 하면 시간이 안 맞음. 동시에 손뼉치면(SYNC) 그 순간을 기준으로 시계 보정 가능.
+
+**부품 비용:** GPIO 핀 2개 + JST-GH 3pin 커넥터 1개 ≈ **30 mm²**. 거의 공짜.
+**없으면:** 소프트웨어 NTP 같은 시간 보정 — 복잡하고 jitter 큼. HW SYNC가 정답.
+
+### 결론
+- SYNC_OUT (MCU→Jetson) + SYNC_IN (Jetson→MCU) 두 핀 모두 헤더에 노출
+- 처음엔 SYNC_OUT만 써도 충분. SYNC_IN은 카메라 트리거 동기 시 사용
+- 핀: 3-pin JST-GH (SYNC_OUT / SYNC_IN / GND)
 
 ### 통신 채널별 적합성 재검토 (포즈 다운링크 고려)
 
@@ -289,18 +377,25 @@
 
 ---
 
-## 5. 즉시 결정 필요 (컴팩트 우선 반영)
+## 5. 사용자 답변 반영 결정 (v2.4)
 
-1. **사이즈 목표**: (a) 50×50mm 4L 안전 / (b) 45×40mm 6L 공격적 — 어느 쪽?
-2. **MCU 패키지**:
-   - **(a) LQFP100 H723VGT6 ← 컴팩트 추천** (Ethernet 포기)
-   - (b) LQFP144 H723ZGT6 (Ethernet 살림)
-   - (c) BGA UFBGA100 (가장 작음, 자가 납땜·리워크 어려움)
-3. **Ethernet 완전 제거 OK?** (예 = 사이즈 절감 max, 아니오 = LQFP144 유지 + RJ45 영역 확보)
-4. **Jetson 통신**: (a) UART+SYNC ← 추천 / (b) USB HS / (c) Ethernet
-5. **USB-C 디버그·DFU** 포함? (포함 권장, 80mm² 비용)
-6. **ESP32 안테나**: PCB 내장(`-1`) vs IPEX 외부(`-1U`)?
-7. **E-stop** 외부 안전 회로 유무
+이번 라운드로 다음 항목 확정 또는 권장 결정:
+
+| 항목 | 결정 | 이유 |
+|---|---|---|
+| MCU | **STM32H723VGT6 (LQFP100, 14×14)** | §2 비교표 — 컴팩트 + USB HS 내장 + 성능 충분 |
+| Ethernet | **완전 제거** (사용자: "안할 듯") | 340mm² 절약 |
+| Jetson 통신 | **고속 UART + HW SYNC GPIO** (사용자 동의) | §4-8 SYNC 설명 |
+| USB-C | **포함** (작게, 보드 모서리 배치) | DFU·디버그 매우 편함, 80mm² 가치 있음 |
+| ESP32 안테나 | **IPEX 외부 (`-1U`)** | wearable에선 외부 안테나가 BLE 안정 (§3-8) |
+| E-stop | **포함, 이중 안전 (SW EXTI + HW AND gate)** | 사용자 "긴급정지도 만들어야 해" |
+
+## 6. 아직 남은 결정
+
+1. **사이즈 목표**: (a) 50×50mm 4L (안전, 추천) / (b) 45×40mm 6L (공격적, 비용 ↑)
+2. **CubeMX 칩**: 이미 다른 H7로 세팅했어? (없으면 H723VGT6로 진행)
+3. **DC 입력 커넥터 전류**: 보드만 전원 받으면 JST-GH (~3A) 충분. 보드를 통해 모터까지 공급할 거면 XT30 필요. → 모터 전원 라인 어떻게 갈래? (보통 보드 우회 권장)
+4. **모터/Elmo 모델 + 전압** (Phase 5 보류)
 
 ---
 
