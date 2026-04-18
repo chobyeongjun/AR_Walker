@@ -1,0 +1,52 @@
+block,ref,part,package,qty,source,notes
+power,J_PWR,XT30PW male PCB,THT,1,LCSC,DC input - voltage TBD with motor
+power,Q_REV,SI4435DY P-MOSFET,SO-8,1,Vishay,reverse polarity ideal diode
+power,D_REV,SS54 schottky,SMA,1,common,companion diode
+power,F1,SMD Polyfuse 5A,1812,1,Bel/Bourns,resettable
+power,L_CHOKE,common-mode choke 744232,SMD,1,Wurth,EMI
+power,TVS_IN,SMBJ58A,SMB,1,Littelfuse,for 48V tolerance
+power,U_BUCK,TPS54360DDA,SO-8 PowerPad,1,TI,60V input 3.5A
+power,L_BUCK,XAL6060-103,SMD,1,Coilcraft,10uH for TPS54360
+power,U_LDO_D,TLV75533PDBVR,SOT-23-5,1,TI,5V->3V3 digital
+power,U_LDO_A,TLV75533PDBVR,SOT-23-5,1,TI,5V->3V3 analog (ferrite isolated)
+power,FB1,BLM18PG471,0603,1,Murata,analog ferrite bead
+power,C_BULK,100uF/63V electrolytic,radial 8mm,2,Nichicon,input bulk
+power,LED_PWR,green 0603,0603,1,common,3v3 indicator
+mcu,U1,STM32H723ZGT6,LQFP144,1,ST,main MCU - confirm with user
+mcu,Y1,25MHz crystal HC-49SMD,3225,1,common,HSE for USB HS
+mcu,Y2,32.768kHz crystal,3215,1,Abracon,LSE optional
+mcu,SW_RST,tactile button 6x6,THT,1,common,NRST
+mcu,J_SWD,Cortex 10-pin 1.27mm,SMD,1,Samtec,SWD+SWO
+mcu,SW_BOOT,jumper 2.54,2.54,1,common,BOOT0 selector
+comms_can,U_CAN,TCAN1462DR,SO-8,1,TI,CAN-FD 5Mbps
+comms_can,J_CAN,JST-XH 5pin,THT,1,JST,CAN_H/L/GND/SHLD/+V
+comms_can,R_TERM,120 ohm 0805,0805,1,common,terminator (jumper)
+comms_can,TVS_CAN,PESD2CAN,SOT-23,1,Nexperia,ESD
+comms_can,U_OPTO,PC817,DIP-4,1,Sharp,Estop input isolation
+comms_eth,U_PHY,LAN8742AI-CZ-TR,QFN-24,1,Microchip,**TBD** only if Ethernet chosen for Jetson comm
+comms_eth,J_RJ45,HR911105A,THT,1,Halo,**TBD** integrated magnetics (no EtherCAT)
+comms_usb,J_USB,USB-C 16pin receptacle,SMD,1,GCT USB4105,Type-C HS / DFU debug
+comms_jetson,J_JETSON_UART,JST-GH 4pin,SMD,1,JST,Jetson UART (TX/RX/GND/3V3) - primary downlink
+comms_jetson,J_SYNC,JST-GH 3pin,SMD,1,JST,HW sync MCU<->Jetson (SYNC_OUT/SYNC_IN/GND)
+comms_usb,U_ESD_USB,TPD4S012DBVR,SOT-23-6,1,TI,USB ESD
+comms_uart,J_EBIMU,JST-GH 4pin,SMD,1,JST,EBIMU receiver UART
+wireless,U_ESP,ESP32-C3-MINI-1,module,1,Espressif,onboard BLE5.0 + WiFi - UART to MCU
+wireless,J_ESP_DBG,JST-GH 6pin,SMD,1,JST,ESP32 programming/debug UART
+wireless,SW_ESP_BOOT,tactile 4x4,SMD,1,common,ESP32 BOOT button
+wireless,LED_BLE,blue 0603,0603,1,common,BLE/WiFi status
+wireless,C_ESP_BULK,22uF/10V tantalum,1206,1,Kemet,ESP32 TX peak current
+wireless,U_ESP_LDO,TLV75533PDBVR,SOT-23-5,1,TI,dedicated 3V3 for ESP32 (optional)
+sensor_loadcell,U_LCADC,ADS131M04IPBSR,TQFP-32,1,TI,24bit 32kSPS 4ch SPI
+sensor_loadcell,U_REF,REF5025AIDR,SO-8,1,TI,2.5V precision ref
+sensor_loadcell,J_LC,JST-XH 4pin,THT,2,JST,loadcell harness E+/-/S+/-
+sensor_enc,U_ENC,AS5048A,TSSOP-14,2,ams,SPI absolute encoder
+sensor_enc,J_ENC,JST-GH 6pin,SMD,2,JST,encoder harness
+sensor_isense,U_INA,INA240A1DR,VSSOP-8,2,TI,bidirectional current sense
+sensor_isense,R_SHUNT,0.5 mOhm 2W,2512,2,Susumu,shunt
+sensor_temp,RT_NTC,NTC 10k B3950,0603,2,TDK,motor temp
+storage,J_SD,microSD push-push,SMD,1,Hirose DM3AT,SDMMC 4-bit
+ui,LED_RGB,APA102C or PWM RGB,5050,1,common,status LED
+ui,LED_SYNC,blue 0603,0603,1,common,sync pulse
+ui,SW_USER,tactile,6x6,1,common,user button
+ui,J_ESTOP,screw terminal 2pin,THT,1,Phoenix,external NC contact
+debug,J_VCP,JST-GH 4pin,SMD,1,JST,UART debug fallback
