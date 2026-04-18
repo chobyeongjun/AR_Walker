@@ -10,8 +10,10 @@ power,TVS_IN,SMCJ58A,SMC,1,Littelfuse,1500W TVS for inductive kickback
 power,C_BULK_HV,470uF/63V Al-polymer,SMD 10mm,4,Panasonic,motor power bulk - regen + inrush
 power,C_CER_HV,22uF/63V X7R,1210,4,Murata,ceramic bulk distributed
 power,C_Y,1nF 1kV ceramic Y-cap,1812,2,Murata,line-to-GND CM noise
-power,R_SHUNT_IN,1mOhm 2W shunt,2512,1,Susumu,input current measurement (optional)
-power,U_INA,INA226,VSSOP-10,1,TI,input current/voltage monitor (optional)
+power,R_SHUNT_IN,Susumu CSS2H 1mOhm 2W,2512,1,Susumu,battery current measurement (CONFIRMED)
+power,U_INA,INA228IDGSR,VSSOP-10,1,TI,battery monitor 85V 16-bit V/I/P + coulomb counter
+power,J_BATT_NTC,JST-GH 2pin,SMD,1,JST,battery temperature NTC input
+power,R_NTC_PUP,10k,0402,1,common,battery NTC pull-up
 power,U_BUCK,TPS62933PDQNR,SOT583,1,TI,24/48V->5V 2.5MHz 2A - taps off motor rail
 power,L_BUCK,XAL4040-222,SMD 4x4,1,Coilcraft,2.2uH for TPS62933
 power,FB_BUCK_IN,ferrite bead 1A,0805,1,Murata,isolate buck input from motor noise
