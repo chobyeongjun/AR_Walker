@@ -1,7 +1,7 @@
 block,ref,part,package,qty,source,notes
 power,J_PWR_IN,XT60PW (PCB mount),SMD/THT hybrid,1,Amass,DC input 30A continuous - motor power passes through
-power,J_PWR_M1,XT30PW (or XT60 for safety),SMD/THT hybrid,1,Amass,Motor 1 power output 15A continuous
-power,J_PWR_M2,XT30PW (or XT60 for safety),SMD/THT hybrid,1,Amass,Motor 2 power output 15A continuous
+power,J_PWR_M1,XT60PW (PCB mount),SMD/THT hybrid,1,Amass,Motor 1 output 30A safety margin (sized up since board shrunk to 50x50 6L)
+power,J_PWR_M2,XT60PW (PCB mount),SMD/THT hybrid,1,Amass,Motor 2 output 30A safety margin
 power,U_EFUSE,LTC4368-1IMS,MSOP-12,1,Analog Devices,eFuse controller 0-80V latch mode - OVP/UVLO/RVP/OCP/inrush
 power,Q_EFUSE,IPB180N06S4-02,TO-263,1,Infineon,N-MOSFET 60V 180A 2.7mOhm - eFuse pass element
 power,F1_BACKUP,ATM mini-blade fuse holder + 30A blade,THT,1,Littelfuse,backup replaceable fuse
