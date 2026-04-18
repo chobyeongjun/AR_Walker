@@ -39,6 +39,8 @@
 | 2026-04-17 | Phase A schematic 단위 | hierarchical sheet 10개 (loadcell 우선) | |
 | 2026-04-17 | KiCad 프로젝트 구조 | hierarchical sheets per block | 모듈러 |
 | 2026-04-17 | 1차 PCB 통합 vs 분리 | 단일 보드, 분리 옵션은 P6에서 재검토 | 우선 단순 |
+| 2026-04-17 | INA228 voltage 검토 | **유지** (0~85V 전 범위) — 전압 더 낮아져도 동일 IC 사용 가능 | 사용자: "전압 더 줄어들 수도" |
+| 2026-04-17 | 전압 의존 부품 명시 | 벌크 캡 V 정격, TVS, MOSFET V_DS만 Phase B에서 결정 | INA228·Buck IC·LDO는 모두 무관 |
 
 ## 보류 항목
 
