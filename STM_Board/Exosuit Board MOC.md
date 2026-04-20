@@ -6,24 +6,32 @@ tags: [moc, project, domain/robotics, domain/electronics]
 # Exosuit Board MOC
 
 > Cable-driven Exosuit 용 커스텀 STM32 보드 프로젝트 루트 MOC.
-> 이 폴더는 `~/AR_Walker/STM_Board/` git repo 이며, `~/research-vault/` vault 안에 symlink 로 포함됨.
+> 이 폴더는 `~/AR_Walker/STM_Board/` git repo 이며, `~/research-vault/stm-board` symlink 로 vault 에 편입.
 
-## 🎯 현재 상태
+## 🎯 현재 상태 (v3.5 reconciliation 반영)
 
 - **Phase**: P2 진입 준비
-- **MCU**: [[STM32H723VGT6]] 확정 (LQFP100)
+- **MCU**: [[STM32H743VIT6]] (H723 에서 변경, [[RECONCILIATION]])
+- **제어 루프**: 500 Hz (어드미턴스 + 위치 PID)
+- **배터리**: 6S Li-ion 25.2V 완충 (48V 직렬 옵션은 Phase B)
+- **CAN**: **[[ISO1050]] 격리** (GND bounce 파손 방지)
+- **로드셀**: [[ADS131M04]] (32 kSPS 동시 샘플링)
+- **IMU**: EBIMU EBMotion V5 (무선)
+- **카메라/Jetson**: ZED X Mini + Jetson Orin NX 16GB
 - **보드 사이즈**: 50 × 50 mm, [[PCB Stackup 6-layer|6-layer]]
-- **전략**: [[Modular Phase A-B Strategy|Phase A 먼저 freeze, Phase B 모터 확정 후]]
-- **다음**: [[Reference Index]] 수집 → KiCad 프로젝트 → [[Loadcell Amp]] sheet
+- **전략**: [[Modular Phase A-B Strategy]]
+- **보호 아키텍처**: [[Regen Energy Protection]] + [[GND Bounce Protection]] + [[Isolated CAN]] + [[Brake Resistor Circuit]] + [[Inrush Current Limiting]]
+- **다음**: Phase A 데이터시트 수집 → KiCad 프로젝트 → [[Loadcell Amp]] sheet
 
-## 🗺️ 서브 MOC (프로젝트 내부)
+## 🗺️ 서브 MOC
 
-- [[Project MOC]] — 목표·계획·결정 ([[Goals & Requirements]], [[Phase Plan]], [[Decisions Log]])
+- [[Project MOC]] — 목표·계획·결정
 - [[Components MOC]] — 부품별 atomic 노트
 - [[Concepts MOC]] — 엔지니어링 개념
 - [[Schematic Blocks MOC]] — hierarchical sheet 작업 노트
 - [[Reference Index]] — 외부 데이터시트·앱노트·보드
 - [[BOM MOC]] — Bill of Materials
+- [[RECONCILIATION]] — Legacy vs 내 노트 diff (v3.5 핵심 문서)
 
 ## 🔗 빠른 링크
 
@@ -35,43 +43,41 @@ tags: [moc, project, domain/robotics, domain/electronics]
 - [[Size Budget]]
 - [[Modular Strategy]]
 
+## 📁 Legacy 문서 (2026-04-12~14, 이전 Claude 세션 결과)
+
+`10 Project/_legacy/` 에 보존:
+- [[_legacy/BOARD_PLAN|BOARD_PLAN]] — 초기 5-Phase 마스터 플랜
+- [[_legacy/BOARD_DESIGN|BOARD_DESIGN]] — 상세 회로 초기본
+- [[_legacy/BOARD_DESIGN_REVIEWED|BOARD_DESIGN_REVIEWED]] — **4-agent 검토 결과 (CRITICAL 7 + WARNING 15)**
+- [[_legacy/EXOSUIT_PROTECTION|EXOSUIT_PROTECTION]] — **보호 회로 최종 설계**
+- [[_legacy/HANDOFF|HANDOFF]] — 인수인계 문서
+- [[_legacy/RECONCILIATION|RECONCILIATION]] — legacy vs 내 노트 통합
+
 ## 🧭 프로젝트 내 폴더
 
-1. `10 Project/` — 목표·계획·결정
+1. `10 Project/` — 목표·계획·결정 (legacy 포함)
 2. `20 Components/` — 부품 atomic 노트
-3. `30 Concepts/` — 프로젝트 특화 개념 (재사용 가능하면 vault 의 `10_Wiki/` 로 승격 후보)
+3. `30 Concepts/` — 엔지니어링 개념 (보호 아키텍처 포함)
 4. `40 Schematic Blocks/` — KiCad sheet 작업 노트
-5. `50 References/` — 프로젝트 전용 데이터시트
+5. `50 References/` — 데이터시트
 6. `60 BOM/` — BOM CSV + MOC
-7. `70 KiCad/` — 실제 KiCad 프로젝트 파일
+7. `70 KiCad/` — 실제 KiCad 프로젝트
 8. `80 Journal/` — 프로젝트 작업일지
-9. `90 Templates/` — 프로젝트 전용 템플릿 ([[Schematic Block]])
+9. `90 Templates/` — 프로젝트 전용 템플릿
 
-## 🏷️ 이 프로젝트에서 자주 쓰는 태그
+## 🏷️ 태그
 
 - `#type/component` · `#type/concept` · `#type/decision` · `#type/block`
 - `#domain/power` · `#domain/mcu` · `#domain/sensor` · `#domain/comm` · `#domain/safety`
-- `#status/open` · `#status/decided` · `#status/deferred`
+- `#status/decided` · `#status/rejected` · `#status/deferred`
 - `#phase/A` (모터 무관) · `#phase/B` (모터 의존)
 
-## 📁 경로 3종 (모두 같은 파일)
+## 📁 경로 3종 (모두 동일 파일)
 
 | 경로 | 용도 |
 |---|---|
-| `~/stm_board/` | **일상 작업** (터미널·에디터) — 사용자 선호 |
-| `~/research-vault/stm-board/` | Obsidian 에서 보는 경로 |
-| `~/AR_Walker/STM_Board/` | git 저장소 원본 |
+| `~/stm_board/` | 일상 작업 |
+| `~/research-vault/stm-board/` | Obsidian |
+| `~/AR_Walker/STM_Board/` | git 원본 |
 
 - 브랜치: `claude/exosuit-board-design-LiIxS`
-
-## 📝 Vault 통합 안내
-
-이 프로젝트는 **단독 vault 아님** — 사용자의 기존 `~/research-vault/` (구조: `00_Raw/`, `10_Wiki/`, `20_Meta/`, `templates/`, `<project-name>/` …) 안에 symlink 로 편입.
-
-통합 방법:
-```bash
-ln -s ~/stm_board ~/research-vault/stm-board
-```
-(`~/stm_board` 는 이미 `~/AR_Walker/STM_Board` 로 걸린 symlink — 일상 작업은 `~/stm_board` 에서)
-
-이 프로젝트의 `30 Concepts/` 중 재사용도 높은 것 (예: [[eFuse]], [[PCB Stackup 6-layer]], [[Loadcell Amplifier Design]]) 은 나중에 `~/research-vault/10_Wiki/` 로 승격하면 그래프 통합도 ↑.
