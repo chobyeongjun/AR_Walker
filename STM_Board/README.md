@@ -34,11 +34,13 @@ ln -s ~/AR_Walker/STM_Board ~/research-vault/stm-board
 
 프로젝트 전용 `Schematic Block` 템플릿은 `90 Templates/` 에 유지.
 
-## 로컬 경로
+## 로컬 경로 (3종, 모두 동일 파일)
 
-- 원본: `~/AR_Walker/STM_Board/`
-- 단축 symlink: `~/stm_board` (legacy, 유지)
-- Obsidian 접근: `~/research-vault/stm-board/` (사용자가 symlink 생성)
+| 경로 | 용도 |
+|---|---|
+| `~/stm_board/` | **일상 작업** (사용자 선호) |
+| `~/research-vault/stm-board/` | Obsidian |
+| `~/AR_Walker/STM_Board/` | git 원본 |
 
 ## Git
 

@@ -54,11 +54,15 @@ tags: [moc, project, domain/robotics, domain/electronics]
 - `#status/open` · `#status/decided` · `#status/deferred`
 - `#phase/A` (모터 무관) · `#phase/B` (모터 의존)
 
-## 📁 Git 추적
+## 📁 경로 3종 (모두 같은 파일)
 
-- 실제 위치: `~/AR_Walker/STM_Board/` (AR_Walker 레포)
+| 경로 | 용도 |
+|---|---|
+| `~/stm_board/` | **일상 작업** (터미널·에디터) — 사용자 선호 |
+| `~/research-vault/stm-board/` | Obsidian 에서 보는 경로 |
+| `~/AR_Walker/STM_Board/` | git 저장소 원본 |
+
 - 브랜치: `claude/exosuit-board-design-LiIxS`
-- vault 접근: `~/research-vault/stm-board/` (symlink, 사용자가 걸면 됨)
 
 ## 📝 Vault 통합 안내
 
@@ -66,7 +70,8 @@ tags: [moc, project, domain/robotics, domain/electronics]
 
 통합 방법:
 ```bash
-ln -s ~/AR_Walker/STM_Board ~/research-vault/stm-board
+ln -s ~/stm_board ~/research-vault/stm-board
 ```
+(`~/stm_board` 는 이미 `~/AR_Walker/STM_Board` 로 걸린 symlink — 일상 작업은 `~/stm_board` 에서)
 
 이 프로젝트의 `30 Concepts/` 중 재사용도 높은 것 (예: [[eFuse]], [[PCB Stackup 6-layer]], [[Loadcell Amplifier Design]]) 은 나중에 `~/research-vault/10_Wiki/` 로 승격하면 그래프 통합도 ↑.
