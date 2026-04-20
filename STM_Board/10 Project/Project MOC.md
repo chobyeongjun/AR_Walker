@@ -15,10 +15,20 @@ Exosuit STM32 Board 프로젝트 전체 네비게이션.
 - [[Size Budget]] — 보드 면적 예산
 - [[Modular Strategy]] — Phase A / B 분리 전략
 
-## 추적
+## 추적·투명성
 
 - [[Decisions Log]] — 시간순 결정 기록
 - [[Open Questions]] — 보류·미결 항목
+- **[[Citations & Sources]]** ⭐ — 각 스펙·주장의 출처 추적 (투명성)
+
+## Legacy (2026-04-12~14 이전 세션)
+
+- [[_legacy/BOARD_PLAN]]
+- [[_legacy/BOARD_DESIGN]]
+- [[_legacy/BOARD_DESIGN_REVIEWED]]
+- [[_legacy/EXOSUIT_PROTECTION]]
+- [[_legacy/HANDOFF]]
+- [[_legacy/RECONCILIATION]] — legacy 와 내 노트 diff
 
 ## 관련 MOC
 
@@ -26,3 +36,4 @@ Exosuit STM32 Board 프로젝트 전체 네비게이션.
 - [[Concepts MOC]]
 - [[Schematic Blocks MOC]]
 - [[BOM MOC]]
+- [[Reference Index]]
