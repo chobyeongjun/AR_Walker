@@ -22,10 +22,10 @@ Assets/                        ← images, diagrams
 
 ```bash
 # 기존 ~/research-vault/ 가 있다면 symlink 만 걸면 됨
-ln -s ~/AR_Walker/STM_Board ~/research-vault/exosuit-board
+ln -s ~/AR_Walker/STM_Board ~/research-vault/stm-board
 ```
 
-그 후 Obsidian 에서 `~/research-vault/` 를 vault 로 열면 `exosuit-board/` 폴더로 이 모든 노트 접근.
+그 후 Obsidian 에서 `~/research-vault/` 를 vault 로 열면 `stm-board/` 폴더로 이 모든 노트 접근.
 
 ## 공용 템플릿 안내
 
@@ -38,7 +38,7 @@ ln -s ~/AR_Walker/STM_Board ~/research-vault/exosuit-board
 
 - 원본: `~/AR_Walker/STM_Board/`
 - 단축 symlink: `~/stm_board` (legacy, 유지)
-- Obsidian 접근: `~/research-vault/exosuit-board/` (사용자가 symlink 생성)
+- Obsidian 접근: `~/research-vault/stm-board/` (사용자가 symlink 생성)
 
 ## Git
 

@@ -58,7 +58,7 @@ tags: [moc, project, domain/robotics, domain/electronics]
 
 - 실제 위치: `~/AR_Walker/STM_Board/` (AR_Walker 레포)
 - 브랜치: `claude/exosuit-board-design-LiIxS`
-- vault 접근: `~/research-vault/<프로젝트명>/` (symlink, 사용자가 걸면 됨)
+- vault 접근: `~/research-vault/stm-board/` (symlink, 사용자가 걸면 됨)
 
 ## 📝 Vault 통합 안내
 
@@ -66,8 +66,7 @@ tags: [moc, project, domain/robotics, domain/electronics]
 
 통합 방법:
 ```bash
-ln -s ~/AR_Walker/STM_Board ~/research-vault/exosuit-board
-# 또는 사용자 선호 kebab-case 이름
+ln -s ~/AR_Walker/STM_Board ~/research-vault/stm-board
 ```
 
 이 프로젝트의 `30 Concepts/` 중 재사용도 높은 것 (예: [[eFuse]], [[PCB Stackup 6-layer]], [[Loadcell Amplifier Design]]) 은 나중에 `~/research-vault/10_Wiki/` 로 승격하면 그래프 통합도 ↑.
