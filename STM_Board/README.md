@@ -21,11 +21,13 @@ Assets/                        ← images, diagrams
 ## 사용자 vault 에 연결
 
 ```bash
-# 기존 ~/research-vault/ 가 있다면 symlink 만 걸면 됨
-ln -s ~/AR_Walker/STM_Board ~/research-vault/stm-board
+# ~/stm_board 는 이미 ~/AR_Walker/STM_Board 로 걸려있는 legacy symlink
+ln -s ~/stm_board ~/research-vault/stm-board
 ```
 
-그 후 Obsidian 에서 `~/research-vault/` 를 vault 로 열면 `stm-board/` 폴더로 이 모든 노트 접근.
+그 후 Obsidian 에서 `~/research-vault/` 를 vault 로 열면 `stm-board/` 폴더로 접근.
+
+**일상 작업은 `~/stm_board/` 에서** (터미널/에디터). 편집 내용은 자동으로 `~/AR_Walker/STM_Board/` 원본에 반영되고 git 추적됨.
 
 ## 공용 템플릿 안내
 
