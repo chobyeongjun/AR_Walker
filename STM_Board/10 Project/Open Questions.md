@@ -20,10 +20,7 @@ tags: [project, status/open]
 - [x] 모터 제어 모드 → Servo(전류) + SET_POS
 - [x] **BLE 포함** → [[ESP32-C3-MINI-1U]] (v3.9 확정)
 - [x] **JST-GH 1.25mm 통일** (v3.9 확정, JST 카탈로그 근거)
-
-## ❌ 제거 (v3.9)
-
-- [x] ~~Hardware SYNC GPIO~~ → 제거 ([[Hardware Sync for Jetson]] 참고용 보존)
+- [x] **Hardware SYNC GPIO 포함** (v3.10 재추가, 사용자 확정)
 
 ## ⏸️ 잠정 (나중에 결정)
 

@@ -8,7 +8,7 @@ tags: [moc, project, domain/robotics, domain/electronics]
 > Cable-driven Exosuit 용 커스텀 STM32 보드 프로젝트 루트 MOC.
 > 이 폴더는 `~/AR_Walker/STM_Board/` git repo 이며, `~/research-vault/stm-board` symlink 로 vault 에 편입.
 
-## 🎯 현재 상태 (v3.9)
+## 🎯 현재 상태 (v3.10)
 
 - **Phase**: P1 (데이터시트 수집) 진행 중, P2 (KiCad) 준비 중
 - **MCU**: [[STM32H743VIT6]]
@@ -17,15 +17,15 @@ tags: [moc, project, domain/robotics, domain/electronics]
 - **CAN**: **[[ISO1050]] 격리** (GND bounce 파손 방지)
 - **로드셀**: [[ADS131M04]] (32 kSPS 동시 샘플링)
 - **IMU**: EBIMU EBMotion V5 (무선)
-- **카메라/Jetson**: ZED X Mini + Jetson Orin NX 16GB
-- **무선**: [[ESP32-C3-MINI-1U]] BLE (v3.9 사용자 확정, 고수준 명령·텔레메트리·OTA 용)
+- **카메라/Jetson**: ZED X Mini + Jetson Orin NX 16GB (+ HW SYNC GPIO)
+- **무선**: [[ESP32-C3-MINI-1U]] BLE (v3.9 확정)
+- **Jetson HW SYNC**: [[Hardware Sync for Jetson]] (v3.10 재추가, JST-GH 3pin)
 - **커넥터**: JST-GH 1.25mm 통일 (v3.9 확정, JST 카탈로그 근거)
 - **보드 사이즈**: ⏸️ **잠정 50×50mm** — motor 확정 후 P6 에서 결정
 - **Layer 수**: 6-layer ([[PCB Stackup 6-layer]])
 - **전략**: [[Modular Phase A-B Strategy]]
 - **보호**: [[Regen Energy Protection]] + [[GND Bounce Protection]] + [[Isolated CAN]] + [[Brake Resistor Circuit]] + [[Inrush Current Limiting]]
-- **제거됨** (v3.9): Hardware SYNC GPIO
-- **다음**: `download_all.sh` → CubeMX 핀 확정 → KiCad 프로젝트
+- **다음**: `download_all.sh` failed 수동 보충 → CubeMX 핀 확정 → KiCad 프로젝트
 
 ## 🗺️ 서브 MOC
 

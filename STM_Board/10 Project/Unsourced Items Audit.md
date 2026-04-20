@@ -13,7 +13,7 @@ tags: [project, audit]
 | # | 항목 | v3.9 결정 | 근거 |
 |---|---|---|---|
 | 1 | ESP32-C3-MINI-1U BLE | ✅ **포함** | 사용자: "BLE 반드시 필요" |
-| 2 | Hardware SYNC GPIO | ❌ **제거** | 사용자: "잘 모르겠다" → 제거 원칙 |
+| 2 | Hardware SYNC GPIO | ✅ **재추가** (v3.10) | 사용자: "SYNC 추가야" (v3.9 제거 철회) |
 | 3 | USB-C 디버그 | ✅ **유지** | Legacy W5 에서 USB-C 존재 전제로 리뷰 |
 | 4 | JST-GH 1.25mm 통일 | ✅ **확정 (근거 있음)** | JST 공식 카탈로그 ([[Citations & Sources#F. 커넥터 근거]]) |
 | 5 | 보드 사이즈 50×50mm | ⏸️ **잠정** | 사용자: "motor 정해지면 재결정" |

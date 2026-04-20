@@ -14,18 +14,17 @@ kicad_sheet: comms.kicad_sch
 외부 통신 인터페이스:
 - **격리 CAN** (Elmo 드라이버 CANopen) — [[ISO1050]] + [[MGJ2D05050SC]]
 - **Jetson UART** (고수준 명령·텔레메트리)
+- **Jetson HW SYNC GPIO** (시계 정합) — v3.10 사용자 재추가
 - **EBIMU UART** (무선 IMU 수신기 입력)
 
 → [[Wireless]] (ESP32) 는 별도 블록
 
-> v3.9 변경: Hardware SYNC GPIO 제거됨 ([[Hardware Sync for Jetson]]). 필요시 재활성화.
-
 ## ⚠️ 격리 CAN (legacy review 핵심)
 
-내 원안 [[TCAN1462]] (비격리) → **[[ISO1050]] (격리)** 로 변경.
+[[TCAN1462]] (비격리) → **[[ISO1050]] (격리)** 로 변경.
 
-이유: [[GND Bounce Protection]] · [[Isolated CAN]] · [[RECONCILIATION]]
-요약: 이전 보드가 GND bounce 2.5V 로 CAN TXD/RXD 반복 파손 → 격리 필수.
+이유: [[GND Bounce Protection]] · [[Isolated CAN]] · [[_legacy/RECONCILIATION]]
+요약: 이전 보드가 GND bounce 2.5V 로 CAN TXD/RXD 반복 파손.
 
 출처: `_legacy/EXOSUIT_PROTECTION.md`, `_legacy/BOARD_DESIGN_REVIEWED.md`
 
@@ -44,9 +43,10 @@ kicad_sheet: comms.kicad_sch
 - PRTR5V0U2X ESD (MCU 측)
 - JST-GH 5pin (CAN_H, CAN_L, GND, SHLD, +V tap)
 
-### Jetson UART
+### Jetson UART + HW SYNC
 
-- JST-GH 4pin (TX, RX, GND, 3V3)
+- JST-GH 4pin (TX, RX, GND, 3V3) — UART
+- **JST-GH 3pin (SYNC_OUT, SYNC_IN, GND)** — 하드웨어 시계 정합 ([[Hardware Sync for Jetson]])
 
 ### EBIMU 수신기 UART
 
@@ -54,18 +54,18 @@ kicad_sheet: comms.kicad_sch
 
 ## 핀맵 (MCU 측, H743)
 
-🚩 **아래 핀 대부분 CubeMX `.ioc` 에서 충돌 검사·확정 필요.** Legacy 에서 확정된 핀만 ✅.
-
 | 신호 | MCU 핀 | 상태 |
 |---|---|---|
 | FDCAN1_TX | PD1 | ✅ legacy W12 |
 | FDCAN1_RX | PD0 | ✅ legacy W12 |
 | UART2_TX (Jetson) | PA2 | 🚩 CubeMX 확정 필요 |
 | UART2_RX (Jetson) | PA3 | 🚩 CubeMX 확정 필요 |
+| SYNC_OUT | PB14 | 🚩 CubeMX 확정 필요 (TIM 가능 핀) |
+| SYNC_IN | PB15 | 🚩 CubeMX 확정 필요 (EXTI 가능 핀) |
 | EBIMU UART_TX | (SPARE) | 🚩 SDMMC1 D2/D3 충돌 피해 배정 |
 | EBIMU UART_RX | (SPARE) | 🚩 동일 |
 
-## 회로 (CAN 격리 체인, 커넥터→MCU 방향)
+## 회로 (CAN 격리 체인)
 
 ```
 Elmo 드라이버 (모터 쪽)
@@ -74,18 +74,18 @@ Elmo 드라이버 (모터 쪽)
        │
  SM712-02HTG TVS (500W, ±8kV ESD) ← 3mm
        │
- ACM2012-900 CMC (CM 노이즈 차단) ← 8mm
+ ACM2012-900 CMC ← 8mm
        │
  [22Ω × 2] 버스 댐핑 ← 13mm
        │
- ISO1050 버스측 (VCC2 = 격리 5V) ← 18mm
+ ISO1050 버스측 (VCC2 격리 5V) ← 18mm
        │
        │  ═══ 갈바닉 격리 경계 ═══
        │  (5000 Vrms, creepage 6mm)
        │
- ISO1050 MCU측 (VCC1 = 3.3V AGND) ← 18mm
+ ISO1050 MCU측 (VCC1 3.3V AGND) ← 18mm
        │
- PRTR5V0U2X ESD ← 23mm (MCU 측)
+ PRTR5V0U2X ESD ← 23mm
        │
  [33Ω × 2] MCU 댐핑 ← 28mm
        │
@@ -98,7 +98,7 @@ Elmo 드라이버 (모터 쪽)
 
 - [[Isolated CAN]]
 - [[GND Bounce Protection]]
-- [[Hardware Sync for Jetson]] — 제거됨 (v3.9), 참고용 보존
+- [[Hardware Sync for Jetson]] — 사용자 확정 (v3.10)
 
 ## 관련 부품
 
@@ -119,7 +119,7 @@ Elmo 드라이버 (모터 쪽)
 - [ ] MGJ2D05050SC 풋프린트 (SIP-7)
 - [ ] 격리 경계 PCB 레이아웃 규칙 문서화 (2mm 갭)
 - [ ] 120Ω 종단 점퍼 설계
-- [ ] 소자 배치 거리 (커넥터→MCU 35mm 내외) 설계
+- [ ] SYNC JST-GH 3pin 배치 (Jetson UART 커넥터 옆)
 - [ ] **CubeMX `.ioc` 핀 충돌 검사** (FDCAN1 외 모든 핀)
 - [ ] sheet 그리기
 - [ ] ERC 통과

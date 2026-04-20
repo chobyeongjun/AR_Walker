@@ -115,6 +115,7 @@ JST 커넥터 시리즈 공식 비교 (jst-mfg.com):
 | ESP32-C3-MINI-1U BLE 포함 | 사용자 "BLE 반드시 필요" | ✅ |
 | JST-GH 1.25mm 통일 | 사용자 "통일하는 건 좋음" + JST 카탈로그 근거 | ✅ |
 | E-stop 포함 | 사용자 "긴급정지도 만들어야 해" | ✅ |
+| Hardware SYNC GPIO 포함 (v3.10) | 사용자: "SYNC 추가야" (v3.9 제거 철회) | ✅ |
 | 보호 아키텍처 (regen/brake/inrush/reverse/GND bounce) | 사용자 "legacy 그대로" + _legacy 출처 | ✅ |
 
 ## ⏸️ 잠정 (사용자 방침: "나중에 결정")
@@ -127,13 +128,13 @@ JST 커넥터 시리즈 공식 비교 (jst-mfg.com):
 | 모터 드라이버 (Elmo 3 후보) | 보류 | 모터 후 |
 | 배터리 24V vs 48V | 보류 | 모터 속도 후 |
 
-## ❌ 제거 (v3.9)
+## 🔄 결정 번복 이력
 
-| 항목 | 이유 |
-|---|---|
-| Hardware SYNC GPIO | legacy 에 없음, 사용자 필요 여부 불명 → "모르면 제거" 원칙 |
+| 항목 | 원래 | v3.9 | v3.10 |
+|---|---|---|---|
+| Hardware SYNC GPIO | 내 추가 | ❌ 제거 (사용자 "모르겠다") | ✅ 재추가 (사용자 "SYNC 추가야") |
 
-참고 문서: [[Hardware Sync for Jetson]] (status/removed, 참고용 보존)
+→ 최종: 포함. [[Hardware Sync for Jetson]]
 
 ## 🚩 불확실 (재확인 필요)
 

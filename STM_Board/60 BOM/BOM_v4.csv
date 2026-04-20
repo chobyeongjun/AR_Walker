@@ -84,3 +84,4 @@ grounding,L_STAR,BLM21PG601SN1D,0805,1,Murata,PGND<->AGND single star ferrite,A,
 system,MOD_JETSON,Jetson Orin NX 16GB + carrier,external,1,NVIDIA,not on board - system level,A,yes
 system,MOD_CAMERA,Stereolabs ZED X Mini,external,1,Stereolabs,GMSL2 IP67 150g,A,yes
 system,MOD_IMU,EBIMU EBMotion V5 + RF receiver,external,1,E2BOX,2.4GHz wireless IMU,A,yes
+comms_uart,J_SYNC,JST-GH 3pin,SMD,1,JST,Jetson HW SYNC (SYNC_OUT/SYNC_IN/GND) - restored v3.10,A,yes

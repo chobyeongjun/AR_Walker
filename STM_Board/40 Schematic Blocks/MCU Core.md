@@ -108,13 +108,13 @@ NRST ─[100nF]─ GND
 - UART4 (EBIMU) ↔ SDMMC1 D2/D3 충돌 가능성 — **재배정 필요**
 - SWD SWO (PB3) ↔ SPI3 SCK (PB3) 잠재 충돌
 
-> **Hardware SYNC** 제거됨 (v3.9).
+> **Hardware SYNC** 사용자 확정 (v3.10) — SYNC_OUT (PB14), SYNC_IN (PB15) 🚩
 
 ## 관련 개념
 
 - [[BGA vs LQFP]] — LQFP100 선택
 - [[GND Bounce Protection]] — PCB 레이아웃 규칙
-- [[Hardware Sync for Jetson]] — 제거됨
+- [[Hardware Sync for Jetson]] — 사용자 확정 (v3.10)
 
 ## 관련 결정
 

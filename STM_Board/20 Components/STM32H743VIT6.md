@@ -131,15 +131,17 @@ SWD   = PA13 (SWDIO) + PA14 (SWCLK) + SWO + GND + 3V3 + NRST → Cortex Debug 10
 | USB FS | PA11 / PA12 | ✅ | ST DS12110 (고정핀) |
 | VBUS_SENSE | PA9 | 🚩 | ADC 매핑 추측 |
 | TIM1 PWM (RGB) | PA8/9/10 | 🚩 | AF 매핑 추측 + PA9 VBUS와 공유 X |
+| SYNC_OUT (→ Jetson) | PB14 | 🚩 | TIM 가능 핀, CubeMX 확정 필요 |
+| SYNC_IN (← Jetson) | PB15 | 🚩 | EXTI 가능 핀, CubeMX 확정 필요 |
 | ESTOP EXTI | PC13 | 🚩 | PC13 3mA 한계 — legacy W3 |
 | MOTOR_ENABLE | PE3 | 🚩 | 임의 선택 |
 
-> **Hardware SYNC GPIO 제거됨** (v3.9) — [[Hardware Sync for Jetson]] 참고.
+> **Hardware SYNC GPIO** 사용자 확정 (v3.10, 이전 v3.9 제거 철회) — [[Hardware Sync for Jetson]].
 
 ## 연결되는 블록
 
 - [[MCU Core]] — 메인 블록
-- [[Comms]] — FDCAN1, UART2/3/4
+- [[Comms]] — FDCAN1, UART2/3/4, SYNC
 - [[Loadcell Amp]] — SPI1 + DMA
 - [[Encoder]] — SPI3
 - [[Storage]] — SDMMC1
@@ -152,7 +154,7 @@ SWD   = PA13 (SWDIO) + PA14 (SWCLK) + SWO + GND + 3V3 + NRST → Cortex Debug 10
 
 - [[BGA vs LQFP]] — LQFP100 선택 근거
 - [[Modular Phase A-B Strategy]]
-- [[Hardware Sync for Jetson]] — 제거됨 (v3.9)
+- [[Hardware Sync for Jetson]] — 사용자 확정 (v3.10)
 
 ## 데이터시트 / 레퍼런스
 
