@@ -1,30 +1,38 @@
 # STM_Board — Exosuit Custom STM32 Board
 
-Cable-driven exosuit 정밀 토크 제어를 위한 커스텀 STM32 보드.
-KiCad로 schematic → PCB → 시제품까지.
+> **Obsidian vault** for cable-driven exosuit custom STM32 board design.
+> Open this folder in Obsidian → start from `[[00 Index]]` (or `00 Index.md`).
 
-## 빠른 시작
+## Quickstart (Obsidian)
 
-1. `PLAN.md` 읽고 **§6 결정 필요 항목** 답변
-2. `parts/BOM_v0.csv` 부품 후보 검토
-3. `kicad/` 에서 KiCad 프로젝트 생성 (Phase 2)
+1. Obsidian → "Open folder as vault" → select `STM_Board/`
+2. Open `00 Index.md` as the entry point
+3. Use **Graph View** (`Ctrl+G`) to see note connections
+4. Use **Templates** plugin with `90 Templates/` as template folder
 
-## 폴더
+## Structure
 
-| 폴더 | 용도 |
-|---|---|
-| `docs/` | 결정 기록, 다이어그램, 브링업 노트 |
-| `kicad/` | KiCad 7+ 프로젝트 (`exo_stm32.kicad_pro` 등) |
-| `parts/` | BOM, 데이터시트 링크 |
-| `refs/` | 외부 참고 보드 자료 |
-| `schematic_blocks/` | 블록별 작업 메모 |
-
-## 로컬 거울
-
-```bash
-ln -s ~/AR_Walker/STM_Board ~/stm_board
+```
+00 Index.md                    ← start here
+10 Project/                    ← goals, plan, decisions, open Qs
+20 Components/                 ← atomic notes per IC/part
+30 Concepts/                   ← engineering concepts (eFuse, SYNC, ...)
+40 Schematic Blocks/           ← hierarchical sheet work notes
+50 References/                 ← datasheets, app notes, ref boards
+60 BOM/                        ← bill of materials
+70 KiCad/                      ← the actual KiCad project
+80 Journal/                    ← daily/session notes (yours)
+90 Templates/                  ← reusable note templates
+Assets/                        ← images, diagrams
+.obsidian/                     ← Obsidian config
 ```
 
-## 브랜치
+## Local mirror
 
-`claude/exosuit-board-design-LiIxS` 에서 개발.
+```bash
+ln -s ~/AR_Walker/STM_Board ~/stm_board   # already done
+```
+
+## Branch
+
+`claude/exosuit-board-design-LiIxS` — all work committed here.

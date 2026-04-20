@@ -1,0 +1,57 @@
+---
+aliases: [Block Diagram, System Architecture]
+tags: [project, architecture]
+---
+
+# Block Diagram
+
+## 시스템 구성도 (텍스트)
+
+```
+        ┌──────────────────────────────────┐
+        │   Jetson Orin (host)             │
+        └──────────┬─────────────┬─────────┘
+                   │ UART+SYNC   │ USB (디버그)
+       ┌───────────▼─────────────▼──────────┐
+       │   STM32H723VGT6 (550 MHz M7)       │
+       │   1MB Flash / 564KB RAM / USB HS   │
+       │                                     │
+       │  CAN-FD x1  FDCAN1                 │
+       │  USB HS     OTG_HS (내장 PHY)       │
+       │  SDMMC1     4-bit microSD          │
+       │  SPI1       ADS131M04 (loadcell)   │
+       │  SPI3       AS5048A x2 (encoder)   │
+       │  I²C        INA228 (battery)       │
+       │  UART (4ch) EBIMU, Jetson, ESP32,  │
+       │             debug                   │
+       │  TIM PWM    RGB LED, sync          │
+       │  GPIO/EXTI  E-stop, motor enable,  │
+       │             user btn, SD detect    │
+       └──┬─────┬─────┬─────┬─────┬─────┬───┘
+          │     │     │     │     │     │
+       ┌──▼─┐ ┌─▼──┐ ┌▼───┐ ┌▼──┐ ┌▼──┐ ┌▼──┐
+       │CAN │ │EBIMU│ │ADS │ │ENC│ │LED│ │SD │
+       │XCVR│ │UART │ │131 │ │AS5│ │RGB│ │MMC│
+       └──┬─┘ │수신기│ │M04 │ │048│ └───┘ └───┘
+          │   └─────┘ └────┘ └───┘
+          │ CANopen
+     ┌────▼─────────┐
+     │ Elmo driver  │ → BLDC Motor
+     │ (모델 미정)  │
+     └──────────────┘   × 2
+
+ Power: 24/36/48V (모터 후 확정)
+        ─► eFuse (LTC4368) ─► 5V buck ─► 3.3V LDO ─► MCU/센서
+```
+
+## 관련
+
+- [[Goals & Requirements]]
+- [[Size Budget]]
+- [[Modular Strategy]]
+- [[PCB Stackup 6-layer]]
+
+## TODO
+
+- [ ] Excalidraw 로 블록 다이어그램 실제 그리기 (Assets/block-diagram.excalidraw.md)
+- [ ] 신호 흐름 / 전원 흐름 별도 다이어그램

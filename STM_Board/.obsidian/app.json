@@ -1,0 +1,10 @@
+{
+  "attachmentFolderPath": "Assets",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "80 Journal",
+  "showInlineTitle": true,
+  "useMarkdownLinks": false,
+  "newLinkFormat": "shortest",
+  "promptDelete": true,
+  "alwaysUpdateLinks": true
+}
