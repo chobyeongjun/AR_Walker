@@ -14,12 +14,10 @@ tags: [project, architecture]
 │                   [PCIe ZED Link]   │                          │
 │                        │            │                          │
 │                  [ZED X Mini]       │                          │
-│                  (GMSL2, IP67,      │ UART+SYNC                 │
+│                  (GMSL2, IP67,      │ UART                      │
 │                   120fps, 150g)     │ (1 Mbps DMA)              │
 │                                     │                          │
 └─────────────────────────────────────┼──────────────────────────┘
-                                      │
-                 (HW SYNC GPIO — 공유 시계 이벤트)
                                       │
 ┌─────────────────────────────────────▼──────────────────────────┐
 │     STM32H743VIT6 (480 MHz Cortex-M7, 2MB Flash, 1MB RAM)       │
@@ -28,7 +26,7 @@ tags: [project, architecture]
 │            + MGJ2D05050SC 격리 DC/DC                             │
 │                                                                  │
 │  UART2   ─► Jetson          UART3 ─► ESP32-C3-MINI-1U (BLE)     │
-│  UART4   ─► EBIMU 수신기    SYNC  ─► 양방향 GPIO                │
+│  UART4   ─► EBIMU 수신기                                         │
 │                                                                  │
 │  SPI1 ─► ADS131M04 (24-bit, 32kSPS, 4ch, 로드셀 × 2)            │
 │         + REF5025 2.5V                                           │

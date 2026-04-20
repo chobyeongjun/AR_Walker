@@ -12,18 +12,22 @@ kicad_sheet: comms.kicad_sch
 ## 목적
 
 외부 통신 인터페이스:
-- **격리 CAN-B** (Elmo 드라이버 CANopen) — [[ISO1050]] + [[MGJ2D05050SC]]
-- **Jetson UART + HW SYNC** (pose 다운링크)
+- **격리 CAN** (Elmo 드라이버 CANopen) — [[ISO1050]] + [[MGJ2D05050SC]]
+- **Jetson UART** (고수준 명령·텔레메트리)
 - **EBIMU UART** (무선 IMU 수신기 입력)
 
 → [[Wireless]] (ESP32) 는 별도 블록
 
-## ⚠️ 격리 CAN (legacy review 핵심 변경)
+> v3.9 변경: Hardware SYNC GPIO 제거됨 ([[Hardware Sync for Jetson]]). 필요시 재활성화.
+
+## ⚠️ 격리 CAN (legacy review 핵심)
 
 내 원안 [[TCAN1462]] (비격리) → **[[ISO1050]] (격리)** 로 변경.
 
 이유: [[GND Bounce Protection]] · [[Isolated CAN]] · [[RECONCILIATION]]
 요약: 이전 보드가 GND bounce 2.5V 로 CAN TXD/RXD 반복 파손 → 격리 필수.
+
+출처: `_legacy/EXOSUIT_PROTECTION.md`, `_legacy/BOARD_DESIGN_REVIEWED.md`
 
 ## 핵심 부품
 
@@ -40,10 +44,9 @@ kicad_sheet: comms.kicad_sch
 - PRTR5V0U2X ESD (MCU 측)
 - JST-GH 5pin (CAN_H, CAN_L, GND, SHLD, +V tap)
 
-### Jetson UART + SYNC
+### Jetson UART
 
 - JST-GH 4pin (TX, RX, GND, 3V3)
-- JST-GH 3pin (SYNC_OUT, SYNC_IN, GND)
 
 ### EBIMU 수신기 UART
 
@@ -51,16 +54,16 @@ kicad_sheet: comms.kicad_sch
 
 ## 핀맵 (MCU 측, H743)
 
-| 신호 | MCU 핀 | 비고 |
+🚩 **아래 핀 대부분 CubeMX `.ioc` 에서 충돌 검사·확정 필요.** Legacy 에서 확정된 핀만 ✅.
+
+| 신호 | MCU 핀 | 상태 |
 |---|---|---|
-| FDCAN1_TX | PD1 | → ISO1050 TXD (33Ω) |
-| FDCAN1_RX | PD0 | ← ISO1050 RXD (33Ω) |
-| UART2_TX (Jetson) | PA2 | |
-| UART2_RX (Jetson) | PA3 | |
-| SYNC_OUT | PB14 | TIM PWM 가능 |
-| SYNC_IN | PB15 | EXTI |
-| EBIMU UART_TX | (SPARE) | SDMMC1 충돌 피해 배정 |
-| EBIMU UART_RX | (SPARE) | |
+| FDCAN1_TX | PD1 | ✅ legacy W12 |
+| FDCAN1_RX | PD0 | ✅ legacy W12 |
+| UART2_TX (Jetson) | PA2 | 🚩 CubeMX 확정 필요 |
+| UART2_RX (Jetson) | PA3 | 🚩 CubeMX 확정 필요 |
+| EBIMU UART_TX | (SPARE) | 🚩 SDMMC1 D2/D3 충돌 피해 배정 |
+| EBIMU UART_RX | (SPARE) | 🚩 동일 |
 
 ## 회로 (CAN 격리 체인, 커넥터→MCU 방향)
 
@@ -89,11 +92,13 @@ Elmo 드라이버 (모터 쪽)
  STM32H743 FDCAN1 TX/RX ← 35mm
 ```
 
+출처: `_legacy/EXOSUIT_PROTECTION.md` PCB 레이아웃 규칙.
+
 ## 관련 개념
 
 - [[Isolated CAN]]
 - [[GND Bounce Protection]]
-- [[Hardware Sync for Jetson]]
+- [[Hardware Sync for Jetson]] — 제거됨 (v3.9), 참고용 보존
 
 ## 관련 부품
 
@@ -103,10 +108,10 @@ Elmo 드라이버 (모터 쪽)
 
 ## 데이터시트
 
-- [ ] TI ISO1050 데이터시트
-- [ ] Murata MGJ2D05050SC 데이터시트
-- [ ] TDK ACM2012-900 데이터시트
-- [ ] Semtech SM712-02HTG 데이터시트
+- [ ] TI ISO1050 (SLLS983)
+- [ ] Murata MGJ2D05050SC
+- [ ] TDK ACM2012-900
+- [ ] Semtech SM712-02HTG
 
 ## 작업 체크리스트
 
@@ -115,5 +120,6 @@ Elmo 드라이버 (모터 쪽)
 - [ ] 격리 경계 PCB 레이아웃 규칙 문서화 (2mm 갭)
 - [ ] 120Ω 종단 점퍼 설계
 - [ ] 소자 배치 거리 (커넥터→MCU 35mm 내외) 설계
+- [ ] **CubeMX `.ioc` 핀 충돌 검사** (FDCAN1 외 모든 핀)
 - [ ] sheet 그리기
 - [ ] ERC 통과

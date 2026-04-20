@@ -5,7 +5,7 @@ tags: [project, decisions]
 
 # Decisions Log
 
-시간순 기록. 자세한 결정 근거는 [[RECONCILIATION]] 및 각 `[[wikilink]]` 노트 참고.
+시간순 기록. 근거 상세는 [[Citations & Sources]] 및 각 `[[wikilink]]` 노트 참고.
 
 ## 2026-04-17 (내 atomic 노트 세션 초기)
 
@@ -13,18 +13,13 @@ tags: [project, decisions]
 |---|---|---|---|
 | 모터 모델 | 보류 (Phase 5) — Elmo 가정 | [[Open Questions]] | legacy 에선 3 후보 명시 |
 | 모터 인터페이스 | CANopen | [[Comms]] | legacy 동일 |
-| 로드셀 ADC | HX711 → ADS131M04 | [[Loadcell Amplifier Design]] | **[[RECONCILIATION]] 후 유지** |
+| 로드셀 ADC | HX711 → ADS131M04 | [[Loadcell Amplifier Design]] | **v3.5 후 유지** |
 | 로깅 | 온보드 microSD SDMMC 4-bit | [[Storage]] | |
-| CAN 버스 | 1개 | [[Comms]] | |
 | IMU | EBIMU 무선 | [[Goals & Requirements]] | legacy 에선 V5 명시 |
 | EtherCAT | 사용 안 함 | | |
-| 무선 제어 | ESP32-C3-MINI-1U (IPEX) | [[Wireless]] | 내 추가, 유지 |
-| Jetson 통신 | UART + HW SYNC GPIO | [[Hardware Sync for Jetson]] | 내 추가, 유지 |
-| E-stop | 이중 안전 (SW + HW AND gate) | [[E-stop Dual Safety]] | 유지 |
 | 모터 전원 보드 통과 | 확정 | | |
 | 모터 전류 | 15A+ 연속 / 30A 피크 | | legacy 는 계산식 명시 |
-| DC 입력 커넥터 | XT60PW (30A) | | Phase B |
-| PCB | 6-layer 50×50mm | [[PCB Stackup 6-layer]] | |
+| PCB | 6-layer | [[PCB Stackup 6-layer]] | |
 | 외/내층 동박 | 2oz / 1oz | | |
 | 표면 처리 | ENIG | | |
 | 배터리 모니터 | INA228 | [[Battery SoC Estimation]] | **v3.5 에서 × 2 로 변경** |
@@ -37,46 +32,67 @@ tags: [project, decisions]
 | 통합 vault | `~/research-vault/` 단일 + symlink | |
 | symlink 이름 | `stm-board` | |
 
-## 2026-04-20 오후 (v3.5 Legacy Reconciliation) ⭐
+## 2026-04-20 오후 v3.5 (Legacy Reconciliation)
 
-Legacy 설계 문서 (2026-04-12~14) 발견 → 내 노트와 diff → **주요 결정 교정**.
-자세한 근거: [[RECONCILIATION]]
+Legacy 설계 문서 발견 → 주요 결정 교정. 상세: [[_legacy/RECONCILIATION]]
 
 | 항목 | 내 원안 | Legacy | **최종** | 변경 이유 |
 |---|---|---|---|---|
-| **MCU** | H723VGT6 | H743VIT6 | [[STM32H743VIT6]] | Flash 2MB/RAM 1MB/dual-bank/Nucleo 레퍼런스 |
-| **제어 루프** | 1 kHz | 500 Hz | **500 Hz** | AR_Walker 기존값, Elmo+로드셀 충분 |
-| **CAN 트랜시버** | TCAN1462 | ISO1050 | [[ISO1050]] | **GND bounce 2.5V 로 이전 보드 파손** |
-| **격리 DC/DC** | 없음 | MGJ2D05050SC | [[MGJ2D05050SC]] | ISO1050 VCC2 독립 공급 |
-| **로드셀 ADC** | ADS131M04 | ADS1234 + INA128UA | **ADS131M04 유지** | 32 kSPS 동시 샘플링·PGA 내장·단일 3.3V·비용 절반 |
-| **배터리 모니터** | INA228 × 1 | INA228 × 2 | INA228 × 2 | 24V×2 직렬 시 개별 측정 |
-| **배터리** | 24~48V 미정 | 6S Li-ion 25.2V | 6S 25.2V 확정 | legacy 명시 |
-| **IMU** | 일반 EBIMU | EBIMU V5 (2.4GHz) | EBIMU V5 | |
-| **카메라** | 언급 없음 | ZED X Mini (GMSL2) | ZED X Mini | Jetson 전용 |
-| **Jetson** | 일반 Orin | Orin NX 16GB | Orin NX 16GB | 157 TOPS, ZED Link |
-| **모터 제어 모드** | MIT 토크 | Servo + SET_POS | Servo + SET_POS | 풀리 r(θ) 가변 → 어드미턴스로 보정 |
+| MCU | H723VGT6 | H743VIT6 | [[STM32H743VIT6]] | Flash/RAM/dual-bank/Nucleo |
+| 제어 루프 | 1 kHz | 500 Hz | 500 Hz | AR_Walker 기존값 |
+| CAN 트랜시버 | TCAN1462 | ISO1050 | [[ISO1050]] | GND bounce 2.5V 파손 |
+| 격리 DC/DC | 없음 | MGJ2D05050SC | [[MGJ2D05050SC]] | ISO1050 VCC2 |
+| 로드셀 ADC | ADS131M04 | ADS1234 + INA128UA | **ADS131M04 유지** | 기술 비교 후 사용자 "위 권고대로" |
+| 배터리 모니터 | INA228 × 1 | INA228 × 2 | × 2 | 직렬 배터리 |
+| 배터리 | 24~48V 미정 | 6S Li-ion 25.2V | 6S 25.2V | legacy |
+| IMU | 일반 EBIMU | EBIMU V5 (2.4GHz) | EBIMU V5 | |
+| 카메라 | 없음 | ZED X Mini | ZED X Mini | |
+| Jetson | 일반 Orin | Orin NX 16GB | Orin NX 16GB | |
+| 모터 제어 모드 | MIT 토크 | Servo + SET_POS | Servo + SET_POS | 풀리 r(θ) 가변 |
 
-### v3.5 신규 개념 추가 (legacy 보호 아키텍처)
+### v3.5 신규 개념
 
-| 개념 | 문서 | 문제 해결 |
-|---|---|---|
-| [[Regen Energy Protection]] | 신규 | 4 모터 동시 릴리즈 1J → 143V 폭주 방지 |
-| [[GND Bounce Protection]] | 신규 | 2.5V bounce → CAN TXD/RXD 파손 근본 해결 |
-| [[Isolated CAN]] | 신규 | ISO1050 + MGJ2D05050SC 격리 체인 |
-| [[Brake Resistor Circuit]] | 신규 | 26.5V 임계 → 3Ω/50W 소산 |
-| [[Inrush Current Limiting]] | 신규 | NTC 4Ω + G5V-1 bypass 릴레이 |
+- [[Regen Energy Protection]] · [[GND Bounce Protection]] · [[Isolated CAN]] · [[Brake Resistor Circuit]] · [[Inrush Current Limiting]]
 
 ### v3.5 회로 필수 수정 (legacy C4~C7, W2~W7)
 
-| 항목 | 수정 |
+VCAP_2 (Pin 57), VREF+, VDDA 페라이트, HSE 22Ω, BOOT0, NRST, CAN STBY.
+
+## 2026-04-20 v3.7~3.8 (투명성 강화)
+
+| 항목 | 내용 |
 |---|---|
-| C4 VCAP_2 (Pin 57) | 2.2µF 독립 배치 ([[MCU Core]]) |
-| C5 VREF+ | VDDA 직결 + 100nF + 1µF |
-| W2 VDDA 필터 | BLM18PG601 ferrite + 10µF+1µF+100nF |
-| W4 HSE 크리스털 | OSC_IN 22Ω 직렬 저항 |
-| W6 BOOT0 | 10kΩ 풀다운 + 점퍼 |
-| W7 NRST | 100nF |
-| W11 CAN STBY | ISO1050 로 변경돼 N/A |
+| v3.7 | [[Citations & Sources]] 신규 — 출처 추적 문서 |
+| v3.8 | [[Unsourced Items Audit]] 신규 — 내 추가 13개 항목 감사 |
+
+## 2026-04-20 v3.9 (Unsourced Audit 답변 반영)
+
+사용자 방침: **"너의 생각으로 하는 것들은 모두 X. 무조건 근거 있이."**
+
+| Q | 결정 | 근거 |
+|---|---|---|
+| Q1 ESP32-C3-MINI-1U BLE | ✅ **포함 확정** | 사용자: "BLE 반드시 필요" |
+| Q2 Hardware SYNC GPIO | ❌ **제거** | 사용자: "왜 필요한 지 모르겠다" → "모르면 제거" 원칙 |
+| Q3 JST-GH 1.25mm 통일 | ✅ **확정** (근거 포함) | JST 카탈로그 — 1A+잠금+최소크기 교차점 (SH/ZH/PH/XH 대비) |
+| Q4 보드 사이즈 50×50 | ⏸️ **잠정** | 사용자: "motor 정해지면 재결정" |
+
+### 핀 할당 재평가
+
+FDCAN1 (PD0/1), VCAP (Pin 33, 57), VREF+ (Pin 21), VDDA (Pin 11), USB FS (PA11/12), HSE (PH0/1), SWD (PA13/14) 외 모든 핀 — **내 AF 매핑 추측이라 🚩 CubeMX 확정 필요** 태그.
+
+### ESP32 variant (-1U vs -1)
+
+IPEX vs PCB 내장 — legacy 에 없고 내 판단 → **사용자 확정 보류**. 현재 `-1U` 가정 유지하되, 케이스 설계 때 재확인.
+
+### BLE 용도 명확화
+
+**BLE 는 500Hz 저수준 제어 불가** (Bluetooth Core 5.0 — connection interval 최소 7.5ms). BLE 역할:
+- 고수준 명령 (1~10 Hz)
+- 텔레메트리 (10~100 Hz)
+- OTA
+- 파라미터 튜닝
+
+500Hz 제어는 STM32 내부.
 
 ## 템플릿
 

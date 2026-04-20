@@ -8,20 +8,24 @@ tags: [moc, project, domain/robotics, domain/electronics]
 > Cable-driven Exosuit 용 커스텀 STM32 보드 프로젝트 루트 MOC.
 > 이 폴더는 `~/AR_Walker/STM_Board/` git repo 이며, `~/research-vault/stm-board` symlink 로 vault 에 편입.
 
-## 🎯 현재 상태 (v3.6)
+## 🎯 현재 상태 (v3.9)
 
 - **Phase**: P1 (데이터시트 수집) 진행 중, P2 (KiCad) 준비 중
-- **MCU**: [[STM32H743VIT6]] (H723 에서 변경, [[_legacy/RECONCILIATION]])
+- **MCU**: [[STM32H743VIT6]]
 - **제어 루프**: 500 Hz (어드미턴스 + 위치 PID)
 - **배터리**: 6S Li-ion 25.2V 완충 (48V 직렬 옵션은 Phase B)
 - **CAN**: **[[ISO1050]] 격리** (GND bounce 파손 방지)
 - **로드셀**: [[ADS131M04]] (32 kSPS 동시 샘플링)
 - **IMU**: EBIMU EBMotion V5 (무선)
 - **카메라/Jetson**: ZED X Mini + Jetson Orin NX 16GB
-- **보드 사이즈**: 50 × 50 mm, [[PCB Stackup 6-layer|6-layer]]
+- **무선**: [[ESP32-C3-MINI-1U]] BLE (v3.9 사용자 확정, 고수준 명령·텔레메트리·OTA 용)
+- **커넥터**: JST-GH 1.25mm 통일 (v3.9 확정, JST 카탈로그 근거)
+- **보드 사이즈**: ⏸️ **잠정 50×50mm** — motor 확정 후 P6 에서 결정
+- **Layer 수**: 6-layer ([[PCB Stackup 6-layer]])
 - **전략**: [[Modular Phase A-B Strategy]]
-- **보호 아키텍처**: [[Regen Energy Protection]] + [[GND Bounce Protection]] + [[Isolated CAN]] + [[Brake Resistor Circuit]] + [[Inrush Current Limiting]]
-- **다음**: `download_all.sh` → KiCad 프로젝트 → [[Loadcell Amp]] sheet
+- **보호**: [[Regen Energy Protection]] + [[GND Bounce Protection]] + [[Isolated CAN]] + [[Brake Resistor Circuit]] + [[Inrush Current Limiting]]
+- **제거됨** (v3.9): Hardware SYNC GPIO
+- **다음**: `download_all.sh` → CubeMX 핀 확정 → KiCad 프로젝트
 
 ## 🗺️ 서브 MOC
 
@@ -34,7 +38,8 @@ tags: [moc, project, domain/robotics, domain/electronics]
 
 ## 📋 투명성 (꼭 읽어)
 
-- **[[Citations & Sources]]** ⭐ — 이 프로젝트의 각 스펙·결정이 어디서 왔는지. 내가 추측한 것, legacy 에서 온 것, 데이터시트에서 온 것 구분.
+- **[[Citations & Sources]]** ⭐ — 각 스펙·결정 출처 투명 기록. 사용자 방침: "너의 생각으로 하는 것들은 모두 X. 무조건 근거 있이."
+- **[[Unsourced Items Audit]]** — 내 추가 13개 항목 감사, v3.9 답변 반영 완료
 
 ## 🔗 빠른 링크
 
@@ -63,7 +68,7 @@ tags: [moc, project, domain/robotics, domain/electronics]
 3. `30 Concepts/` — 엔지니어링 개념 (15)
 4. `40 Schematic Blocks/` — KiCad sheet 작업 노트 (11)
 5. `50 References/` — 데이터시트 (17 카테고리)
-6. `60 BOM/` — BOM v3.csv
+6. `60 BOM/` — BOM v4.csv (v3.9 SYNC 제거 반영)
 7. `70 KiCad/` — 실제 KiCad 프로젝트 (P2)
 8. `80 Journal/` — 프로젝트 작업일지
 9. `90 Templates/` — 프로젝트 전용 템플릿

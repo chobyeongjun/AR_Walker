@@ -37,7 +37,6 @@ comms_can,R_TERM,120 ohm,0805,1,common,CAN bus terminator (jumper select),A,yes
 comms_can,R_CAN_DAMP,33 / 22 ohm,0402,4,common,33 MCU side + 22 bus side damping,A,yes
 comms_can,D_ESD_CAN,PRTR5V0U2X,SOT-363,1,Nexperia,CAN MCU side ESD,A,yes
 comms_uart,J_JETSON,JST-GH 4pin,SMD,1,JST,UART to Jetson (TX/RX/GND/3V3),A,yes
-comms_uart,J_SYNC,JST-GH 3pin,SMD,1,JST,SYNC_OUT/SYNC_IN/GND,A,yes
 comms_uart,J_EBIMU,JST-GH 4pin,SMD,1,JST,EBIMU receiver UART (TX/RX/GND/5V),A,yes
 wireless,U_ESP,ESP32-C3-MINI-1U,module,1,Espressif,IPEX external antenna BLE+WiFi,A,yes
 wireless,J_ANT,IPEX MHF1 cable + 2.4GHz antenna,external,1,common,antenna assembly,A,yes
@@ -47,7 +46,6 @@ usb,U_ESD_USB,TPD4S012DBVR,SOT-23-6,1,TI,USB ESD,A,yes
 usb,R_CC,5.1k,0402,2,common,USB-C CC1/CC2 pulldown (legacy W5),A,yes
 storage,J_SD,microSD push-push DM3AT,SMD,1,Hirose,SDMMC 4-bit + detect,A,yes
 ui,LED_RGB,common cathode RGB,5050,1,common,status LED,A,yes
-ui,LED_SYNC,blue,0603,1,common,sync LED,A,yes
 ui,SW_USER,tactile 6x6,SMD,1,common,user button,A,yes
 safety,J_ESTOP,JST-GH 2pin,SMD,1,JST,E-stop NC contact,A,yes
 safety,U_AND,74LVC1G08GW,SC-70-5,1,Nexperia,E-stop HW AND gate,A,yes

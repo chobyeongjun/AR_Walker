@@ -7,17 +7,28 @@ tags: [project, status/open]
 
 현재 미결 항목. 결정 시 [[Decisions Log]] 로 이동. v3.5 [[RECONCILIATION]] 반영.
 
-## 🟢 확정됨 (2026-04-20 v3.5)
+## 🟢 확정됨 (2026-04-20 v3.5 + v3.9)
 
 - [x] MCU 패키지 → [[STM32H743VIT6]]
 - [x] 로드셀 ADC → [[ADS131M04]] 유지
 - [x] CAN 트랜시버 → [[ISO1050]] 격리
-- [x] 배터리 팩 → 6S Li-ion 25.2V
+- [x] 배터리 팩 → 6S Li-ion 25.2V (24V 단일 vs 48V 직렬은 Phase B)
 - [x] IMU → EBIMU EBMotion V5
 - [x] 카메라 → ZED X Mini
 - [x] Jetson → Orin NX 16GB
 - [x] 제어 루프 → 500 Hz
 - [x] 모터 제어 모드 → Servo(전류) + SET_POS
+- [x] **BLE 포함** → [[ESP32-C3-MINI-1U]] (v3.9 확정)
+- [x] **JST-GH 1.25mm 통일** (v3.9 확정, JST 카탈로그 근거)
+
+## ❌ 제거 (v3.9)
+
+- [x] ~~Hardware SYNC GPIO~~ → 제거 ([[Hardware Sync for Jetson]] 참고용 보존)
+
+## ⏸️ 잠정 (나중에 결정)
+
+- [ ] 보드 사이즈 50×50mm — motor 확정 후 P6 에서 결정
+- [ ] ESP32 antenna variant (`-1` PCB vs `-1U` IPEX) — 케이스 설계 시
 
 ## 🔴 긴급 (모터 결정의 전제)
 

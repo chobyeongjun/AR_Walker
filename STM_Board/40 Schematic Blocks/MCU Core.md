@@ -92,31 +92,29 @@ NRST ─[100nF]─ GND
 - VDD (Pin 10, 28, 50, 62, 75, 100): 각 100nF + 공유 4.7µF
 - VSS: 각 핀 0Ω 아닌 직결 GND 플레인
 
-## 핀 할당 초안
+## 핀 할당 (상태별)
 
-상세는 [[STM32H743VIT6]] 참고. 요약:
+> **🚩 대부분 CubeMX 확정 필요.** 상세 테이블은 [[STM32H743VIT6]] 참고.
 
-| 기능 | 핀 |
-|---|---|
-| HSE | PH0 / PH1 |
-| SWD | PA13 / PA14 / PB3 |
-| FDCAN1 → [[ISO1050]] | PD0 / PD1 |
-| SDMMC1 → [[DM3AT microSD]] | PC8/9/10/11/12, PD2 |
-| SPI1 → [[ADS131M04]] | PA5/6/7 + PA4 (CS) |
-| SPI3 → [[AS5048A]] × 2 | PB3/4/5 + 2 CS |
-| I²C1 → [[INA228]] × 2 | PB8 / PB9 |
-| UART2 (Jetson) | PA2 / PA3 |
-| UART3 (ESP32) | PD8 / PD9 |
-| UART (EBIMU) | 별도 UART (SDMMC1 D2/D3 와 충돌 피해서) |
-| USB FS | PA11 / PA12 |
-| RGB PWM | PA8/9/10 (TIM1) |
-| SYNC | PB14 / PB15 |
+✅ 확정 (ST DS12110 고정핀 또는 legacy):
+- HSE PH0/PH1, LSE PC14/PC15
+- SWDIO PA13, SWCLK PA14
+- VCAP_1 Pin 33, VCAP_2 Pin 57, VDDA Pin 11, VREF+ Pin 21
+- FDCAN1 PD0/PD1 (legacy W12)
+- USB FS PA11/PA12 (고정)
+
+🚩 추측 (CubeMX 에서 충돌 검사 · 재배정 예상):
+- SPI1/SPI3, I²C1, UART2/3/4, VBUS_SENSE, TIM1, ESTOP, MOTOR_ENABLE
+- UART4 (EBIMU) ↔ SDMMC1 D2/D3 충돌 가능성 — **재배정 필요**
+- SWD SWO (PB3) ↔ SPI3 SCK (PB3) 잠재 충돌
+
+> **Hardware SYNC** 제거됨 (v3.9).
 
 ## 관련 개념
 
 - [[BGA vs LQFP]] — LQFP100 선택
-- [[Hardware Sync for Jetson]] — SYNC GPIO
 - [[GND Bounce Protection]] — PCB 레이아웃 규칙
+- [[Hardware Sync for Jetson]] — 제거됨
 
 ## 관련 결정
 

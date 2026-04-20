@@ -104,35 +104,42 @@ BOOT0 ─[10 kΩ]─ GND  +  점퍼 to 3.3V (DFU 진입용)
 SWD   = PA13 (SWDIO) + PA14 (SWCLK) + SWO + GND + 3V3 + NRST → Cortex Debug 10-pin
 ```
 
-## 핀 할당 초안 (CubeMX 에서 확정)
+## 핀 할당 (상태: 대부분 🚩 CubeMX 확정 필요)
 
-| 기능 | 핀 | 비고 |
-|---|---|---|
-| HSE | PH0 / PH1 | 25 MHz crystal |
-| LSE | PC14 / PC15 | 32.768 kHz (옵션, RTC) |
-| SWD | PA13 / PA14 / PB3 | SWDIO/SWCLK/SWO |
-| FDCAN1 | PD0 (RX) / PD1 (TX) | → [[ISO1050]] |
-| SDMMC1 | PC8/9/10/11/12, PD2 | 4-bit microSD |
-| SPI1 | PA5/6/7 + CS PA4 | → [[ADS131M04]] (loadcell) |
-| SPI3 | PB3/4/5 + 2× CS | → [[AS5048A]] × 2 |
-| I²C1 | PB8 / PB9 | → [[INA228]] × 2 |
-| UART2 | PA2 / PA3 | Jetson |
-| UART3 | PD8 / PD9 | ESP32 |
-| UART4 | PC10 / PC11 | EBIMU (SDMMC1 D2/D3 충돌 주의 — 재배정 필요) |
-| USB FS | PA11 / PA12 | DM / DP (디버그 · DFU) |
-| VBUS_SENSE | PA9 | ADC |
-| TIM1 | PA8/9/10 | RGB LED PWM |
-| SYNC_OUT | PB14 | → Jetson GPIO |
-| SYNC_IN | PB15 | EXTI |
-| ESTOP_EXTI | PC13 | EXTI (PC13 100Ω 직렬 — 3mA 한계) |
-| MOTOR_ENABLE | PE3 | → AND gate ([[Safety UI]]) |
+> **⚠️ 중요:** 아래 테이블은 legacy 에서 확정된 것 (✅) 과 내가 AF 매핑 기반 추측 (🚩) 이 섞여 있음.
+> 🚩 표시된 핀은 **STM32CubeMX `.ioc` 에서 실제 충돌 검사 후 확정** 해야 함.
+> CubeMX 설명: [[Citations & Sources]] — "불확실·미검증" 섹션.
 
-> CubeMX `.ioc` 에서 충돌 확정 필요. UART4 ↔ SDMMC1 D2/D3 충돌 가능성.
+| 기능 | 핀 (제안) | 상태 | 출처 |
+|---|---|---|---|
+| HSE | PH0 / PH1 | ✅ | ST DS12110 (H743 LQFP100 고정핀) |
+| LSE | PC14 / PC15 | ✅ | ST DS12110 (고정핀, 옵션) |
+| SWD SWDIO | PA13 | ✅ | ST DS12110 (고정핀) |
+| SWD SWCLK | PA14 | ✅ | ST DS12110 (고정핀) |
+| VCAP_1 | Pin 33 | ✅ | legacy C4 |
+| VCAP_2 | Pin 57 | ✅ | legacy C4 |
+| VDDA | Pin 11 | ✅ | legacy W2 |
+| VREF+ | Pin 21 | ✅ | legacy C5 |
+| FDCAN1 RX/TX | PD0 / PD1 | ✅ | legacy W12 |
+| SDMMC1 | PC8-12, PD2 | 🚩 | AF 매핑 추측 |
+| SPI1 (ADS131M04) | PA5/6/7 + CS PA4 | 🚩 | AF 매핑 추측 |
+| SPI3 (AS5048A × 2) | PB3/4/5 + 2× CS | 🚩 | AF 매핑 추측 + SWD SWO 와 PB3 공유 주의 |
+| I²C1 (INA228) | PB8 / PB9 | 🚩 | AF 매핑 추측 |
+| UART2 (Jetson) | PA2 / PA3 | 🚩 | AF 매핑 추측 |
+| UART3 (ESP32) | PD8 / PD9 | 🚩 | AF 매핑 추측 |
+| UART4 (EBIMU) | PC10 / PC11 | 🚩 | **SDMMC1 D2/D3 와 충돌 — CubeMX 에서 재배정** |
+| USB FS | PA11 / PA12 | ✅ | ST DS12110 (고정핀) |
+| VBUS_SENSE | PA9 | 🚩 | ADC 매핑 추측 |
+| TIM1 PWM (RGB) | PA8/9/10 | 🚩 | AF 매핑 추측 + PA9 VBUS와 공유 X |
+| ESTOP EXTI | PC13 | 🚩 | PC13 3mA 한계 — legacy W3 |
+| MOTOR_ENABLE | PE3 | 🚩 | 임의 선택 |
+
+> **Hardware SYNC GPIO 제거됨** (v3.9) — [[Hardware Sync for Jetson]] 참고.
 
 ## 연결되는 블록
 
 - [[MCU Core]] — 메인 블록
-- [[Comms]] — FDCAN1, UART2/3/4, SYNC
+- [[Comms]] — FDCAN1, UART2/3/4
 - [[Loadcell Amp]] — SPI1 + DMA
 - [[Encoder]] — SPI3
 - [[Storage]] — SDMMC1
@@ -144,8 +151,8 @@ SWD   = PA13 (SWDIO) + PA14 (SWCLK) + SWO + GND + 3V3 + NRST → Cortex Debug 10
 ## 관련 개념
 
 - [[BGA vs LQFP]] — LQFP100 선택 근거
-- [[Hardware Sync for Jetson]]
 - [[Modular Phase A-B Strategy]]
+- [[Hardware Sync for Jetson]] — 제거됨 (v3.9)
 
 ## 데이터시트 / 레퍼런스
 
