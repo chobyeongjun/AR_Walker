@@ -44,11 +44,14 @@ tags: [project, decisions]
 | 항목 | 결정 | 관련 |
 |---|---|---|
 | CubeMX 칩 | H723VGT6 진행 확정 (사용자 위임) | [[STM32H723VGT6]] |
-| Vault 구조 | **Obsidian Second Brain 으로 재구성** | [[00 Index]] |
+| Vault 구조 | Obsidian Second Brain 으로 재구성 | [[Exosuit Board MOC]] |
 | 노트 단위 | atomic + wikilinks + MOC + YAML | |
+| **통합 vault** | `~/research-vault/` 단일 vault + symlink 로 프로젝트 통합 (옵션 C) | Second Brain 단일 그래프 |
+| 프로젝트 MOC 이름 | `00 Index.md` → `Exosuit Board MOC.md` | vault 루트와 이름 충돌 방지 |
+| 공용 템플릿 이동 | Component/Concept/Decision → `~/research-vault/Templates/` | 재사용 |
 | 다음 단계 | P2 KiCad 프로젝트 생성 | [[Phase Plan]] |
 
 ## 템플릿
 
-새 결정은 [[Templates/Decision]] 을 복사해서 상세 기록.
-간단한 결정은 위 표에 한 줄로 추가.
+공용 템플릿 (Component / Concept / Decision) 은 `~/research-vault/Templates/` 에 있음.
+프로젝트 전용 템플릿 (Schematic Block) 은 이 프로젝트의 `90 Templates/` 에 있음.

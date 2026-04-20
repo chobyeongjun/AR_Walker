@@ -22,6 +22,13 @@ tags: [journal]
 
 ## 링크
 
-- [[00 Index]]
+- [[Exosuit Board MOC]]
 - [[Open Questions]]
 - [[Decisions Log]]
+
+## 후속 (2026-04-20 오후)
+
+- 통합 vault `~/research-vault/` 로 재구성 (옵션 C: symlink 통합)
+- 이 프로젝트는 `Projects/Exosuit_Board/` symlink 로 이동
+- `.obsidian/` 설정과 공용 템플릿은 vault 루트로 이동
+- 자세한 것: `~/research-vault/Journal/2026-04-20.md`

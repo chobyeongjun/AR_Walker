@@ -10,5 +10,5 @@
 
 ## 연결
 
-- [[00 Index]]
+- [[Exosuit Board MOC]]
 - [[Block Diagram]]
