@@ -26,6 +26,9 @@ tags: [project, status/open]
 
 - [ ] 보드 사이즈 50×50mm — motor 확정 후 P6 에서 결정
 - [ ] ESP32 antenna variant (`-1` PCB vs `-1U` IPEX) — 케이스 설계 시
+- [ ] **ZED X Mini 렌즈** (2.2mm 광각 vs 3.8mm 표준) — 2.2mm 권장 (근거리 body tracking)
+- [ ] **ZED Link Duo 캡처 카드** 확정 — Orin NX 는 직결 불가, 외부 12~19V 전원 필요
+- [ ] **Jetson Orin NX carrier board** 선정 (ZED Box vs Dev Kit vs Seeed vs 기타)
 
 ## 🔴 긴급 (모터 결정의 전제)
 

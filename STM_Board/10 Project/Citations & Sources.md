@@ -69,6 +69,9 @@ tags: [project, references]
 | Rubycon | 35ZLH |
 | Panasonic | SVPD OS-CON |
 | Semtech | SM712 |
+| **E2BOX** | EBIMU24GV6 + EBRCV24GV6 데이터시트 — v3.13 에서 직접 읽음 |
+| **Stereolabs** | ZED X Datasheet v1.2 — v3.14 에서 직접 읽음 |
+| NVIDIA (Mouser mirror) | Jetson Orin NX Datasheet (로컬 PDF 14KB 는 무효, 재다운로드 필요) |
 
 ### E. 표준 / 업계
 
