@@ -26,7 +26,7 @@ tags: [project, layout, status/provisional]
 | USB-C 커넥터 | 80 mm² | GCT USB4105 도면 |
 | [[ISO1050]] + 격리 DC/DC | 150 mm² | TI SLLS983 (SOIC-16 wide) + Murata MGJ2D (SIP-7) |
 | [[AS5048A]] × 2 | 60 mm² | ams 데이터시트 (TSSOP-14) |
-| JST-GH × 5 (CAN, Jetson, EBIMU, Loadcell×2, E-stop) | 150 mm² | JST GH 시리즈 도면 |
+| JST-GH × 6 (CAN 5pin, Jetson 4pin, SYNC 3pin, EBIMU 3pin, Loadcell×2 4pin, E-stop 2pin) | ~180 mm² | JST GH 시리즈 도면 |
 | [[E-stop Dual Safety\|E-stop 회로]] ([[74LVC1G08]] 등) | 25 mm² | |
 | 디커플링·패시브 | 300 mm² | 양면 분산 |
 | [[INA228]] × 2 + shunt + NTC | 60 mm² | TI SBOS882 (VSSOP-10) × 2 |

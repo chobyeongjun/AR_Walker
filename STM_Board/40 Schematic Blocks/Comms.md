@@ -48,9 +48,12 @@ kicad_sheet: comms.kicad_sch
 - JST-GH 4pin (TX, RX, GND, 3V3) — UART
 - **JST-GH 3pin (SYNC_OUT, SYNC_IN, GND)** — 하드웨어 시계 정합 ([[Hardware Sync for Jetson]])
 
-### EBIMU 수신기 UART
+### EBIMU 수신기 (EBRCV24GV6) UART
 
-- JST-GH 4pin (TX, RX, GND, **5V** — EBIMU 수신기 전원)
+- **JST-GH 3pin (TX, GND, 5V)** ← v3.13 정정. 이전 v3.12 까지 "4pin TX/RX/GND/5V" 는 오기.
+- 수신기 헤더에 RX 핀 없음 ([[EBIMU24GV6]] §EBRCV24GV6 §5-1-1 확인). 커맨드 설정은 USB-C 로만 가능.
+- 연결: 수신기 TX (3.3V TTL, default 921600 bps) → MCU UART RX
+- 5V 는 보드 5V 레일에서 공급 (receiver 45 mA 소비, Buck 여유 충분)
 
 ## 핀맵 (MCU 측, H743)
 
@@ -62,8 +65,7 @@ kicad_sheet: comms.kicad_sch
 | UART2_RX (Jetson) | PA3 | 🚩 CubeMX 확정 필요 |
 | SYNC_OUT | PB14 | 🚩 CubeMX 확정 필요 (TIM 가능 핀) |
 | SYNC_IN | PB15 | 🚩 CubeMX 확정 필요 (EXTI 가능 핀) |
-| EBIMU UART_TX | (SPARE) | 🚩 SDMMC1 D2/D3 충돌 피해 배정 |
-| EBIMU UART_RX | (SPARE) | 🚩 동일 |
+| EBIMU UART_RX (← 수신기 TX) | (SPARE) | 🚩 SDMMC1 D2/D3 충돌 피해 배정. 단방향 RX 만 필요 |
 
 ## 회로 (CAN 격리 체인)
 

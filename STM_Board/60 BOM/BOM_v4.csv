@@ -37,7 +37,7 @@ comms_can,R_TERM,120 ohm,0805,1,common,CAN bus terminator (jumper select),A,yes
 comms_can,R_CAN_DAMP,33 / 22 ohm,0402,4,common,33 MCU side + 22 bus side damping,A,yes
 comms_can,D_ESD_CAN,PRTR5V0U2X,SOT-363,1,Nexperia,CAN MCU side ESD,A,yes
 comms_uart,J_JETSON,JST-GH 4pin,SMD,1,JST,UART to Jetson (TX/RX/GND/3V3),A,yes
-comms_uart,J_EBIMU,JST-GH 4pin,SMD,1,JST,EBIMU receiver UART (TX/RX/GND/5V),A,yes
+comms_uart,J_EBIMU,JST-GH 3pin,SMD,1,JST,EBRCV24GV6 receiver UART header (TX/GND/5V) - no RX pin (v3.13 corrected from 4pin),A,yes
 wireless,U_ESP,ESP32-C3-MINI-1U,module,1,Espressif,IPEX external antenna BLE+WiFi,A,yes
 wireless,J_ANT,IPEX MHF1 cable + 2.4GHz antenna,external,1,common,antenna assembly,A,yes
 wireless,C_ESP_BULK,22uF tantalum,1206,1,AVX,ESP TX peak current,A,yes
