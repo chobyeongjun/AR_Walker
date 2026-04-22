@@ -1,0 +1,87 @@
+block,ref,part,package,qty,source,notes,phase,decided
+mcu,U1,STM32H743VIT6,LQFP100 14x14,1,ST,main MCU (H723 changed to H743 per RECONCILIATION),A,yes
+mcu,Y1,25MHz crystal HC-49SMD,3225,1,common,HSE + 22ohm series resistor (legacy W4),A,yes
+mcu,R_HSE,22 ohm,0402,1,common,HSE OSC_IN series (harmonic suppression),A,yes
+mcu,Y2,32.768kHz crystal,3215,1,Abracon,LSE optional,A,no
+mcu,SW_RST,tactile button 6x6,SMD,1,common,NRST + 100nF,A,yes
+mcu,C_NRST,100nF,0402,1,common,NRST filter (legacy W7),A,yes
+mcu,J_SWD,Cortex 10-pin 1.27mm,SMD,1,Samtec,SWD+SWO+NRST+3V3+GND,A,yes
+mcu,SW_BOOT,jumper 2.54,2.54,1,common,BOOT0 selector,A,yes
+mcu,R_BOOT0,10k,0402,1,common,BOOT0 pulldown (legacy W6),A,yes
+mcu,C_VCAP1,2.2uF X5R/6.3V,0603,1,Murata,VCAP_1 Pin 33 (legacy C4),A,yes
+mcu,C_VCAP2,2.2uF X5R/6.3V,0603,1,Murata,VCAP_2 Pin 57 MISSING IN INITIAL (legacy C4),A,yes
+mcu,FB_VDDA,BLM18PG601SN1D,0603,1,Murata,VDDA ferrite 600 ohm @ 100MHz (legacy W2),A,yes
+mcu,C_VDDA,10uF X5R / 1uF / 100nF stack,0603,3,Murata,VDDA decoupling stack,A,yes
+mcu,C_VREF,1uF / 100nF,0402,2,common,VREF+ decoupling (legacy C5),A,yes
+logic_power,U_BUCK,AP63205WU-7 (24V) or TPS62933 (48V),SOT-563,1,Diodes/TI,VIN up to 32V or 60V - pick after battery voltage confirmed,A,tbd
+logic_power,L_BUCK,2.2-10uH depending on buck,SMD,1,Coilcraft,per WEBENCH,A,tbd
+logic_power,FB_BUCK_IN,BLM18PG601 ferrite,0603,1,Murata,isolate buck input from motor noise,A,yes
+logic_power,U_LDO_D,TLV75533PDBVR,SOT-23-5,1,TI,5V->3V3 digital,A,yes
+logic_power,U_LDO_A,TLV75533PDBVR,SOT-23-5,1,TI,5V->3V3 analog,A,yes
+logic_power,FB_AVDD,BLM18PG471,0603,1,Murata,analog 3V3 ferrite,A,yes
+logic_power,LED_PWR,green,0603,1,common,3v3 indicator,A,yes
+loadcell,U_LCADC,ADS131M04IPBSR,TQFP-32,1,TI,24bit 32kSPS 4ch simultaneous SPI (PGA internal),A,yes
+loadcell,U_REF,REF5025AIDR,SO-8,1,TI,2.5V precision ref 3ppm/C,A,yes
+loadcell,J_LC,JST-GH 4pin,SMD,2,JST,loadcell E+/S+/S-/E-,A,yes
+loadcell,RC_LC,1k + 150nF anti-alias,0402,8,common,legacy W10 anti-aliasing RC per channel,A,yes
+loadcell,D_LC,BAV99 clamp,SOT-23,4,common,legacy W9 input over-voltage clamp,A,yes
+encoder,U_ENC,AS5048A,TSSOP-14,2,ams,SPI absolute encoder 14-bit,A,yes
+encoder,J_ENC,JST-GH 6pin,SMD,2,JST,encoder harness,A,yes
+comms_can,U_CAN,ISO1050DUBR,SOIC-16 wide,1,TI,isolated CAN 5000Vrms (TCAN1462 rejected - GND bounce),A,yes
+comms_can,U_ISO_DCDC,MGJ2D05050SC,SIP-7,1,Murata,5V->5V 2W isolated DC/DC for ISO1050 VCC2,A,yes
+comms_can,D_VCC2,BZT52C5V6,SOD-123,1,common,VCC2 5.6V zener clamp,A,yes
+comms_can,L_CMC,ACM2012-900-2P-T002,SMD,1,TDK,CAN common-mode choke 900 ohm @ 100MHz,A,yes
+comms_can,TVS_CAN,SM712-02HTG,SMA,1,Semtech,CAN bus TVS 500W +-8kV,A,yes
+comms_can,J_CAN,JST-GH 5pin,SMD,1,JST,CAN_H/L/GND/SHLD/+V,A,yes
+comms_can,R_TERM,120 ohm,0805,1,common,CAN bus terminator (jumper select),A,yes
+comms_can,R_CAN_DAMP,33 / 22 ohm,0402,4,common,33 MCU side + 22 bus side damping,A,yes
+comms_can,D_ESD_CAN,PRTR5V0U2X,SOT-363,1,Nexperia,CAN MCU side ESD,A,yes
+comms_uart,J_JETSON,JST-GH 4pin,SMD,1,JST,UART to Jetson (TX/RX/GND/3V3),A,yes
+comms_uart,J_EBIMU,JST-GH 3pin,SMD,1,JST,EBRCV24GV6 receiver UART header (TX/GND/5V) - no RX pin (v3.13 corrected from 4pin),A,yes
+wireless,U_ESP,ESP32-C3-MINI-1U,module,1,Espressif,IPEX external antenna BLE+WiFi,A,yes
+wireless,J_ANT,IPEX MHF1 cable + 2.4GHz antenna,external,1,common,antenna assembly,A,yes
+wireless,C_ESP_BULK,22uF tantalum,1206,1,AVX,ESP TX peak current,A,yes
+usb,J_USB,USB-C 16pin,SMD,1,GCT USB4105,USB FS debug/DFU,A,yes
+usb,U_ESD_USB,TPD4S012DBVR,SOT-23-6,1,TI,USB ESD,A,yes
+usb,R_CC,5.1k,0402,2,common,USB-C CC1/CC2 pulldown (legacy W5),A,yes
+storage,J_SD,microSD push-push DM3AT,SMD,1,Hirose,SDMMC 4-bit + detect,A,yes
+ui,LED_RGB,common cathode RGB,5050,1,common,status LED,A,yes
+ui,SW_USER,tactile 6x6,SMD,1,common,user button,A,yes
+safety,J_ESTOP,JST-GH 2pin,SMD,1,JST,E-stop NC contact,A,yes
+safety,U_AND,74LVC1G08GW,SC-70-5,1,Nexperia,E-stop HW AND gate,A,yes
+safety,R_PUP_ESTOP,10k,0402,1,common,E-stop pull-up,A,yes
+safety,C_DBNC_ESTOP,10nF,0402,1,common,E-stop debounce,A,yes
+safety,LED_ESTOP,red,0603,1,common,E-stop status,A,yes
+safety,U_LATCH,74LVC1G373DCK,SC-70,1,Nexperia,optional E-stop latch,A,no
+battery,U_INA1,INA228IDGSR,VSSOP-10,1,TI,battery monitor #1 (pack 1) I2C 0x40,A,yes
+battery,U_INA2,INA228IDGSR,VSSOP-10,1,TI,battery monitor #2 (pack 2) I2C 0x41 - DNP if single-pack,A,yes
+battery,R_SHUNT1,Susumu CSS2H 1mOhm 2W,2512,1,Susumu,current shunt pack 1,A,yes
+battery,R_SHUNT2,Susumu CSS2H 1mOhm 2W,2512,1,Susumu,current shunt pack 2 - DNP if single-pack,A,yes
+battery,J_BATT_NTC,JST-GH 2pin,SMD,2,JST,battery NTC input x2,A,yes
+battery,R_NTC_PUP,10k,0402,2,common,NTC pull-up x2,A,yes
+motor_power,J_PWR_IN,XT60PW,SMD/THT,1,Amass,DC input (XT90 for 48V with margin),B,tbd
+motor_power,J_PWR_M1,XT30PW or XT60,SMD/THT,1,Amass,Motor 1 output (Phase B sizing),B,tbd
+motor_power,J_PWR_M2,XT30PW or XT60,SMD/THT,1,Amass,Motor 2 output,B,tbd
+motor_power,Q_REVPROT,DMP2305U-7,SOT-23,1,Diodes,reverse polarity P-MOS -30V/4A,B,yes
+motor_power,D_VGS,BZT52C12,SOD-123,1,common,P-MOS GATE 12V zener (legacy C3 VGS protection),B,yes
+motor_power,R_VGS,100k,0402,1,common,P-MOS GATE pullup,B,yes
+motor_power,RT_NTC,SL08-2R005,THT,2,Ametherm,inrush NTC 2 ohm x2 series = 4 ohm,B,yes
+motor_power,K_RELAY,Omron G5V-1-DC5,THT,1,Omron,NTC bypass relay 5V/10A,B,yes
+motor_power,F1_BACKUP,ATM blade fuse holder + 30A blade,THT,1,Littelfuse,backup fuse (current TBD with motor),B,tbd
+motor_power,TVS_BUS,P6KE33CA,DO-15,2,Vishay,bus TVS 600W x2 parallel (37.8V clamp),B,yes
+motor_power,C_BULK,Rubycon 35ZLH4700M,radial 10mm,2,Rubycon,bus bulk 4700uF/35V x2 (regen protection),B,yes
+motor_power,C_BULK_CER,22uF/63V X7R,1210,4,Murata,ceramic bulk distributed,B,yes
+motor_power,C_Y,1nF 1kV Y-cap,1812,2,Murata,CM noise,B,yes
+motor_power,U_CMP_BRAKE,TLV3201DCKR,SC-70-5,1,TI,brake comparator 26.5V threshold,B,yes
+motor_power,R_DIV_TOP,100k 0.1%,0402,1,common,brake threshold divider top,B,yes
+motor_power,R_DIV_BOT,10k 0.1%,0402,1,common,brake threshold divider bottom,B,yes
+motor_power,Q_BRAKE,IPB025N10N3 G,TO-263,1,Infineon,brake MOSFET 100V/130A,B,yes
+motor_power,R_BRAKE,Arcol HS50 3R0 J,thru-hole,1,Arcol,brake resistor 3 ohm/50W (external heatsink),B,yes
+motor_power_local,TVS_M,SMAJ28CA,SMA,4,Vishay,per-motor local TVS 400W,B,yes
+motor_power_local,C_M,Panasonic SVPD471M35,radial,4,Panasonic,per-motor OS-CON 470uF/35V,B,yes
+motor_power_local,L_M,BLM31AG601SN1L,0805,4,Murata,per-motor ferrite bead 600 ohm/3A,B,yes
+grounding,L_STAR,BLM21PG601SN1D,0805,1,Murata,PGND<->AGND single star ferrite,A,yes
+system,MOD_JETSON,Jetson Orin NX 16GB + carrier,external,1,NVIDIA,not on board - system level,A,yes
+system,MOD_CAMERA,Stereolabs ZED X Mini,external,1,Stereolabs,GMSL2 IP67 150g,A,yes
+system,MOD_IMU,EBIMU24GV6 + EBRCV24GV6 receiver,external,1,E2BOX,V6 2.4GHz wireless IMU + RF receiver (legacy V5 corrected to V6),A,yes
+comms_uart,J_SYNC,JST-GH 3pin,SMD,1,JST,Jetson HW SYNC (SYNC_OUT/SYNC_IN/GND) - restored v3.10,A,yes
