@@ -16,7 +16,7 @@ tags: [moc, project, domain/robotics, domain/electronics]
 - **배터리**: 6S Li-ion 25.2V 완충 (48V 직렬 옵션은 Phase B)
 - **CAN**: **[[ISO1050]] 격리** (GND bounce 파손 방지)
 - **로드셀**: [[ADS131M04]] (32 kSPS 동시 샘플링)
-- **IMU**: EBIMU EBMotion V5 (무선)
+- **IMU**: [[EBIMU24GV6]] + EBRCV24GV6 수신기 (V6, 무선 2.4GHz)
 - **카메라/Jetson**: ZED X Mini + Jetson Orin NX 16GB (+ HW SYNC GPIO)
 - **무선**: [[ESP32-C3-MINI-1U]] BLE (v3.9 확정)
 - **Jetson HW SYNC**: [[Hardware Sync for Jetson]] (v3.10 재추가, JST-GH 3pin)

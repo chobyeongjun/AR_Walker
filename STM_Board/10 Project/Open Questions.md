@@ -13,7 +13,7 @@ tags: [project, status/open]
 - [x] 로드셀 ADC → [[ADS131M04]] 유지
 - [x] CAN 트랜시버 → [[ISO1050]] 격리
 - [x] 배터리 팩 → 6S Li-ion 25.2V (24V 단일 vs 48V 직렬은 Phase B)
-- [x] IMU → EBIMU EBMotion V5
+- [x] IMU → [[EBIMU24GV6]] + EBRCV24GV6 수신기 (V6, legacy V5 에서 정정)
 - [x] 카메라 → ZED X Mini
 - [x] Jetson → Orin NX 16GB
 - [x] 제어 루프 → 500 Hz

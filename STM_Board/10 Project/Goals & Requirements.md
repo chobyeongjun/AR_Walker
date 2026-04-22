@@ -42,7 +42,7 @@ AR_Walker (Teensy 기반) → STM32 + Jetson 아키텍처로 전환.
 
 ## 센서
 
-- **IMU**: [[EBIMU EBMotion V5]] (2.4GHz 무선, 1000Hz, Quaternion)
+- **IMU**: [[EBIMU24GV6]] + EBRCV24GV6 수신기 (2.4GHz 무선, 1000Hz, Quaternion)
 - **로드셀** (케이블 텐션) × 2: [[ADS131M04]] (24-bit, 32kSPS, 4ch 동시 샘플링) + [[REF5025]] 2.5V ref
 - **케이블 위치 인코더** × 2: [[AS5048A]] (SPI 14-bit 자기식)
 - **배터리** × 2: [[INA228]] (85V max, 쿨롱 카운터)

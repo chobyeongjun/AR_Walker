@@ -36,7 +36,7 @@ bash download_all.sh
 | 14 | `14_Storage/` | Hirose DM3AT, AN5200 SDMMC |
 | 15 | `15_Wireless/` | ESP32-C3-MINI-1U, HW Design Guidelines |
 | 16 | `16_Passives_Grounding/` | BLM21PG601 star ferrite |
-| 17 | `17_System_Modules/` | EBIMU V5, ZED X Mini, Jetson Orin NX |
+| 17 | `17_System_Modules/` | EBIMU24GV6 + EBRCV24GV6, ZED X Mini, Jetson Orin NX |
 
 ## ⏳ 미확정 (Phase B)
 

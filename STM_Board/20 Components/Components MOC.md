@@ -69,7 +69,7 @@ tags: [moc, components]
 ## Phase C — 시스템 스펙 (legacy 추가)
 
 - `STM32H743VIT6` (위)
-- `EBIMU EBMotion V5` — 무선 IMU (수신기 UART)
+- [[EBIMU24GV6]] + EBRCV24GV6 수신기 — 무선 IMU (V6, legacy HANDOFF 은 V5 표기했으나 실제 V6)
 - `ZED X Mini` — Stereolabs 카메라 (GMSL2, Jetson 전용)
 - `Jetson Orin NX 16GB` — 고수준 컴퓨팅 (157 TOPS)
 

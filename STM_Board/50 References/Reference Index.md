@@ -29,7 +29,7 @@ tags: [moc, references]
 │   ├── 14_Storage/                (Hirose DM3AT, AN5200)
 │   ├── 15_Wireless/               (ESP32-C3-MINI-1U, HW Design Guide)
 │   ├── 16_Passives_Grounding/     (BLM21PG601 star ferrite)
-│   └── 17_System_Modules/         (EBIMU V5, ZED X Mini, Jetson Orin NX)
+│   └── 17_System_Modules/         (EBIMU24GV6 + EBRCV24GV6, ZED X Mini, Jetson Orin NX)
 ├── App Notes/
 └── Reference Boards/              (Nucleo-H743ZI, Moteus, ODrive)
 ```
@@ -168,7 +168,8 @@ tags: [moc, references]
 
 | 부품 | 제조사 | 데이터시트 URL | 파일명 | ⬜ |
 |---|---|---|---|:-:|
-| [[EBIMU EBMotion V5]] 무선 IMU | E2BOX | https://www.e2box.co.kr/product/EBIMU-9DOFV5.asp | `EBIMU_V5_manual.pdf` | ⬜ |
+| [[EBIMU24GV6]] 센서 모듈 (V6) | E2BOX | 사용자 로컬 (`EBIMU24GV6_rev10.pdf`) | `EBIMU24GV6_IMU_Module.pdf` | ⬜ |
+| EBRCV24GV6 수신기 (V6) | E2BOX | 사용자 로컬 (`EBRCV24GV6_rev10.pdf`) | `EBRCV24GV6_Receiver.pdf` | ⬜ |
 | [[ZED X Mini]] 스테레오 카메라 | Stereolabs | https://store.stereolabs.com/products/zed-x-mini-datasheet | `ZED_X_Mini.pdf` | ⬜ |
 | [[Jetson Orin NX]] 16GB | NVIDIA | https://developer.nvidia.com/downloads/embedded/l4t/r35_release_v1.0/datasheets/JETSON_ORIN_NX_MODULE_DS_10929_002.pdf | `Jetson_Orin_NX.pdf` | ⬜ |
 
