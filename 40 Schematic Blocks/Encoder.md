@@ -3,7 +3,7 @@ aliases: [Encoder Block]
 tags: [type/block, phase/A, domain/sensor]
 type: schematic_block
 phase: A
-status: pending
+status: removed
 kicad_sheet: encoder.kicad_sch
 ---
 

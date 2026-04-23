@@ -5,7 +5,7 @@ tags: [project, architecture]
 
 # Block Diagram
 
-## 시스템 구성도 (v3.5, legacy 반영)
+## 시스템 구성도 (v3.11, AS5048A 제거)
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -32,8 +32,7 @@ tags: [project, architecture]
 │                                                                  │
 │  SPI1 ─► ADS131M04 (24-bit, 32kSPS, 4ch, 로드셀 × 2)            │
 │         + REF5025 2.5V                                           │
-│  SPI3 ─► AS5048A × 2 (인코더 풀리)                              │
-│                                                                  │
+│  │                                                                  │
 │  I²C1 ─► INA228 × 2 (배터리 팩 × 2 모니터)                      │
 │                                                                  │
 │  SDMMC1 ─► microSD (4-bit, 로깅)                                │
