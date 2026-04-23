@@ -1,0 +1,56 @@
+block,ref,part,package,qty,source,notes,phase,decided
+mcu,U1,STM32H723VGT6,LQFP100 14x14,1,ST,main MCU confirmed,A,yes
+mcu,Y1,25MHz crystal HC-49SMD,3225,1,common,HSE for USB HS,A,yes
+mcu,Y2,32.768kHz crystal,3215,1,Abracon,LSE optional,A,no
+mcu,SW_RST,tactile button 6x6,THT,1,common,NRST,A,yes
+mcu,J_SWD,Cortex 10-pin 1.27mm,SMD,1,Samtec,SWD+SWO,A,yes
+mcu,SW_BOOT,jumper 2.54,2.54,1,common,BOOT0 selector,A,yes
+logic_power,U_BUCK,TPS62933PDQNR,SOT583,1,TI,2.5MHz 60V 2A buck,A,yes
+logic_power,L_BUCK,XAL4040-222,SMD 4x4,1,Coilcraft,2.2uH for TPS62933,A,yes
+logic_power,FB_BUCK,BLM18PG471 ferrite,0603,1,Murata,isolate buck input from motor noise,A,yes
+logic_power,U_LDO_D,TLV75533PDBVR,SOT-23-5,1,TI,5V->3V3 digital,A,yes
+logic_power,U_LDO_A,TLV75533PDBVR,SOT-23-5,1,TI,5V->3V3 analog,A,yes
+logic_power,FB_AVDD,BLM18PG471,0603,1,Murata,analog 3V3 ferrite,A,yes
+logic_power,LED_PWR,green 0603,0603,1,common,3v3 indicator,A,yes
+loadcell,U_LCADC,ADS131M04IPBSR,TQFP-32,1,TI,24bit 32kSPS 4ch SPI,A,yes
+loadcell,U_REF,REF5025AIDR,SO-8,1,TI,2.5V precision ref 3ppm/C,A,yes
+loadcell,J_LC,JST-GH 4pin,SMD,2,JST,loadcell E+/S+/S-/E-,A,yes
+encoder,U_ENC,AS5048A,TSSOP-14,2,ams,SPI absolute encoder,A,yes
+encoder,J_ENC,JST-GH 6pin,SMD,2,JST,encoder harness,A,yes
+comms_can,U_CAN,TCAN1462DR,SO-8,1,TI,CAN-FD 5Mbps,A,yes
+comms_can,J_CAN,JST-GH 5pin,SMD,1,JST,CAN bus + power tap,A,yes
+comms_can,R_TERM,120 ohm 0805,0805,1,common,terminator + jumper,A,yes
+comms_can,TVS_CAN,PESD2CAN,SOT-23,1,Nexperia,ESD,A,yes
+comms_uart,J_JETSON,JST-GH 4pin,SMD,1,JST,UART to Jetson,A,yes
+comms_uart,J_SYNC,JST-GH 3pin,SMD,1,JST,SYNC_OUT/SYNC_IN/GND,A,yes
+comms_uart,J_EBIMU,JST-GH 4pin,SMD,1,JST,EBIMU receiver UART + 5V,A,yes
+wireless,U_ESP,ESP32-C3-MINI-1U,module,1,Espressif,IPEX external antenna,A,yes
+wireless,J_ANT,IPEX MHF1 cable + 2.4GHz antenna,external,1,common,antenna assembly,A,yes
+wireless,C_ESP_BULK,22uF tantalum,1206,1,AVX,ESP TX peak current,A,yes
+usb,J_USB,USB-C 16pin receptacle,SMD,1,GCT USB4105,Type-C USB HS,A,yes
+usb,U_ESD_USB,TPD4S012DBVR,SOT-23-6,1,TI,USB ESD,A,yes
+storage,J_SD,microSD push-push DM3AT,SMD,1,Hirose,SDMMC 4-bit + detect,A,yes
+ui,LED_RGB,common cathode RGB,5050,1,common,status LED,A,yes
+ui,LED_SYNC,blue 0603,0603,1,common,sync LED,A,yes
+ui,SW_USER,tactile 6x6,SMD,1,common,user button,A,yes
+safety,J_ESTOP,JST-GH 2pin,SMD,1,JST,E-stop NC contact,A,yes
+safety,U_AND,74LVC1G08GW,SC-70-5,1,Nexperia,E-stop HW AND gate,A,yes
+safety,R_PUP_ESTOP,10k,0402,1,common,E-stop pull-up,A,yes
+safety,C_DBNC_ESTOP,10nF,0402,1,common,E-stop debounce,A,yes
+safety,LED_ESTOP,red 0603,0603,1,common,E-stop status,A,yes
+safety,U_LATCH,74LVC1G373DCK,SC-70,1,Nexperia,optional E-stop latch,A,no
+battery,U_INA,INA228IDGSR,VSSOP-10,1,TI,battery monitor 85V,A,yes
+battery,R_SHUNT_IN,Susumu CSS2H 1mOhm 2W,2512,1,Susumu,current shunt,A,yes
+battery,J_BATT_NTC,JST-GH 2pin,SMD,1,JST,battery NTC input,A,yes
+battery,R_NTC_PUP,10k,0402,1,common,NTC pull-up,A,yes
+motor_power,J_PWR_IN,XT60PW or XT90,SMD/THT,1,Amass,DC input (Phase B sizing),B,tbd
+motor_power,J_PWR_M1,XT30PW or XT60PW,SMD/THT,1,Amass,Motor 1 output (Phase B),B,tbd
+motor_power,J_PWR_M2,XT30PW or XT60PW,SMD/THT,1,Amass,Motor 2 output (Phase B),B,tbd
+motor_power,U_EFUSE,LTC4368-1IMS,MSOP-12,1,Analog Devices,eFuse controller,B,yes
+motor_power,Q_EFUSE,IPB180N06S4-02,TO-263,1,Infineon,N-MOSFET for eFuse,B,yes
+motor_power,F1_BACKUP,ATM mini-blade holder + blade,THT,1,Littelfuse,backup fuse (current TBD),B,tbd
+motor_power,L_CHOKE,Wurth 7443631400 60A,SMD,1,Wurth,common-mode choke,B,yes
+motor_power,TVS_IN,SMCJ series,SMC,1,Littelfuse,clamp voltage TBD with motor V,B,tbd
+motor_power,C_BULK_HV,470uF/V Al-polymer,SMD 10mm,4,Panasonic,bulk cap V rating TBD,B,tbd
+motor_power,C_CER_HV,22uF/V X7R,1210,4,Murata,ceramic bulk V rating TBD,B,tbd
+motor_power,C_Y,1nF 1kV Y-cap,1812,2,Murata,CM noise,B,yes

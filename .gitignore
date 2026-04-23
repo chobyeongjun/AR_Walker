@@ -1,0 +1,7 @@
+.obsidian/workspace*
+.obsidian/graph.json
+.obsidian/hotkeys.json
+.obsidian/appearance.json
+.trash/
+*.tmp
+*.bak
