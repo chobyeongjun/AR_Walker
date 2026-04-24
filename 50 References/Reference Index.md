@@ -43,7 +43,7 @@ tags: [moc, references]
 | 부품 | 파일명 | 상태 | 수동 다운로드 URL |
 |---|---|:-:|---|
 | [[STM32H743VIT6]] | `STM32H743xx.pdf` | ✅ | https://www.st.com/en/microcontrollers-microprocessors/stm32h743vi.html |
-| AN5437 "STM32H7 HW Checklist" | `AN5437_H7_HW_Checklist.pdf` | ⏳ | https://www.st.com/en/embedded-software/an5437-stm32h7-hardware-design-checklist.html |
+| AN4938 "STM32H74x HW Dev Guide" | `AN4938_H743_HW_Dev.pdf` | ✅ | https://www.st.com/en/embedded-software/an5437-stm32h7-hardware-design-checklist.html |
 | AN2867 "Oscillator Design Guide" | `AN2867_Oscillator.pdf` | ✅ | https://www.st.com/en/embedded-software/an2867-guidelines-for-oscillator-design-on-stm8afals-and-stm32-mcusmpus.html |
 | AN4879 "USB hardware/PCB guide" | `AN4879_USB.pdf` | ✅ | https://www.st.com/en/embedded-software/an4879-introduction-to-usb-hardware-and-pcb-guidelines-using-stm32-mcus.html |
 | UM2407 Nucleo-H743ZI2 유저 매뉴얼 | `UM2407_Nucleo_H743ZI2.pdf` | ✅ | https://www.st.com/en/evaluation-tools/nucleo-h743zi2.html |
@@ -204,7 +204,6 @@ tags: [moc, references]
 | 파일 | 사이트 |
 |---|---|
 | `01_MCU/STM32H743xx.pdf` | st.com → STM32H743VI → Datasheet |
-| `01_MCU/AN5437_H7_HW_Checklist.pdf` | st.com → AN5437 검색 |
 | `01_MCU/Nucleo-H743ZI_SCH.pdf` | st.com → NUCLEO-H743ZI2 → Schematics |
 | `01_MCU/UM2407_Nucleo_H743ZI2.pdf` | st.com → NUCLEO-H743ZI2 → User Manual |
 | `07_Logic_Power/TLV75533.pdf` | ti.com → TLV75533 → Datasheet |
