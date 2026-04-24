@@ -15,7 +15,7 @@ tags: [moc, references]
 ```
 50 References/
 ├── Datasheets/
-│   ├── 01_MCU/                    (STM32H743, AN5436, AN2867, Nucleo)
+│   ├── 01_MCU/                    (STM32H743, AN5437, AN2867, Nucleo)
 │   ├── 02_ADC_Loadcell/           (ADS131M04, REF5025)
 │   ├── 03_Encoder/                (AS5048A — v3.11 제거, 파일 보관)
 │   ├── 04_CAN_Isolation/          (ISO1050, MGJ2D05050SC, ACM2012, SM712, PRTR5V0U2X)
@@ -42,12 +42,12 @@ tags: [moc, references]
 
 | 부품 | 파일명 | 상태 | 수동 다운로드 URL |
 |---|---|:-:|---|
-| [[STM32H743VIT6]] | `STM32H743xx.pdf` | ⏳ | https://www.st.com/en/microcontrollers-microprocessors/stm32h743vi.html |
-| AN5436 "STM32H7 HW Checklist" | `AN5436_H7_HW_Checklist.pdf` | ⏳ | https://www.st.com/en/embedded-software/an5437-stm32h7-hardware-design-checklist.html |
-| AN2867 "Oscillator Design Guide" | `AN2867_Oscillator.pdf` | ⏳ | https://www.st.com/en/embedded-software/an2867-guidelines-for-oscillator-design-on-stm8afals-and-stm32-mcusmpus.html |
-| AN4879 "USB hardware/PCB guide" | `AN4879_USB.pdf` | ⏳ | https://www.st.com/en/embedded-software/an4879-introduction-to-usb-hardware-and-pcb-guidelines-using-stm32-mcus.html |
-| UM2407 Nucleo-H743ZI2 유저 매뉴얼 | `UM2407_Nucleo_H743ZI2.pdf` | ⏳ | https://www.st.com/en/evaluation-tools/nucleo-h743zi2.html |
-| Nucleo-H743ZI schematic pack | `Nucleo-H743ZI_SCH.pdf` | ⏳ | https://www.st.com/en/evaluation-tools/nucleo-h743zi2.html → "Schematics" |
+| [[STM32H743VIT6]] | `STM32H743xx.pdf` | ✅ | https://www.st.com/en/microcontrollers-microprocessors/stm32h743vi.html |
+| AN5437 "STM32H7 HW Checklist" | `AN5437_H7_HW_Checklist.pdf` | ⏳ | https://www.st.com/en/embedded-software/an5437-stm32h7-hardware-design-checklist.html |
+| AN2867 "Oscillator Design Guide" | `AN2867_Oscillator.pdf` | ✅ | https://www.st.com/en/embedded-software/an2867-guidelines-for-oscillator-design-on-stm8afals-and-stm32-mcusmpus.html |
+| AN4879 "USB hardware/PCB guide" | `AN4879_USB.pdf` | ✅ | https://www.st.com/en/embedded-software/an4879-introduction-to-usb-hardware-and-pcb-guidelines-using-stm32-mcus.html |
+| UM2407 Nucleo-H743ZI2 유저 매뉴얼 | `UM2407_Nucleo_H743ZI2.pdf` | ✅ | https://www.st.com/en/evaluation-tools/nucleo-h743zi2.html |
+| Nucleo-H743ZI schematic pack | `Nucleo-H743ZI_SCH.pdf` | ✅ | https://www.st.com/en/evaluation-tools/nucleo-h743zi2.html → "Schematics" |
 
 ### 02. 로드셀 ADC 체인
 
@@ -55,8 +55,8 @@ tags: [moc, references]
 |---|---|:-:|
 | [[ADS131M04]] | `ADS131M04.pdf` | ✅ |
 | SBAA532 "ADS131M0x design" | `SBAA532_ADS131M_Design.pdf` | ✅ |
-| ADS131M04EVM User Guide | `ADS131M04EVM_UG.pdf` | ⏳ |
-| [[REF5025]] | `REF5025.pdf` | ⏳ |
+| ADS131M04EVM User Guide | `ADS131M04EVM_UG.pdf` | ✅ |
+| [[REF5025]] | `REF5025.pdf` | ✅ |
 
 > ⏳ TI 수동: https://www.ti.com/product/REF5025 · https://www.ti.com/product/ADS131M04
 
@@ -101,8 +101,8 @@ tags: [moc, references]
 |---|---|:-:|
 | [[TPS62933]] | `TPS62933.pdf` | ✅ |
 | [[AP63205WU]] | `AP63205_family.pdf` | ✅ |
-| [[TLV75533]] | `TLV75533.pdf` | ⏳ |
-| XAL4040 inductor | `XAL4040.pdf` | ⏳ |
+| [[TLV75533]] | `TLV75533.pdf` | ✅ |
+| XAL4040 inductor | `XAL4040.pdf` | ✅ |
 | BLM18PG601 ferrite | `BLM18PG601.pdf` | ⬜ |
 
 > ⏳ TI TLV75533: https://www.ti.com/product/TLV75533
@@ -152,7 +152,7 @@ tags: [moc, references]
 | 부품 | 파일명 | 상태 |
 |---|---|:-:|
 | [[74LVC1G08]] AND gate | `74LVC1G08.pdf` | ✅ |
-| 74LVC1G373 래치 (옵션) | `74LVC1G373.pdf` | ⏳ |
+| 74LVC1G373 래치 (옵션) | `74LVC1G373.pdf` | ✅ |
 
 > ⏳ Nexperia: https://assets.nexperia.com/documents/data-sheet/74LVC1G373.pdf
 
@@ -160,7 +160,7 @@ tags: [moc, references]
 
 | 부품 | 파일명 | 상태 |
 |---|---|:-:|
-| [[DM3AT microSD]] push-push | `DM3AT_microSD.pdf` | ⏳ |
+| [[DM3AT microSD]] push-push | `DM3AT_microSD.pdf` | ✅ |
 | AN5200 "STM32 SDMMC Guide" | `AN5200_SDMMC.pdf` | ⏳ |
 
 > ⏳ Hirose DM3AT: https://www.hirose.com/en/product/p/CL0580-2142-2-51
@@ -171,7 +171,7 @@ tags: [moc, references]
 | 부품 | 파일명 | 상태 |
 |---|---|:-:|
 | [[ESP32-C3-MINI-1U]] | `ESP32-C3-MINI-1U.pdf` | ✅ |
-| ESP32-C3 HW Design Guidelines | `ESP32-C3_HW_Design.pdf` | ⏳ |
+| ESP32-C3 HW Design Guidelines | `ESP32-C3_HW_Design.pdf` | ✅ |
 
 > ⏳ Espressif: https://www.espressif.com/en/support/documents/technical-documents (ESP32-C3 Hardware Design Guidelines)
 
@@ -204,7 +204,7 @@ tags: [moc, references]
 | 파일 | 사이트 |
 |---|---|
 | `01_MCU/STM32H743xx.pdf` | st.com → STM32H743VI → Datasheet |
-| `01_MCU/AN5436_H7_HW_Checklist.pdf` | st.com → AN5437 검색 |
+| `01_MCU/AN5437_H7_HW_Checklist.pdf` | st.com → AN5437 검색 |
 | `01_MCU/Nucleo-H743ZI_SCH.pdf` | st.com → NUCLEO-H743ZI2 → Schematics |
 | `01_MCU/UM2407_Nucleo_H743ZI2.pdf` | st.com → NUCLEO-H743ZI2 → User Manual |
 | `07_Logic_Power/TLV75533.pdf` | ti.com → TLV75533 → Datasheet |
