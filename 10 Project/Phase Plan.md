@@ -12,7 +12,7 @@ tags: [project, plan]
 | Phase | 내용 | 산출물 | 상태 |
 |---|---|---|---|
 | **P0** | 요구·블록도 | [[Goals & Requirements]], [[Block Diagram]] | ✅ |
-| **P1** | 각 블록 reference schematic 수집 | `50 References/Datasheets/`, [[Reference Index]] | 🟡 진행중 |
+| **P1** | 각 블록 reference schematic 수집 | `50 References/Datasheets/`, [[Reference Index]] | ✅ |
 | **P2** | KiCad 프로젝트 생성 + 심볼/풋프린트 라이브러리 | `70 KiCad/exo_stm32.kicad_pro` | ⬜ |
 | **P3A** | Phase A hierarchical sheet 작성 | per-block `.kicad_sch` | ⬜ |
 | **P3A.1** | [[Logic Power]] | `logic_power.kicad_sch` | ⬜ |
