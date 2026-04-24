@@ -8,7 +8,7 @@ type: concept
 
 ## 문제
 
-[[STM32H723VGT6]] (LQFP100, 14×14) vs STM32H723VGH6 (UFBGA100, 7×7) 선택.
+[[STM32H743VIT6]] (LQFP100, 14×14) vs STM32H743VIH6 (UFBGA100, 7×7) 선택.
 외주 PCBA 환경에서 어느 쪽이 좋은가?
 
 ## 성능 차이: 없음
@@ -56,6 +56,6 @@ type: concept
 
 ## 관련
 
-- [[STM32H723VGT6]]
+- [[STM32H743VIT6]]
 - [[Size Budget]]
 - [[Decisions Log]]

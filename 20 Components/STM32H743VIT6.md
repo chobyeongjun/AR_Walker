@@ -14,7 +14,7 @@ status: decided
 # STM32H743VIT6
 
 > **확정 MCU** — Cortex-M7 480 MHz + 2MB Flash + 1MB RAM, legacy review 에서 검증 완료.
-> 내 원안 [[STM32H723VGT6]] 에서 변경 (이유: [[RECONCILIATION]] §🔴)
+> 내 원안 STM32H723VGT6 에서 변경 (이유: [[RECONCILIATION]] §🔴)
 
 ## 한 줄 요약
 

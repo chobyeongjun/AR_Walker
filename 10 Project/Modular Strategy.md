@@ -16,10 +16,9 @@ tags: [project, strategy]
 
 | 블록 | 부품 | 의존성 |
 |---|---|---|
-| [[MCU Core]] | [[STM32H723VGT6]] | ❌ |
+| [[MCU Core]] | [[STM32H743VIT6]] | ❌ |
 | [[Loadcell Amp]] ⭐ | [[ADS131M04]] + [[REF5025]] | ❌ |
-| [[Encoder]] | [[AS5048A]] × 2 | ❌ |
-| [[Comms]] | [[TCAN1462]] + UART 헤더 | ❌ (CANopen 표준) |
+| [[Comms]] | [[ISO1050]] + [[MGJ2D05050SC]] + UART 헤더 | ❌ (CANopen 표준) |
 | [[Wireless]] | [[ESP32-C3-MINI-1U]] | ❌ |
 | [[Storage]] | [[DM3AT microSD]] | ❌ |
 | [[USB Debug]] | USB-C + [[TPD4S012]] | ❌ |
