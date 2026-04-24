@@ -161,7 +161,7 @@ tags: [moc, references]
 | 부품 | 파일명 | 상태 |
 |---|---|:-:|
 | [[DM3AT microSD]] push-push | `DM3AT_microSD.pdf` | ✅ |
-| AN5200 "STM32 SDMMC Guide" | `AN5200_SDMMC.pdf` | ⏳ |
+| AN5200 "STM32 SDMMC Guide" | `AN5200_SDMMC.pdf` | ✅ |
 
 > ⏳ Hirose DM3AT: https://www.hirose.com/en/product/p/CL0580-2142-2-51
 > ⏳ ST AN5200: https://www.st.com/en/embedded-software/an5200-sdmmc-stm32.html
